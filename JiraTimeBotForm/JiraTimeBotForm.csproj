@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Google-Noto-Emoji-Smileys-10103-robot-face.ico</ApplicationIcon>
+    <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Atlassian.Jira, Version=10.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -74,11 +74,11 @@
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\Settings.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="JiraIntegration\JiraApi.cs" />
     <Compile Include="Passwords\EncryptionClass.cs" />
@@ -87,8 +87,8 @@
     <Compile Include="TaskTime\ITaskTimeDiscoverer.cs" />
     <Compile Include="TaskTime\TaskTimeDiscoverer.cs" />
     <Compile Include="TaskTime\TaskTimeItem.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -114,7 +114,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Google-Noto-Emoji-Smileys-10103-robot-face.ico" />
+    <Content Include="app.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -45,6 +45,7 @@ namespace JiraTimeBotForm
             this.btnStart = new System.Windows.Forms.Button();
             this.ntfyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tmrStart = new System.Windows.Forms.Timer(this.components);
+            this.txtDummyMode = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // actTime
@@ -168,11 +169,22 @@ namespace JiraTimeBotForm
             this.tmrStart.Interval = 1000;
             this.tmrStart.Tick += new System.EventHandler(this.tmrStart_Tick);
             // 
+            // txtDummyMode
+            // 
+            this.txtDummyMode.AutoSize = true;
+            this.txtDummyMode.Location = new System.Drawing.Point(48, 234);
+            this.txtDummyMode.Name = "txtDummyMode";
+            this.txtDummyMode.Size = new System.Drawing.Size(114, 17);
+            this.txtDummyMode.TabIndex = 13;
+            this.txtDummyMode.Text = "Тестовый прогон";
+            this.txtDummyMode.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 292);
+            this.Controls.Add(this.txtDummyMode);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.label4);
@@ -215,6 +227,7 @@ namespace JiraTimeBotForm
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.NotifyIcon ntfyIcon;
         private System.Windows.Forms.Timer tmrStart;
+        private System.Windows.Forms.CheckBox txtDummyMode;
     }
 }
 

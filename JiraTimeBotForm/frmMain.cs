@@ -163,9 +163,9 @@ namespace JiraTimeBotForm
                 var taskTimes = taskDiscoverer.GetTaskTimes(settings, date);
                 if (!taskTimes.Any())
                 {
-                    _log.Warn($"{date} вы не сделали ничего полезного =) Использую предыдущий день.");
+                    _log.Warn($"{date:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
                     daysDiff--;
-                    if (daysDiff < 7)
+                    if (daysDiff < -7)
                     {
                         _log.Error("Не нашли ни одного коммита за предыдущие 7 дней. Возможно вы в отпуске? Выхожу.");
                         return;
@@ -180,7 +180,7 @@ namespace JiraTimeBotForm
                     _log.Trace($"- {taskTime.Branch} (коммитов {taskTime.Commits}): {taskTime.Time}");
                 }
 
-                jira.SetTodayWorklog(taskTimes);
+                jira.SetTodayWorklog(taskTimes, dummy: txtDummyMode.Checked);
                 _log.Info("Готово.");
                 return;
             }

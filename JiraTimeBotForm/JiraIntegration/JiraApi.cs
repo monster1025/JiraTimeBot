@@ -20,7 +20,7 @@ namespace JiraTimeBotForm.JiraIntegration
             _jira = Jira.CreateRestClient(_settings.JiraUrl, _settings.JiraUserName, _settings.JiraPassword);
         }
         
-        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, DateTime? date = null)
+        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, DateTime? date = null, bool dummy = false)
         {
             if (date == null)
             {
@@ -48,7 +48,10 @@ namespace JiraTimeBotForm.JiraIntegration
                         if (timeDiff > 1)
                         {
                             _log.Trace($"Время отличается на {timeDiff} минут, удаляю worklog: {taskTimeItem.Branch} {workLog.Author} {workLog.CreateDate}: {workLog.TimeSpent}");
-                            issue.DeleteWorklogAsync(workLog, WorklogStrategy.RetainRemainingEstimate);
+                            if (!dummy)
+                            {
+                                issue.DeleteWorklogAsync(workLog, WorklogStrategy.RetainRemainingEstimate);
+                            }
                             hasTodayWorklog = false;
                         }
                         else
@@ -62,8 +65,12 @@ namespace JiraTimeBotForm.JiraIntegration
                 if (!hasTodayWorklog)
                 {
                     var timeSpentJira = $"{taskTimeItem.Time.TotalMinutes}m";
-                    var addedWorklog = issue.AddWorklogAsync(new Worklog(timeSpentJira, date.Value)).Result;
-                    _log.Trace($"Добавили Worklog для {taskTimeItem.Branch}: {addedWorklog.Author} {addedWorklog.CreateDate}: {addedWorklog.TimeSpent}");
+                    var workLogToAdd = new Worklog(timeSpentJira, date.Value);
+                    if (!dummy)
+                    {
+                        workLogToAdd = issue.AddWorklogAsync(workLogToAdd).Result;
+                    }
+                    _log.Trace($"Добавили Worklog для {taskTimeItem.Branch}: {workLogToAdd.Author} {workLogToAdd.CreateDate}: {workLogToAdd.TimeSpent}");
                 }
             }
         }
