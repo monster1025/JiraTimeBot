@@ -44,7 +44,7 @@ namespace JiraTimeBotForm.JiraIntegration
                     var timeSpent = TimeSpan.FromSeconds(workLog.TimeSpentInSeconds);
                     if (workLog.CreateDate.GetValueOrDefault().Date == date && workLog.Author == _settings.JiraUserName)
                     {
-                        var timeDiff = (timeSpent - taskTimeItem.Time).TotalMinutes;
+                        var timeDiff = Math.Abs((timeSpent - taskTimeItem.Time).TotalMinutes);
                         if (timeDiff > 1)
                         {
                             _log.Trace($"Время отличается на {timeDiff} минут, удаляю worklog: {taskTimeItem.Branch} {workLog.Author} {workLog.CreateDate}: {workLog.TimeSpent}");
