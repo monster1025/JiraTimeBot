@@ -34,10 +34,15 @@ namespace JiraTimeBotForm.TaskTime
                 }
 
                 var repo = new Repository(repoDirectory);
-                var log = repo.Log(new LogCommand {Date = date, Users = { settings.MercurialAuthorEmail }});
+                var log = repo.Log(new LogCommand {Date = date, Users = { settings.MercurialAuthorEmail } });
                 foreach (var changeset in log)
                 {
                     if (!changeset.Branch.Contains("-"))
+                    {
+                        continue;
+                    }
+                    //Пропускаем Close коммиты
+                    if (changeset.CommitMessage.StartsWith($"Close {changeset.Branch} branch"))
                     {
                         continue;
                     }

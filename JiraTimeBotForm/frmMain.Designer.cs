@@ -145,6 +145,7 @@ namespace JiraTimeBotForm
             this.txtLog.Location = new System.Drawing.Point(218, 16);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLog.Size = new System.Drawing.Size(510, 264);
             this.txtLog.TabIndex = 11;
             // 
