@@ -48,7 +48,7 @@ namespace JiraTimeBotForm.TaskTime
                     }
 
                     workTasks.Add(changeset.Branch);
-                    _log.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress}");
+                    _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress}");
                 }
             }
 
@@ -63,7 +63,7 @@ namespace JiraTimeBotForm.TaskTime
                 {
                     Branch = taskGroup.Key,
                     Time = TimeSpan.FromMinutes(minutesForCurrentTaskGroup),
-                    Commits = taskGroup.Count()
+                    Commits = taskGroup.Count(),
                 });
             }
 

@@ -19,7 +19,13 @@ namespace JiraTimeBotForm.JiraIntegration
             _log = log;
             _jira = Jira.CreateRestClient(_settings.JiraUrl, _settings.JiraUserName, _settings.JiraPassword);
         }
-        
+
+        public string GetTaskName(string branch)
+        {
+            var issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == branch);
+            return issue?.Summary;
+        }
+
         public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, DateTime? date = null, bool dummy = false)
         {
             if (date == null)
@@ -50,7 +56,7 @@ namespace JiraTimeBotForm.JiraIntegration
                             _log.Trace($"Время отличается на {timeDiff} минут, удаляю worklog: {taskTimeItem.Branch} {workLog.Author} {workLog.CreateDate}: {workLog.TimeSpent}");
                             if (!dummy)
                             {
-                                issue.DeleteWorklogAsync(workLog, WorklogStrategy.RetainRemainingEstimate);
+                                issue.DeleteWorklogAsync(workLog);
                             }
                             hasTodayWorklog = false;
                         }

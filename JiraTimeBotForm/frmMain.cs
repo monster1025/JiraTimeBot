@@ -185,5 +185,56 @@ namespace JiraTimeBotForm
                 return;
             }
         }
+
+        private void btnMeeting_Click(object sender, EventArgs e)
+        {
+            if (!Directory.Exists(txtRepoPath.Text))
+            {
+                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            txtLog.Text = "";
+            var settings = new Settings
+            {
+                JiraUserName = txtJiraLogin.Text,
+                JiraPassword = txtJiraPassword.Text,
+                MercurialAuthorEmail = txtMercurialEmail.Text,
+                ActivationTime = TimeSpan.Parse(actTime.Text),
+                RepositoryPath = txtRepoPath.Text
+            };
+
+            var jira = new JiraApi(settings, _log);
+            var taskDiscoverer = new TaskTimeDiscoverer();
+
+            int daysDiff = -1;
+            while (true)
+            {
+                var date = DateTime.Now.Date.AddDays(daysDiff);
+                var taskTimes = taskDiscoverer.GetTaskTimes(settings, date);
+                if (!taskTimes.Any())
+                {
+                    _log.Warn($"{date:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
+                    daysDiff--;
+                    if (daysDiff < -7)
+                    {
+                        _log.Error("Не нашли ни одного коммита за предыдущие 7 дней. Возможно вы в отпуске? Выхожу.");
+                        return;
+                    }
+
+                    continue;
+                }
+
+                _log.Trace($"На реальную дату {date:dd.MM.yyyy} распределение по задачам:");
+                foreach (var taskTime in taskTimes.OrderByDescending(f=>f.Time))
+                {
+                    var taskName = jira.GetTaskName(taskTime.Branch);
+                    _log.Trace($"- {taskTime.Branch}: {taskName} - {taskTime.Time}");
+                }
+
+                break;
+            }
+
+        }
     }
 }

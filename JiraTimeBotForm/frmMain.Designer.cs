@@ -46,6 +46,7 @@ namespace JiraTimeBotForm
             this.ntfyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tmrStart = new System.Windows.Forms.Timer(this.components);
             this.txtDummyMode = new System.Windows.Forms.CheckBox();
+            this.btnMeeting = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // actTime
@@ -151,7 +152,7 @@ namespace JiraTimeBotForm
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(48, 257);
+            this.btnStart.Location = new System.Drawing.Point(34, 257);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(103, 23);
             this.btnStart.TabIndex = 12;
@@ -173,18 +174,29 @@ namespace JiraTimeBotForm
             // txtDummyMode
             // 
             this.txtDummyMode.AutoSize = true;
-            this.txtDummyMode.Location = new System.Drawing.Point(48, 234);
+            this.txtDummyMode.Location = new System.Drawing.Point(31, 234);
             this.txtDummyMode.Name = "txtDummyMode";
             this.txtDummyMode.Size = new System.Drawing.Size(114, 17);
             this.txtDummyMode.TabIndex = 13;
             this.txtDummyMode.Text = "Тестовый прогон";
             this.txtDummyMode.UseVisualStyleBackColor = true;
             // 
+            // btnMeeting
+            // 
+            this.btnMeeting.Location = new System.Drawing.Point(160, 257);
+            this.btnMeeting.Name = "btnMeeting";
+            this.btnMeeting.Size = new System.Drawing.Size(52, 23);
+            this.btnMeeting.TabIndex = 14;
+            this.btnMeeting.Text = "Митинг";
+            this.btnMeeting.UseVisualStyleBackColor = true;
+            this.btnMeeting.Click += new System.EventHandler(this.btnMeeting_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 292);
+            this.Controls.Add(this.btnMeeting);
             this.Controls.Add(this.txtDummyMode);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.txtLog);
@@ -229,6 +241,7 @@ namespace JiraTimeBotForm
         private System.Windows.Forms.NotifyIcon ntfyIcon;
         private System.Windows.Forms.Timer tmrStart;
         private System.Windows.Forms.CheckBox txtDummyMode;
+        private System.Windows.Forms.Button btnMeeting;
     }
 }
 
