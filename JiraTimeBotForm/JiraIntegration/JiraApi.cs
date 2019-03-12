@@ -36,10 +36,18 @@ namespace JiraTimeBotForm.JiraIntegration
 
             foreach (var taskTimeItem in taskTimeItems)
             {
-                var issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == taskTimeItem.Branch);
+                Issue issue = null;
+                try
+                {
+                    issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == taskTimeItem.Branch);
+                }
+                catch (Exception)
+                {
+
+                }
                 if (issue == null)
                 {
-                    _log.Error($"Не могу найти ветку {taskTimeItem.Branch}, пропускаю!");
+                    _log.Error($"[!] Не могу найти ветку {taskTimeItem.Branch} в JIRA, пропускаю!");
                     continue;
                 }
 
