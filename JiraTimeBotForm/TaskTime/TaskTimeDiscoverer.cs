@@ -44,7 +44,7 @@ namespace JiraTimeBotForm.TaskTime
                         continue;
                     }
                     //Пропускаем Close коммиты
-                    if (changeset.CommitMessage.StartsWith($"Close {changeset.Branch} branch"))
+                    if (changeset.CommitMessage.StartsWith($"Close {changeset.Branch} ", StringComparison.InvariantCultureIgnoreCase))
                     {
                         continue;
                     }

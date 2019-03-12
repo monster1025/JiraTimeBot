@@ -97,7 +97,8 @@ namespace JiraTimeBotForm
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 6;
-            this.label2.Text = "EMail Mercurial:";
+            this.label2.Text = "Mercurial name:";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txtMercurialEmail
             // 
