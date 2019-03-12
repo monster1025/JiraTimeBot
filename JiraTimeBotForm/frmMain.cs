@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -127,7 +127,7 @@ namespace JiraTimeBotForm
             {
                 if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    _log.Error("сегодня суббота или воскресенье. Работать нельзя =)");
+                    _log.Error("СЃРµРіРѕРґРЅСЏ СЃСѓР±Р±РѕС‚Р° РёР»Рё РІРѕСЃРєСЂРµСЃРµРЅСЊРµ. Р Р°Р±РѕС‚Р°С‚СЊ РЅРµР»СЊР·СЏ =)");
                     return;
                 }
 
@@ -140,7 +140,7 @@ namespace JiraTimeBotForm
         {
             if (!Directory.Exists(txtRepoPath.Text))
             {
-                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("РџР°РїРєР° СЃ СЂРµРїРѕ РЅРµ СЃСѓС€РµСЃС‚РІСѓРµС‚.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -164,25 +164,25 @@ namespace JiraTimeBotForm
                 var taskTimes = taskDiscoverer.GetTaskTimes(settings, date);
                 if (!taskTimes.Any())
                 {
-                    _log.Warn($"{date:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
+                    _log.Warn($"{date:dd.MM.yyyy} РІС‹ РЅРµ СЃРґРµР»Р°Р»Рё РЅРёС‡РµРіРѕ РїРѕР»РµР·РЅРѕРіРѕ =) РСЃРїРѕР»СЊР·СѓСЋ РїСЂРµРґС‹РґСѓС‰РёР№ РґРµРЅСЊ.");
                     daysDiff--;
                     if (daysDiff < -7)
                     {
-                        _log.Error("Не нашли ни одного коммита за предыдущие 7 дней. Возможно вы в отпуске? Выхожу.");
+                        _log.Error("РќРµ РЅР°С€Р»Рё РЅРё РѕРґРЅРѕРіРѕ РєРѕРјРјРёС‚Р° Р·Р° РїСЂРµРґС‹РґСѓС‰РёРµ 7 РґРЅРµР№. Р’РѕР·РјРѕР¶РЅРѕ РІС‹ РІ РѕС‚РїСѓСЃРєРµ? Р’С‹С…РѕР¶Сѓ.");
                         return;
                     }
 
                     continue;
                 }
 
-                _log.Trace($"На реальную дату {date:dd.MM.yyyy} распределение по задачам:");
+                _log.Trace($"РќР° СЂРµР°Р»СЊРЅСѓСЋ РґР°С‚Сѓ {date:dd.MM.yyyy} СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РїРѕ Р·Р°РґР°С‡Р°Рј:");
                 foreach (var taskTime in taskTimes)
                 {
-                    _log.Trace($"- {taskTime.Branch} (коммитов {taskTime.Commits}): {taskTime.Time}");
+                    _log.Trace($"- {taskTime.Branch} (РєРѕРјРјРёС‚РѕРІ {taskTime.Commits}): {taskTime.Time}");
                 }
 
                 jira.SetTodayWorklog(taskTimes, dummy: txtDummyMode.Checked);
-                _log.Info("Готово.");
+                _log.Info("Р“РѕС‚РѕРІРѕ.");
                 return;
             }
         }
@@ -191,7 +191,7 @@ namespace JiraTimeBotForm
         {
             if (!Directory.Exists(txtRepoPath.Text))
             {
-                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("РџР°РїРєР° СЃ СЂРµРїРѕ РЅРµ СЃСѓС€РµСЃС‚РІСѓРµС‚.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -215,18 +215,18 @@ namespace JiraTimeBotForm
                 var taskTimes = taskDiscoverer.GetTaskTimes(settings, date);
                 if (!taskTimes.Any())
                 {
-                    _log.Warn($"{date:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
+                    _log.Warn($"{date:dd.MM.yyyy} РІС‹ РЅРµ СЃРґРµР»Р°Р»Рё РЅРёС‡РµРіРѕ РїРѕР»РµР·РЅРѕРіРѕ =) РСЃРїРѕР»СЊР·СѓСЋ РїСЂРµРґС‹РґСѓС‰РёР№ РґРµРЅСЊ.");
                     daysDiff--;
                     if (daysDiff < -7)
                     {
-                        _log.Error("Не нашли ни одного коммита за предыдущие 7 дней. Возможно вы в отпуске? Выхожу.");
+                        _log.Error("РќРµ РЅР°С€Р»Рё РЅРё РѕРґРЅРѕРіРѕ РєРѕРјРјРёС‚Р° Р·Р° РїСЂРµРґС‹РґСѓС‰РёРµ 7 РґРЅРµР№. Р’РѕР·РјРѕР¶РЅРѕ РІС‹ РІ РѕС‚РїСѓСЃРєРµ? Р’С‹С…РѕР¶Сѓ.");
                         return;
                     }
 
                     continue;
                 }
 
-                _log.Trace($"На реальную дату {date:dd.MM.yyyy} распределение по задачам:");
+                _log.Trace($"РќР° СЂРµР°Р»СЊРЅСѓСЋ РґР°С‚Сѓ {date:dd.MM.yyyy} СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РїРѕ Р·Р°РґР°С‡Р°Рј:");
                 foreach (var taskTime in taskTimes.OrderByDescending(f=>f.Time))
                 {
                     var taskName = jira.GetTaskName(taskTime.Branch);
