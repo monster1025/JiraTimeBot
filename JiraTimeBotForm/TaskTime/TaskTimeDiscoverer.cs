@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using JiraTimeBotForm.Configuration;
 using Mercurial;
 
@@ -32,6 +33,7 @@ namespace JiraTimeBotForm.TaskTime
                 {
                     continue;
                 }
+                Application.DoEvents();
 
                 var repo = new Repository(repoDirectory);
                 var log = repo.Log(new LogCommand {Date = date, Users = { settings.MercurialAuthorEmail } });
@@ -49,6 +51,7 @@ namespace JiraTimeBotForm.TaskTime
 
                     workTasks.Add(changeset.Branch);
                     _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress}");
+                    Application.DoEvents();
                 }
             }
 

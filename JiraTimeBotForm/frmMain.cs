@@ -131,6 +131,7 @@ namespace JiraTimeBotForm
                     return;
                 }
 
+                txtDummyMode.Checked = false;
                 DoTheJob();
             }
         }
