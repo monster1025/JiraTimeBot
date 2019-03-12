@@ -1,4 +1,4 @@
-namespace JiraTimeBotForm
+п»їnamespace JiraTimeBotForm
 {
     partial class frmMain
     {
@@ -71,7 +71,7 @@ namespace JiraTimeBotForm
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(60, 13);
             this.lbl1.TabIndex = 2;
-            this.lbl1.Text = "Логин Jira:";
+            this.lbl1.Text = "Р›РѕРіРёРЅ Jira:";
             // 
             // label1
             // 
@@ -80,7 +80,7 @@ namespace JiraTimeBotForm
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Пароль Jira:";
+            this.label1.Text = "РџР°СЂРѕР»СЊ Jira:";
             // 
             // txtJiraPassword
             // 
@@ -114,7 +114,7 @@ namespace JiraTimeBotForm
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Время:";
+            this.label3.Text = "Р’СЂРµРјСЏ:";
             // 
             // btnSave
             // 
@@ -133,7 +133,7 @@ namespace JiraTimeBotForm
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 10;
-            this.label4.Text = "Путь до репо:";
+            this.label4.Text = "РџСѓС‚СЊ РґРѕ СЂРµРїРѕ:";
             // 
             // txtRepoPath
             // 
@@ -179,7 +179,7 @@ namespace JiraTimeBotForm
             this.txtDummyMode.Name = "txtDummyMode";
             this.txtDummyMode.Size = new System.Drawing.Size(114, 17);
             this.txtDummyMode.TabIndex = 13;
-            this.txtDummyMode.Text = "Тестовый прогон";
+            this.txtDummyMode.Text = "РўРµСЃС‚РѕРІС‹Р№ РїСЂРѕРіРѕРЅ";
             this.txtDummyMode.UseVisualStyleBackColor = true;
             // 
             // btnMeeting
@@ -188,7 +188,7 @@ namespace JiraTimeBotForm
             this.btnMeeting.Name = "btnMeeting";
             this.btnMeeting.Size = new System.Drawing.Size(52, 23);
             this.btnMeeting.TabIndex = 14;
-            this.btnMeeting.Text = "Митинг";
+            this.btnMeeting.Text = "РњРёС‚РёРЅРі";
             this.btnMeeting.UseVisualStyleBackColor = true;
             this.btnMeeting.Click += new System.EventHandler(this.btnMeeting_Click);
             // 
@@ -215,7 +215,7 @@ namespace JiraTimeBotForm
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmMain";
-            this.Text = "Бот логирования времени";
+            this.Text = "Р‘РѕС‚ Р»РѕРіРёСЂРѕРІР°РЅРёСЏ РІСЂРµРјРµРЅРё";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
