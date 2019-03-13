@@ -22,8 +22,16 @@ namespace JiraTimeBotForm.JiraIntegration
 
         public string GetTaskName(string branch)
         {
-            var issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == branch);
-            return issue?.Summary;
+            Issue issue = null;
+            try
+            {
+                issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == branch);
+                return issue?.Summary;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, DateTime? date = null, bool dummy = false)
