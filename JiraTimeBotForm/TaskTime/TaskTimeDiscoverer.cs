@@ -74,12 +74,13 @@ namespace JiraTimeBotForm.TaskTime
             }
 
             int remainMinutes = settings.MinuterPerWorkDay;
+            int totalCommitsCount = workTasks.Count;
 
             //Нам нужно раскидать 480 минут в день.
-            foreach (var taskGroup in workTasks.GroupBy(f => f))
+            foreach (var taskGroup in workTasks.GroupBy(f => f).OrderByDescending(f=>f.Count()))
             {
                 int currentTaskCommits = taskGroup.Count();
-                int currentTaskTime = (int)RoundTo15(settings.MinuterPerWorkDay / workTasks.Count * currentTaskCommits);
+                int currentTaskTime = (int)RoundTo(settings.MinuterPerWorkDay / totalCommitsCount * currentTaskCommits);
                 remainMinutes = remainMinutes - currentTaskTime;
 
                 var taskTimeItem = new TaskTimeItem
@@ -91,19 +92,20 @@ namespace JiraTimeBotForm.TaskTime
 
                 workTimeItems.Add(taskTimeItem);
             }
+            //если переборщили или не достаточно добавили до 8 часов - скореектируем остаток в первой задаче (она самая трудозатратная).
             workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
 
             return workTimeItems;
         }
 
-        private decimal RoundTo15(decimal value, bool up = true)
+        private decimal RoundTo(decimal value, decimal to = 15, bool up = true)
         {
-            if ((value % 15) == 0)
+            if ((value % to) == 0)
                 return value;
             if (up)
-                return (value - (value % 15) + 15);
+                return (value - (value % to) + to);
 
-            return (value - (value % 15));
+            return (value - (value % to));
         }
 
     }
