@@ -54,33 +54,42 @@ namespace JiraTimeBotForm.TaskTime
                     Application.DoEvents();
                 }
             }
+            if (!workTasks.Any())
+            {
+                return new List<TaskTimeItem>();
+            }
 
             int remainMinutes = settings.MinuterPerWorkDay;
-            float fifteenMinIntervals = settings.MinuterPerWorkDay / 15;
-            float intervalPerCommit = fifteenMinIntervals / workTasks.Count;
 
             //Нам нужно раскидать 480 минут в день.
             var workTimeItems = new List<TaskTimeItem>();
             foreach (var taskGroup in workTasks.GroupBy(f=>f))
             {
-                int currentIntervalsCount = (int)(intervalPerCommit * taskGroup.Count());
-                var minutesForCurrentTaskGroup = currentIntervalsCount  * 15;
-                remainMinutes = remainMinutes - minutesForCurrentTaskGroup;
+                int currentTaskCommits = taskGroup.Count();
+                int currentTaskTime = (int)RoundTo15(settings.MinuterPerWorkDay / workTasks.Count * currentTaskCommits);
+                remainMinutes = remainMinutes - currentTaskTime;
 
                 workTimeItems.Add(new TaskTimeItem
                 {
                     Branch = taskGroup.Key,
-                    Time = TimeSpan.FromMinutes(minutesForCurrentTaskGroup),
+                    Time = TimeSpan.FromMinutes(currentTaskTime),
                     Commits = taskGroup.Count(),
                 });
             }
-
-            if (workTimeItems.Any())
-            {
-                workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
-            }
+            workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
 
             return workTimeItems;
         }
+
+        private decimal RoundTo15(decimal value, bool up = true)
+        {
+            if ((value % 15) == 0)
+                return value;
+            if (up)
+                return (value - (value % 15) + 15);
+
+            return (value - (value % 15));
+        }
+
     }
 }
