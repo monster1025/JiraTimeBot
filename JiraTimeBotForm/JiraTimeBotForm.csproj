@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Job.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\Settings.cs" />
     <Compile Include="frmMain.cs">
@@ -84,6 +85,9 @@
     <Compile Include="Passwords\EncryptionClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TasksProcessors\ITasksProcessor.cs" />
+    <Compile Include="TasksProcessors\MeetingProcessor.cs" />
+    <Compile Include="TasksProcessors\WorkLogTasksProcessor.cs" />
     <Compile Include="TaskTime\ITaskTimeDiscoverer.cs" />
     <Compile Include="TaskTime\TaskTimeDiscoverer.cs" />
     <Compile Include="TaskTime\TaskTimeItem.cs" />
