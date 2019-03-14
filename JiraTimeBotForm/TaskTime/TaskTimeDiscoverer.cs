@@ -55,12 +55,17 @@ namespace JiraTimeBotForm.TaskTime
                 }
             }
 
+            int remainMinutes = settings.MinuterPerWorkDay;
+            float fifteenMinIntervals = settings.MinuterPerWorkDay / 15;
+            float intervalPerCommit = fifteenMinIntervals / workTasks.Count;
+
             //Нам нужно раскидать 480 минут в день.
             var workTimeItems = new List<TaskTimeItem>();
             foreach (var taskGroup in workTasks.GroupBy(f=>f))
             {
-                var minutesPerTime = settings.MinuterPerWorkDay / workTasks.Count;
-                var minutesForCurrentTaskGroup = minutesPerTime * taskGroup.Count();
+                int currentIntervalsCount = (int)(intervalPerCommit * taskGroup.Count());
+                var minutesForCurrentTaskGroup = currentIntervalsCount  * 15;
+                remainMinutes = remainMinutes - minutesForCurrentTaskGroup;
 
                 workTimeItems.Add(new TaskTimeItem
                 {
@@ -68,6 +73,11 @@ namespace JiraTimeBotForm.TaskTime
                     Time = TimeSpan.FromMinutes(minutesForCurrentTaskGroup),
                     Commits = taskGroup.Count(),
                 });
+            }
+
+            if (workTimeItems.Any())
+            {
+                workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
             }
 
             return workTimeItems;
