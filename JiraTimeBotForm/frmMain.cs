@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace JiraTimeBotForm
             var tokenSource = new CancellationTokenSource();
             tokenSource.Token.Register(() =>
             {
-                _log.Info("Операция отменена...");
+                _log.Info("РћРїРµСЂР°С†РёСЏ РѕС‚РјРµРЅРµРЅР°...");
                 LockUnlock(true);
             });
 
@@ -153,7 +153,7 @@ namespace JiraTimeBotForm
 
             if (!Directory.Exists(settings.RepositoryPath))
             {
-                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("РџР°РїРєР° СЃ СЂРµРїРѕ РЅРµ СЃСѓС€РµСЃС‚РІСѓРµС‚.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -187,11 +187,11 @@ namespace JiraTimeBotForm
             {
                 if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    _log.Error("Сегодня суббота или воскресенье. Работать нельзя =)");
+                    _log.Error("РЎРµРіРѕРґРЅСЏ СЃСѓР±Р±РѕС‚Р° РёР»Рё РІРѕСЃРєСЂРµСЃРµРЅСЊРµ. Р Р°Р±РѕС‚Р°С‚СЊ РЅРµР»СЊР·СЏ =)");
                     return;
                 }
 
-                _log.Info("Автоматическое внесение времени.");
+                _log.Info("РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ РІРЅРµСЃРµРЅРёРµ РІСЂРµРјРµРЅРё.");
 
                 var settings = ReadSettingsAndLock();
 
@@ -200,7 +200,7 @@ namespace JiraTimeBotForm
                 if (settings.DummyMode)
                 {
                     settings.DummyMode = false;
-                    _log.Info("Выключаем режим Тестового прогона");
+                    _log.Info("Р’С‹РєР»СЋС‡Р°РµРј СЂРµР¶РёРј РўРµСЃС‚РѕРІРѕРіРѕ РїСЂРѕРіРѕРЅР°");
                 }
 
                 using (var tokenSource = GetTokenSource())
@@ -218,7 +218,7 @@ namespace JiraTimeBotForm
 
             if (!Directory.Exists(settings.RepositoryPath))
             {
-                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("РџР°РїРєР° СЃ СЂРµРїРѕ РЅРµ СЃСѓС€РµСЃС‚РІСѓРµС‚.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
