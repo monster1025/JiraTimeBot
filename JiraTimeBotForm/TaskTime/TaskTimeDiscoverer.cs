@@ -27,7 +27,10 @@ namespace JiraTimeBotForm.TaskTime
 
             foreach (var repoDirectory in Directory.GetDirectories(settings.RepositoryPath))
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return workTimeItems;
+                }
 
                 //var project = new DirectoryInfo(repoDirectory).Name;
                 if (!Directory.Exists(Path.Combine(repoDirectory, ".hg")))
@@ -46,7 +49,10 @@ namespace JiraTimeBotForm.TaskTime
 
                 foreach (var changeset in log)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        return workTimeItems;
+                    }
 
                     if (!changeset.Branch.Contains("-"))
                     {
