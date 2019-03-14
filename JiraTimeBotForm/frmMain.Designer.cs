@@ -47,6 +47,7 @@
             this.tmrStart = new System.Windows.Forms.Timer(this.components);
             this.txtDummyMode = new System.Windows.Forms.CheckBox();
             this.btnMeeting = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // actTime
@@ -147,13 +148,14 @@
             this.txtLog.Location = new System.Drawing.Point(218, 16);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLog.Size = new System.Drawing.Size(510, 264);
             this.txtLog.TabIndex = 11;
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(34, 257);
+            this.btnStart.Location = new System.Drawing.Point(34, 224);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(103, 23);
             this.btnStart.TabIndex = 12;
@@ -175,7 +177,7 @@
             // txtDummyMode
             // 
             this.txtDummyMode.AutoSize = true;
-            this.txtDummyMode.Location = new System.Drawing.Point(31, 234);
+            this.txtDummyMode.Location = new System.Drawing.Point(31, 201);
             this.txtDummyMode.Name = "txtDummyMode";
             this.txtDummyMode.Size = new System.Drawing.Size(114, 17);
             this.txtDummyMode.TabIndex = 13;
@@ -184,7 +186,7 @@
             // 
             // btnMeeting
             // 
-            this.btnMeeting.Location = new System.Drawing.Point(160, 257);
+            this.btnMeeting.Location = new System.Drawing.Point(160, 224);
             this.btnMeeting.Name = "btnMeeting";
             this.btnMeeting.Size = new System.Drawing.Size(52, 23);
             this.btnMeeting.TabIndex = 14;
@@ -192,11 +194,23 @@
             this.btnMeeting.UseVisualStyleBackColor = true;
             this.btnMeeting.Click += new System.EventHandler(this.btnMeeting_Click);
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Enabled = false;
+            this.btnCancel.Location = new System.Drawing.Point(34, 256);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(178, 23);
+            this.btnCancel.TabIndex = 15;
+            this.btnCancel.Text = "Cancel operation";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 292);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnMeeting);
             this.Controls.Add(this.txtDummyMode);
             this.Controls.Add(this.btnStart);
@@ -243,6 +257,7 @@
         private System.Windows.Forms.Timer tmrStart;
         private System.Windows.Forms.CheckBox txtDummyMode;
         private System.Windows.Forms.Button btnMeeting;
+        private System.Windows.Forms.Button btnCancel;
     }
 }
 

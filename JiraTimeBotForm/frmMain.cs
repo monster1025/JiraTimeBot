@@ -1,10 +1,15 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.JiraIntegration;
 using JiraTimeBotForm.Passwords;
+using JiraTimeBotForm.TasksProcessors;
 using JiraTimeBotForm.TaskTime;
 using Newtonsoft.Json;
 
@@ -19,7 +24,22 @@ namespace JiraTimeBotForm
         private readonly ILog _log;
         private readonly NotifyIcon  trayIcon;
         private readonly ContextMenu trayMenu;
- 
+        private Job _job;
+        private readonly IReadOnlyList<Control> _controls;
+        private CancellationTokenSource _tokenSource;
+
+        private CancellationTokenSource GetTokenSource()
+        {
+            var tokenSource = new CancellationTokenSource();
+            tokenSource.Token.Register(() =>
+            {
+                _log.Info("�������� ��������...");
+                LockUnlock(true);
+            });
+
+            return tokenSource;
+        }
+
         public frmMain()
         {
             InitializeComponent();
@@ -37,6 +57,10 @@ namespace JiraTimeBotForm
             trayIcon.Click += btnTray_Click;
             trayIcon.DoubleClick += btnTray_Click;
             trayIcon.Visible = false;
+
+            _job = new Job(_log);
+
+            _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting };
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -57,7 +81,7 @@ namespace JiraTimeBotForm
             Extensions.Extensions.Restore(this);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        public Settings ReadSettingsAndLock()
         {
             var settings = new Settings
             {
@@ -65,9 +89,30 @@ namespace JiraTimeBotForm
                 JiraPassword = txtJiraPassword.Text,
                 MercurialAuthorEmail = txtMercurialEmail.Text,
                 ActivationTime = TimeSpan.Parse(actTime.Text),
-                RepositoryPath = txtRepoPath.Text
-
+                RepositoryPath = txtRepoPath.Text,
+                DummyMode = txtDummyMode.Checked
             };
+            
+            LockUnlock(false);
+
+            return settings;
+        }
+
+        public void LockUnlock(bool enabled)
+        {
+            foreach (var control in _controls)
+            {
+                control.Enabled = enabled;
+            }
+
+            btnCancel.Enabled = !enabled;
+            tmrStart.Enabled = enabled;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            var settings = ReadSettingsAndLock();
+            LockUnlock(true);
 
             var password = new EncryptionClass().Encrypt(settings.JiraUserName, settings.JiraPassword, settings.JiraUrl);
             settings.JiraPassword = password;
@@ -99,11 +144,25 @@ namespace JiraTimeBotForm
             txtMercurialEmail.Text = settings.MercurialAuthorEmail;
             txtRepoPath.Text = settings.RepositoryPath;
             actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
+            txtDummyMode.Checked = settings.DummyMode;
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
-            DoTheJob();
+            var settings = ReadSettingsAndLock();
+
+            if (!Directory.Exists(settings.RepositoryPath))
+            {
+                MessageBox.Show("����� � ���� �� ����������.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (_tokenSource = GetTokenSource())
+            {
+                await _job.DoTheJob(settings, new WorkLogTasksProcessor(_log), _tokenSource.Token); 
+            }
+
+            LockUnlock(true);
         }
 
         private void frmMain_Resize(object sender, EventArgs e)
@@ -120,127 +179,65 @@ namespace JiraTimeBotForm
             }
         }
 
-        private void tmrStart_Tick(object sender, EventArgs e)
+        private async void tmrStart_Tick(object sender, EventArgs e)
         {
             var runTime = TimeSpan.Parse(actTime.Text);
+
             if (Math.Abs((DateTime.Now.TimeOfDay - runTime).TotalSeconds) < 1)
             {
                 if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    _log.Error("сегодня суббота или воскресенье. Работать нельзя =)");
+                    _log.Error("������� ������� ��� �����������. �������� ������ =)");
                     return;
                 }
 
-                txtDummyMode.Checked = false;
-                DoTheJob();
+                _log.Info("�������������� �������� �������.");
+
+                var settings = ReadSettingsAndLock();
+
+                await Task.Delay(2000);
+
+                if (settings.DummyMode)
+                {
+                    settings.DummyMode = false;
+                    _log.Info("��������� ����� ��������� �������");
+                }
+
+                using (var tokenSource = GetTokenSource())
+                {
+                    await _job.DoTheJob(settings, new WorkLogTasksProcessor(_log), tokenSource.Token);
+                }
+
+                LockUnlock(true);
             }
         }
 
-        private void DoTheJob()
+        private async void btnMeeting_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(txtRepoPath.Text))
+            var settings = ReadSettingsAndLock();
+
+            if (!Directory.Exists(settings.RepositoryPath))
             {
-                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("����� � ���� �� ����������.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            txtLog.Text = "";
-            var settings = new Settings
+            using (_tokenSource = GetTokenSource())
             {
-                JiraUserName = txtJiraLogin.Text,
-                JiraPassword = txtJiraPassword.Text,
-                MercurialAuthorEmail = txtMercurialEmail.Text,
-                ActivationTime = TimeSpan.Parse(actTime.Text),
-                RepositoryPath = txtRepoPath.Text
-            };
-
-            var jira = new JiraApi(settings, _log);
-            var taskDiscoverer = new TaskTimeDiscoverer(_log);
-
-            int daysDiff = 0;
-            while (true)
-            {
-                var date = DateTime.Now.Date.AddDays(daysDiff);
-                var taskTimes = taskDiscoverer.GetTaskTimes(settings, date);
-                if (!taskTimes.Any())
-                {
-                    _log.Warn($"{date:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
-                    daysDiff--;
-                    if (daysDiff < -7)
-                    {
-                        _log.Error("Не нашли ни одного коммита за предыдущие 7 дней. Возможно вы в отпуске? Выхожу.");
-                        return;
-                    }
-
-                    continue;
-                }
-
-                _log.Trace($"На реальную дату {date:dd.MM.yyyy} распределение по задачам:");
-                foreach (var taskTime in taskTimes)
-                {
-                    _log.Trace($"- {taskTime.Branch} (коммитов {taskTime.Commits}): {taskTime.Time}");
-                }
-
-                jira.SetTodayWorklog(taskTimes, dummy: txtDummyMode.Checked);
-                _log.Info("Готово.");
-                return;
-            }
-        }
-
-        private void btnMeeting_Click(object sender, EventArgs e)
-        {
-            if (!Directory.Exists(txtRepoPath.Text))
-            {
-                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                await _job.DoTheJob(settings, new MeetingProcessor(_log), _tokenSource.Token);
             }
 
-            txtLog.Text = "";
-            var settings = new Settings
-            {
-                JiraUserName = txtJiraLogin.Text,
-                JiraPassword = txtJiraPassword.Text,
-                MercurialAuthorEmail = txtMercurialEmail.Text,
-                ActivationTime = TimeSpan.Parse(actTime.Text),
-                RepositoryPath = txtRepoPath.Text
-            };
-
-            var jira = new JiraApi(settings, _log);
-            var taskDiscoverer = new TaskTimeDiscoverer();
-
-            int daysDiff = -1;
-            while (true)
-            {
-                var date = DateTime.Now.Date.AddDays(daysDiff);
-                var taskTimes = taskDiscoverer.GetTaskTimes(settings, date);
-                if (!taskTimes.Any())
-                {
-                    _log.Warn($"{date:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
-                    daysDiff--;
-                    if (daysDiff < -7)
-                    {
-                        _log.Error("Не нашли ни одного коммита за предыдущие 7 дней. Возможно вы в отпуске? Выхожу.");
-                        return;
-                    }
-
-                    continue;
-                }
-
-                _log.Trace($"На реальную дату {date:dd.MM.yyyy} распределение по задачам:");
-                foreach (var taskTime in taskTimes.OrderByDescending(f=>f.Time))
-                {
-                    var taskName = jira.GetTaskName(taskTime.Branch);
-                    _log.Trace($"- {taskTime.Branch}: {taskName} - {taskTime.Time}");
-                }
-
-                break;
-            }
-
+            LockUnlock(true);
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            _tokenSource.Cancel();
         }
     }
 }

@@ -22,10 +22,9 @@ namespace JiraTimeBotForm.JiraIntegration
 
         public string GetTaskName(string branch)
         {
-            Issue issue = null;
             try
             {
-                issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == branch);
+                var issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == branch);
                 return issue?.Summary;
             }
             catch (Exception)
