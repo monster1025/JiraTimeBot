@@ -155,11 +155,11 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(34, 224);
+            this.btnStart.Location = new System.Drawing.Point(9, 224);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(103, 23);
+            this.btnStart.Size = new System.Drawing.Size(114, 23);
             this.btnStart.TabIndex = 12;
-            this.btnStart.Text = "Set task times";
+            this.btnStart.Text = "Проставить время";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -177,7 +177,7 @@
             // txtDummyMode
             // 
             this.txtDummyMode.AutoSize = true;
-            this.txtDummyMode.Location = new System.Drawing.Point(31, 201);
+            this.txtDummyMode.Location = new System.Drawing.Point(9, 201);
             this.txtDummyMode.Name = "txtDummyMode";
             this.txtDummyMode.Size = new System.Drawing.Size(114, 17);
             this.txtDummyMode.TabIndex = 13;
@@ -186,9 +186,9 @@
             // 
             // btnMeeting
             // 
-            this.btnMeeting.Location = new System.Drawing.Point(160, 224);
+            this.btnMeeting.Location = new System.Drawing.Point(142, 224);
             this.btnMeeting.Name = "btnMeeting";
-            this.btnMeeting.Size = new System.Drawing.Size(52, 23);
+            this.btnMeeting.Size = new System.Drawing.Size(70, 23);
             this.btnMeeting.TabIndex = 14;
             this.btnMeeting.Text = "Митинг";
             this.btnMeeting.UseVisualStyleBackColor = true;
@@ -197,9 +197,9 @@
             // btnCancel
             // 
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(34, 256);
+            this.btnCancel.Location = new System.Drawing.Point(9, 256);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(178, 23);
+            this.btnCancel.Size = new System.Drawing.Size(203, 23);
             this.btnCancel.TabIndex = 15;
             this.btnCancel.Text = "Cancel operation";
             this.btnCancel.UseVisualStyleBackColor = true;
