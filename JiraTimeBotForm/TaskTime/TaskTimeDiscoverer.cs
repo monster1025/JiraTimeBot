@@ -62,24 +62,43 @@ namespace JiraTimeBotForm.TaskTime
                     _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress}");
                 }
             }
+            if (!workTasks.Any())
+            {
+                return new List<TaskTimeItem>();
+            }
+
+            int remainMinutes = settings.MinuterPerWorkDay;
 
             //Нам нужно раскидать 480 минут в день.
             foreach (var taskGroup in workTasks.GroupBy(f => f))
             {
-                var minutesPerTime = settings.MinuterPerWorkDay / workTasks.Count;
-                var minutesForCurrentTaskGroup = minutesPerTime * taskGroup.Count();
+                int currentTaskCommits = taskGroup.Count();
+                int currentTaskTime = (int)RoundTo15(settings.MinuterPerWorkDay / workTasks.Count * currentTaskCommits);
+                remainMinutes = remainMinutes - currentTaskTime;
 
                 var taskTimeItem = new TaskTimeItem
                 {
                     Branch = taskGroup.Key,
-                    Time = TimeSpan.FromMinutes(minutesForCurrentTaskGroup),
+                    Time = TimeSpan.FromMinutes(currentTaskTime),
                     Commits = taskGroup.Count(),
                 };
 
                 workTimeItems.Add(taskTimeItem);
             }
+            workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
 
             return workTimeItems;
         }
+
+        private decimal RoundTo15(decimal value, bool up = true)
+        {
+            if ((value % 15) == 0)
+                return value;
+            if (up)
+                return (value - (value % 15) + 15);
+
+            return (value - (value % 15));
+        }
+
     }
 }
