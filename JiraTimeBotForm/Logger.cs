@@ -7,24 +7,22 @@ namespace JiraTimeBotForm
     public class Logger : ILog
     {
         private readonly TextBox _txt;
+        private readonly AppendLog _safeAppender;
 
         public Logger(TextBox txt)
         {
             _txt = txt;
+            _safeAppender = text => _txt.AppendText(text);
+
         }
 
         private void AppendText(string message)
         {
             message = $"{DateTime.Now:HH:mm} {message}";
-
-            if (string.IsNullOrEmpty(_txt.Text))
-            {
-                _txt.Text = message;
-                return;
-            }
-
-            _txt.Text += Environment.NewLine + message;
+            _txt.Invoke(_safeAppender, message + Environment.NewLine);
         }
+
+        private delegate void AppendLog(string text);
 
         public void Info([Localizable(false)] string message)
         {
