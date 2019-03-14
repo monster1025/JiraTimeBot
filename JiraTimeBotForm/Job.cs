@@ -55,12 +55,6 @@ namespace JiraTimeBotForm
                     continue;
                 }
 
-                _log.Trace($"На реальную дату {date:dd.MM.yyyy} распределение по задачам:");
-                foreach (var taskTime in taskTimes)
-                {
-                    _log.Trace($"- {taskTime.Branch} (коммитов {taskTime.Commits}): {taskTime.Time}");
-                }
-
                 tasksProcessor.Process(date, taskTimes, settings);
 
                 _log.Info("Готово.");
