@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using JiraTimeBotForm.CommitWorks;
 using JiraTimeBotForm.Configuration;
+using JiraTimeBotForm.Mercurial;
 using JiraTimeBotForm.Passwords;
 using JiraTimeBotForm.TasksProcessors;
+using JiraTimeBotForm.TaskTime;
 using Newtonsoft.Json;
 
 // This is the code for your desktop app.
@@ -59,7 +61,9 @@ namespace JiraTimeBotForm
             trayIcon.Click += btnTray_Click;
             trayIcon.DoubleClick += btnTray_Click;
 
-            _job = new Job(_buzzwordReplacer, _log);
+            var mercurialLog = new MercurialLog(_log);
+            var taskTimeDiscoverer = new TaskTimeDiscoverer(_log);
+            _job = new Job(mercurialLog, taskTimeDiscoverer,  _log);
 
             _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting, chkAddComments };
         }

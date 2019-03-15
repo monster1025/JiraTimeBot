@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JiraTimeBotForm.CommitWorks;
 using JiraTimeBotForm.Configuration;
+using JiraTimeBotForm.Mercurial;
 using JiraTimeBotForm.TaskProcessors;
 using JiraTimeBotForm.TasksProcessors;
 using JiraTimeBotForm.TaskTime;
@@ -13,12 +14,14 @@ namespace JiraTimeBotForm
 {
     class Job
     {
-        private readonly BuzzwordReplacer _buzzwordReplacer;
+        private readonly MercurialLog _mercurialLog;
+        private readonly TaskTimeDiscoverer _taskTimeDiscoverer;
         private readonly ILog _log;
 
-        public Job(BuzzwordReplacer buzzwordReplacer, ILog log)
+        public Job(MercurialLog mercurialLog, TaskTimeDiscoverer taskTimeDiscoverer, ILog log)
         {
-            _buzzwordReplacer = buzzwordReplacer;
+            _mercurialLog = mercurialLog;
+            _taskTimeDiscoverer = taskTimeDiscoverer;
             _log = log;
         }
 
@@ -31,8 +34,6 @@ namespace JiraTimeBotForm
 
         private void DoTheJobImpl(Settings settings, ITasksProcessor tasksProcessor, CancellationToken cancellationToken)
         {
-            var taskDiscoverer = new TaskTimeDiscoverer(_buzzwordReplacer, _log);
-
             int daysDiff = 0;
             if (tasksProcessor is MeetingProcessor)
             {
@@ -43,7 +44,8 @@ namespace JiraTimeBotForm
             {
                 DateTime date = DateTime.Now.Date.AddDays(daysDiff);
 
-                List<TaskTimeItem> taskTimes = taskDiscoverer.GetTaskTimes(settings, date, cancellationToken);
+                List<MercurialCommitItem> commits = _mercurialLog.GetMercurialLog(settings, date, cancellationToken);
+                List<TaskTimeItem> taskTimes = _taskTimeDiscoverer.GetTaskTimes(settings, commits, cancellationToken);
 
                 if (cancellationToken.IsCancellationRequested)
                 {
