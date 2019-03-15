@@ -56,11 +56,16 @@ namespace JiraTimeBotForm.TaskTime
 
                 workTimeItems.Add(taskTimeItem);
             }
+            if (!workTimeItems.Any())
+            {
+                return new List<TaskTimeItem>();
+            }
 
             if (remainMinutes != 0)
             {
                 _log.Trace($"Погрешность распределения времени: {remainMinutes}. Добавляю к первой задаче.");
             }
+
             //если переборщили или не достаточно добавили до 8 часов - скореектируем остаток в первой задаче (она самая трудозатратная).
             workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
 

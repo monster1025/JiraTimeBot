@@ -82,6 +82,8 @@
   <ItemGroup>
     <Compile Include="DI\ContainerBuilder.cs" />
     <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="JiraIntegration\IJiraDescriptionSource.cs" />
+    <Compile Include="JiraIntegration\JiraDescriptionSource.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\Settings.cs" />

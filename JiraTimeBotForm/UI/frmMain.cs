@@ -7,11 +7,8 @@ using System.Windows.Forms;
 using Autofac;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.DI;
-using JiraTimeBotForm.Mercurial;
 using JiraTimeBotForm.TasksProcessors;
-using JiraTimeBotForm.TaskTime;
 using JiraTimeBotForm.UI;
-using Newtonsoft.Json;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.

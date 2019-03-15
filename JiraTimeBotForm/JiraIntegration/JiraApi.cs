@@ -10,16 +10,12 @@ namespace JiraTimeBotForm.JiraIntegration
     public class JiraApi
     {
         private readonly ILog _log;
+        private readonly IJiraDescriptionSource _descriptionSource;
 
-        private readonly List<string> _dummyComments = new List<string>
-        {
-            "Написание кода", "написание кода", "программирование", "реализация задачи", "кодинг", "код + тесты", 
-            "кодинг", "написание кода и тестов"
-        };
-
-        public JiraApi(ILog log = null)
+        public JiraApi(ILog log, IJiraDescriptionSource descriptionSource)
         {
             _log = log;
+            _descriptionSource = descriptionSource;
         }
 
         public string GetTaskName(string branch, Settings settings)
@@ -46,7 +42,7 @@ namespace JiraTimeBotForm.JiraIntegration
             }
             date = date.Value.Date;
 
-            foreach (var taskTimeItem in taskTimeItems)
+            foreach (TaskTimeItem taskTimeItem in taskTimeItems)
             {
                 Issue issue = null;
                 try
@@ -91,12 +87,8 @@ namespace JiraTimeBotForm.JiraIntegration
                 if (!hasTodayWorklog)
                 {
                     var timeSpentJira = $"{taskTimeItem.Time.TotalMinutes}m";
-                    
-                    var comment = _dummyComments.OrderBy(f=>Guid.NewGuid()).FirstOrDefault();
-                    if (addCommentsToWorklog)
-                    {
-                        comment = taskTimeItem.Description;
-                    }
+
+                    var comment = _descriptionSource.GetDescription(taskTimeItem, addCommentsToWorklog);
 
                     Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value, comment);
                     if (!dummy)

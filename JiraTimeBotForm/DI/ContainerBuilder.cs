@@ -32,11 +32,13 @@ namespace JiraTimeBotForm.DI
             _builder.RegisterType<MeetingProcessor>().AsSelf().As<ITasksProcessor>();
             _builder.RegisterAggregateService<ITasksProcessors>();
 
-            _builder.Register(c => new JiraApi(c.Resolve<ILog>())).AsSelf().AsImplementedInterfaces();
+            _builder.RegisterType<JiraDescriptionSource>().AsSelf().As<IJiraDescriptionSource>();
+            _builder.RegisterType<JiraApi>().AsSelf().AsImplementedInterfaces();
 
             _builder.Register(c => new Job(c.Resolve<IMercurialLog>(), c.Resolve<ITaskTimeDiscoverer>(), c.Resolve<ILog>())).AsSelf();
-                
-            return _builder.Build();
+
+            var container = _builder.Build();
+            return container;
         }
     }
 }

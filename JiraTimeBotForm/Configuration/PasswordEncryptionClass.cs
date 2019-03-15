@@ -6,11 +6,11 @@ namespace JiraTimeBotForm.Configuration
 {
     public class PasswordEncryptionClass
     {
-        private byte[] GetEntropy(string EntropyString)
+        private byte[] GetEntropy(string entropyString)
         {
 
             MD5 md5 = MD5.Create();
-            return md5.ComputeHash(Encoding.UTF8.GetBytes(EntropyString));
+            return md5.ComputeHash(Encoding.UTF8.GetBytes(entropyString));
         }
 
         public string Encrypt(string username, string password, string address)
