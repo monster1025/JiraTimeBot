@@ -201,7 +201,7 @@
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(203, 23);
             this.btnCancel.TabIndex = 15;
-            this.btnCancel.Text = "Cancel operation";
+            this.btnCancel.Text = "Отменить операцию";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
