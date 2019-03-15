@@ -2,11 +2,13 @@
 using Autofac;
 using Autofac.Extras.AggregateService;
 using JiraTimeBotForm.JiraIntegration;
+using JiraTimeBotForm.JiraIntegration.Comments;
 using JiraTimeBotForm.Mercurial;
-using JiraTimeBotForm.TaskProcessors;
+using JiraTimeBotForm.Mercurial.Modifiers;
 using JiraTimeBotForm.TasksProcessors;
 using JiraTimeBotForm.TaskTime;
 using JiraTimeBotForm.UI;
+using JiraTimeBotForm.UI.Tray;
 
 namespace JiraTimeBotForm.DI
 {
@@ -25,12 +27,13 @@ namespace JiraTimeBotForm.DI
             _builder.Register(f => new TrayMenu()).As<ITrayMenu>().AsSelf();
             _builder.Register(c => new CommitSkipper()).As<ICommitSkipper>();
 
-            _builder.Register(c => new MercurialLog(c.Resolve<ILog>(), c.Resolve<ICommitSkipper>())).As<IMercurialLog>().AsSelf();
-            _builder.Register(c => new TaskTimeDiscoverer(c.Resolve<ILog>())).As<ITaskTimeDiscoverer>().AsSelf();
+            _builder.RegisterType<TechnicalInfoSkipper>().As<ITechnicalInfoSkipper>().AsSelf();
+            _builder.RegisterType<MercurialLog>().As<IMercurialLog>().AsSelf();
+            _builder.RegisterType<TaskTimeDiscoverer>().As<ITaskTimeDiscoverer>().AsSelf();
 
             _builder.RegisterType<WorkLogTasksProcessor>().AsSelf().As<ITasksProcessor>();
             _builder.RegisterType<MeetingProcessor>().AsSelf().As<ITasksProcessor>();
-            _builder.RegisterAggregateService<ITasksProcessors>();
+            _builder.RegisterAggregateService<IAllTasksProcessors>();
 
             _builder.RegisterType<JiraDescriptionSource>().AsSelf().As<IJiraDescriptionSource>();
             _builder.RegisterType<JiraApi>().AsSelf().AsImplementedInterfaces();

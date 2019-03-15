@@ -2,6 +2,8 @@
 using System.Threading;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.Mercurial;
+using JiraTimeBotForm.Mercurial.Objects;
+using JiraTimeBotForm.TaskTime.Objects;
 
 namespace JiraTimeBotForm.TaskTime
 {

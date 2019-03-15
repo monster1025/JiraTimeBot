@@ -81,15 +81,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI\ContainerBuilder.cs" />
-    <Compile Include="JiraIntegration\IJiraDescriptionSource.cs" />
-    <Compile Include="JiraIntegration\JiraDescriptionSource.cs" />
+    <Compile Include="JiraIntegration\Comments\IJiraDescriptionSource.cs" />
+    <Compile Include="JiraIntegration\Comments\JiraDescriptionSource.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\Settings.cs" />
-    <Compile Include="Mercurial\CommitSkipper.cs" />
-    <Compile Include="Mercurial\ICommitSkipper.cs" />
+    <Compile Include="Mercurial\Modifiers\ITechnicalInfoSkipper.cs" />
+    <Compile Include="Mercurial\Modifiers\CommitSkipper.cs" />
+    <Compile Include="Mercurial\Modifiers\ICommitSkipper.cs" />
     <Compile Include="Mercurial\IMercurialLog.cs" />
-    <Compile Include="TasksProcessors\ITasksProcessors.cs" />
+    <Compile Include="Mercurial\Modifiers\TechnicalInfoSkipper.cs" />
+    <Compile Include="TasksProcessors\IAllTasksProcessors.cs" />
     <Compile Include="UI\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,7 +99,7 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="JiraIntegration\JiraApi.cs" />
-    <Compile Include="Mercurial\MercurialCommitItem.cs" />
+    <Compile Include="Mercurial\Objects\MercurialCommitItem.cs" />
     <Compile Include="Mercurial\MercurialLog.cs" />
     <Compile Include="Configuration\PasswordEncryptionClass.cs" />
     <Compile Include="Program.cs" />
@@ -107,10 +109,10 @@
     <Compile Include="TasksProcessors\WorkLogTasksProcessor.cs" />
     <Compile Include="TaskTime\ITaskTimeDiscoverer.cs" />
     <Compile Include="TaskTime\TaskTimeDiscoverer.cs" />
-    <Compile Include="TaskTime\TaskTimeItem.cs" />
-    <Compile Include="UI\ITrayMenu.cs" />
-    <Compile Include="UI\RestoreFromTray.cs" />
-    <Compile Include="UI\TrayMenu.cs" />
+    <Compile Include="TaskTime\Objects\TaskTimeItem.cs" />
+    <Compile Include="UI\Tray\ITrayMenu.cs" />
+    <Compile Include="UI\Tray\RestoreFromTray.cs" />
+    <Compile Include="UI\Tray\TrayMenu.cs" />
     <EmbeddedResource Include="UI\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace JiraTimeBotForm.UI
+namespace JiraTimeBotForm.UI.Tray
 {
     public interface ITrayMenu
     {

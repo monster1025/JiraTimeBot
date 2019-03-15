@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JiraTimeBotForm.TaskTime;
+using JiraTimeBotForm.TaskTime.Objects;
 
-namespace JiraTimeBotForm.JiraIntegration
+namespace JiraTimeBotForm.JiraIntegration.Comments
 {
     public class JiraDescriptionSource : IJiraDescriptionSource
     {

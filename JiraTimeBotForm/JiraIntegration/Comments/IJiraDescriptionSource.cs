@@ -1,6 +1,6 @@
-﻿using JiraTimeBotForm.TaskTime;
+﻿using JiraTimeBotForm.TaskTime.Objects;
 
-namespace JiraTimeBotForm.JiraIntegration
+namespace JiraTimeBotForm.JiraIntegration.Comments
 {
     public interface IJiraDescriptionSource
     {

@@ -8,12 +8,12 @@ using Autofac;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.DI;
 using JiraTimeBotForm.TasksProcessors;
-using JiraTimeBotForm.UI;
+using JiraTimeBotForm.UI.Tray;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
-namespace JiraTimeBotForm
+namespace JiraTimeBotForm.UI
 {
     public partial class frmMain : Form
     {
@@ -21,7 +21,7 @@ namespace JiraTimeBotForm
         private readonly Job _job;
         private readonly IReadOnlyList<Control> _controls;
         private readonly IContainer _container;
-        private readonly ITasksProcessors _tasksProcessors;
+        private readonly IAllTasksProcessors _tasksProcessors;
         private readonly ITrayMenu _trayIcon;
         private CancellationTokenSource _tokenSource;
 
@@ -47,7 +47,7 @@ namespace JiraTimeBotForm
 
             _job = _container.Resolve<Job>();
             _log = _container.Resolve<ILog>();
-            _tasksProcessors = _container.Resolve<ITasksProcessors>();
+            _tasksProcessors = _container.Resolve<IAllTasksProcessors>();
 
             _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting, chkAddComments };
         }

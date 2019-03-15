@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JiraTimeBotForm.TaskTime
+namespace JiraTimeBotForm.TaskTime.Objects
 {
     public class TaskTimeItem
     {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.JiraIntegration;
-using JiraTimeBotForm.TaskProcessors;
 using JiraTimeBotForm.TaskTime;
+using JiraTimeBotForm.TaskTime.Objects;
 
 namespace JiraTimeBotForm.TasksProcessors
 {

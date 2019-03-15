@@ -1,6 +1,6 @@
 ﻿namespace JiraTimeBotForm.TasksProcessors
 {
-    public interface ITasksProcessors
+    public interface IAllTasksProcessors
     {
         WorkLogTasksProcessor WorkLogTasksProcessor { get; }
 

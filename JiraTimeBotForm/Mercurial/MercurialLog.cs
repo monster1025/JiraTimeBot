@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using JiraTimeBotForm.Configuration;
+using JiraTimeBotForm.Mercurial.Modifiers;
+using JiraTimeBotForm.Mercurial.Objects;
 using Mercurial;
 
 namespace JiraTimeBotForm.Mercurial
@@ -13,11 +15,13 @@ namespace JiraTimeBotForm.Mercurial
     {
         private readonly ILog _log;
         private readonly ICommitSkipper _commitSkipper;
+        private readonly ITechnicalInfoSkipper _technicalInfoSkipper;
 
-        public MercurialLog(ILog log, ICommitSkipper commitSkipper)
+        public MercurialLog(ILog log, ICommitSkipper commitSkipper, ITechnicalInfoSkipper technicalInfoSkipper)
         {
             _log = log;
             _commitSkipper = commitSkipper;
+            _technicalInfoSkipper = technicalInfoSkipper;
         }
 
         public List<MercurialCommitItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -60,7 +64,7 @@ namespace JiraTimeBotForm.Mercurial
                     {
                         continue;
                     }
-                    commitMessage = StripTechnicalInfo(commitMessage);
+                    commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
 
                     workTasks.Add(new MercurialCommitItem
                     {
@@ -81,40 +85,6 @@ namespace JiraTimeBotForm.Mercurial
         }
 
         
-        private string StripTechnicalInfo(string commitMessage)
-        {
-            if (!commitMessage.Contains("Signed-by:"))
-            {
-                return commitMessage;
-            }
-
-            var arr = commitMessage.Split('\n');
-            var sb = new StringBuilder();
-            foreach (var itm in arr)
-            {
-                if (string.IsNullOrEmpty(itm))
-                {
-                    continue;
-                }
-                if (itm.StartsWith("Signed-by"))
-                {
-                    continue;
-                }
-                if (itm.StartsWith("Jira:"))
-                {
-                    continue;
-                }
-
-                sb.AppendLine(itm);
-            }
-
-            var message = sb.ToString();
-            message = message.TrimEnd('\n');
-            message = message.TrimEnd('\r');
-
-            return message;
-        }
-
         private string FixEncoding(string source)
         {
             //перекодируем сообщение - ибо оно криво забирается в 1252

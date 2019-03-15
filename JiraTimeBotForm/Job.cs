@@ -5,9 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.Mercurial;
-using JiraTimeBotForm.TaskProcessors;
+using JiraTimeBotForm.Mercurial.Objects;
 using JiraTimeBotForm.TasksProcessors;
 using JiraTimeBotForm.TaskTime;
+using JiraTimeBotForm.TaskTime.Objects;
 
 namespace JiraTimeBotForm
 {
