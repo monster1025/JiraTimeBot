@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.TaskProcessors;
+using JiraTimeBotForm.TasksProcessors;
 using JiraTimeBotForm.TaskTime;
 
 namespace JiraTimeBotForm
@@ -29,7 +30,13 @@ namespace JiraTimeBotForm
         {
             var taskDiscoverer = new TaskTimeDiscoverer(_log);
 
+            
+
             int daysDiff = 0;
+            if (tasksProcessor is MeetingProcessor)
+            {
+                daysDiff = -1;
+            }
 
             while (true)
             {
