@@ -48,14 +48,7 @@ namespace JiraTimeBotForm.UI
             form.Visible = true;
             form.Activate();
             form.BringToFront();
-            Extensions.Extensions.Restore(form);
+            RestoreFromTray.Restore(form);
         }
-    }
-
-    public interface ITrayMenu
-    {
-        NotifyIcon Create(frmMain form);
-        void Show();
-        void Hide();
     }
 }

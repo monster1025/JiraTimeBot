@@ -81,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI\ContainerBuilder.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="JiraIntegration\IJiraDescriptionSource.cs" />
     <Compile Include="JiraIntegration\JiraDescriptionSource.cs" />
     <Compile Include="Job.cs" />
@@ -109,6 +108,8 @@
     <Compile Include="TaskTime\ITaskTimeDiscoverer.cs" />
     <Compile Include="TaskTime\TaskTimeDiscoverer.cs" />
     <Compile Include="TaskTime\TaskTimeItem.cs" />
+    <Compile Include="UI\ITrayMenu.cs" />
+    <Compile Include="UI\RestoreFromTray.cs" />
     <Compile Include="UI\TrayMenu.cs" />
     <EmbeddedResource Include="UI\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>

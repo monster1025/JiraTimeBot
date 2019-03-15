@@ -2,10 +2,9 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace JiraTimeBotForm.Extensions
+namespace JiraTimeBotForm.UI
 {
-    public static class Extensions
-    {
+    public static class RestoreFromTray {
         [DllImport( "user32.dll" )]
         private static extern int ShowWindow( IntPtr hWnd, uint Msg );
 
