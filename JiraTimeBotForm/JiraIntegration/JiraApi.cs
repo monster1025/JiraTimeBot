@@ -93,7 +93,7 @@ namespace JiraTimeBotForm.JiraIntegration
                 {
                     var timeSpentJira = $"{taskTimeItem.Time.TotalMinutes}m";
                     
-                    var comment = _dummyComments.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+                    var comment = _dummyComments.ElementAt(new Random(DateTime.Now.Millisecond).Next(_dummyComments.Count));
                     if (addCommentsToWorklog)
                     {
                         comment = taskTimeItem.Description;

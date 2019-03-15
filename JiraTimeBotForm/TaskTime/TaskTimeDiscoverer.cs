@@ -72,6 +72,8 @@ namespace JiraTimeBotForm.TaskTime
                         Description = commitMessage,
                         Branch = changeset.Branch,
                         Commits = 1,
+                        StartTime = changeset.Timestamp,
+                        EndTime = changeset.Timestamp
                     });
                     _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");
                 }
@@ -91,8 +93,9 @@ namespace JiraTimeBotForm.TaskTime
                 int currentTaskTime = (int)RoundTo(settings.MinuterPerWorkDay / totalCommitsCount * currentTaskCommits);
                 remainMinutes = remainMinutes - currentTaskTime;
 
+                var orderedTasks = taskGroup.OrderBy(f => f.StartTime).ToArray();
                 StringBuilder sb = new StringBuilder();
-                foreach (var task in taskGroup)
+                foreach (var task in orderedTasks)
                 {
                     sb.AppendLine($"- {task.Description}");
                 }
@@ -102,7 +105,10 @@ namespace JiraTimeBotForm.TaskTime
                     Branch = taskGroup.Key,
                     Time = TimeSpan.FromMinutes(currentTaskTime),
                     Commits = taskGroup.Count(),
-                    Description = sb.ToString()
+                    Description = sb.ToString(),
+
+                    StartTime = orderedTasks.First().StartTime,
+                    EndTime = orderedTasks.Last().StartTime
                 };
 
                 workTimeItems.Add(taskTimeItem);
