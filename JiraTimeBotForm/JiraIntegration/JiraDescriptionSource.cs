@@ -15,13 +15,12 @@ namespace JiraTimeBotForm.JiraIntegration
 
         public string GetDescription(TaskTimeItem taskTimeItem, bool addCommentsToWorklog)
         {
-            var comment = _dummyComments.OrderBy(f=>Guid.NewGuid()).FirstOrDefault();
             if (addCommentsToWorklog)
             {
-                comment = taskTimeItem.Description;
+                return taskTimeItem.Description;
             }
 
-            return comment;
+            return _dummyComments.OrderBy(f => Guid.NewGuid()).FirstOrDefault();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using JiraTimeBotForm.TaskTime;
+﻿using JiraTimeBotForm.TaskTime;
 
 namespace JiraTimeBotForm.JiraIntegration
 {
