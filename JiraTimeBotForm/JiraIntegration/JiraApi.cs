@@ -13,6 +13,12 @@ namespace JiraTimeBotForm.JiraIntegration
         private readonly ILog _log;
         private Jira _jira;
 
+        private readonly List<string> _dummyComments = new List<string>
+        {
+            "Написание кода", "написание кода", "программирование", "реализация задачи", "кодинг", "код + тесты", 
+            "кодинг", "написание кода и тестов"
+        };
+
         public JiraApi(Settings settings, ILog log = null)
         {
             _settings = settings;
@@ -86,11 +92,14 @@ namespace JiraTimeBotForm.JiraIntegration
                 if (!hasTodayWorklog)
                 {
                     var timeSpentJira = $"{taskTimeItem.Time.TotalMinutes}m";
-                    Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value);
+                    
+                    var comment = _dummyComments.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
                     if (addCommentsToWorklog)
                     {
-                        workLogToAdd = new Worklog(timeSpentJira, date.Value, taskTimeItem.Description);
+                        comment = taskTimeItem.Description;
                     }
+
+                    Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value, comment);
                     if (!dummy)
                     {
                         workLogToAdd = issue.AddWorklogAsync(workLogToAdd).Result;
