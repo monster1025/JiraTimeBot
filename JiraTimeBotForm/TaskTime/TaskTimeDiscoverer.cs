@@ -10,24 +10,24 @@ using JiraTimeBotForm.TaskTime.Objects;
 
 namespace JiraTimeBotForm.TaskTime
 {
-    public class TaskTimeDiscoverer: ITaskTimeDiscoverer
+    public class TaskTimeByCommitsCalculator: ITaskTimeCalculator
     {
         private readonly ILog _log;
 
-        public TaskTimeDiscoverer(ILog log)
+        public TaskTimeByCommitsCalculator(ILog log)
         {
             _log = log;
         }
 
-        public List<TaskTimeItem> GetTaskTimes(Settings settings, List<MercurialCommitItem> commitItems, CancellationToken cancellationToken = default(CancellationToken))
+        public List<TaskTimeItem> CalculateTaskTime(List<MercurialCommitItem> commits, Settings settings, CancellationToken cancellationToken = default(CancellationToken))
         {
             int remainMinutes = settings.MinuterPerWorkDay;
-            int totalCommitsCount = commitItems.Count;
+            int totalCommitsCount = commits.Count;
 
             List<TaskTimeItem> workTimeItems = new List<TaskTimeItem>();
 
             //Нам нужно раскидать 480 минут в день.
-            foreach (var taskGroup in commitItems.GroupBy(f => f.Branch).OrderByDescending(f=>f.Count()))
+            foreach (var taskGroup in commits.GroupBy(f => f.Branch).OrderByDescending(f=>f.Count()))
             {
                 if (cancellationToken.IsCancellationRequested)
                 {

@@ -28,8 +28,11 @@ namespace JiraTimeBotForm.DI
             _builder.Register(c => new CommitSkipper()).As<ICommitSkipper>();
 
             _builder.RegisterType<TechnicalInfoSkipper>().As<ITechnicalInfoSkipper>().AsSelf();
+
             _builder.RegisterType<MercurialLog>().As<IMercurialLog>().AsSelf();
-            _builder.RegisterType<TaskTimeDiscoverer>().As<ITaskTimeDiscoverer>().AsSelf();
+            //_builder.RegisterType<JiraCommitEmulator>().As<IMercurialLog>().AsSelf();
+
+            _builder.RegisterType<TaskTimeByCommitsCalculator>().As<ITaskTimeCalculator>().AsSelf();
 
             _builder.RegisterType<WorkLogTasksProcessor>().AsSelf().As<ITasksProcessor>();
             _builder.RegisterType<MeetingProcessor>().AsSelf().As<ITasksProcessor>();
@@ -38,7 +41,7 @@ namespace JiraTimeBotForm.DI
             _builder.RegisterType<JiraDescriptionSource>().AsSelf().As<IJiraDescriptionSource>();
             _builder.RegisterType<JiraApi>().AsSelf().AsImplementedInterfaces();
 
-            _builder.Register(c => new Job(c.Resolve<IMercurialLog>(), c.Resolve<ITaskTimeDiscoverer>(), c.Resolve<ILog>())).AsSelf();
+            _builder.Register(c => new Job(c.Resolve<IMercurialLog>(), c.Resolve<ITaskTimeCalculator>(), c.Resolve<ILog>())).AsSelf();
 
             var container = _builder.Build();
             return container;

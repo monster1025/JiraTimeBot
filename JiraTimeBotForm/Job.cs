@@ -15,10 +15,10 @@ namespace JiraTimeBotForm
     class Job
     {
         private readonly IMercurialLog _mercurialLog;
-        private readonly ITaskTimeDiscoverer _taskTimeDiscoverer;
+        private readonly ITaskTimeCalculator _taskTimeDiscoverer;
         private readonly ILog _log;
 
-        public Job(IMercurialLog mercurialLog, ITaskTimeDiscoverer taskTimeDiscoverer, ILog log)
+        public Job(IMercurialLog mercurialLog, ITaskTimeCalculator taskTimeDiscoverer, ILog log)
         {
             _mercurialLog = mercurialLog;
             _taskTimeDiscoverer = taskTimeDiscoverer;
@@ -45,7 +45,7 @@ namespace JiraTimeBotForm
                 DateTime date = DateTime.Now.Date.AddDays(daysDiff);
 
                 List<MercurialCommitItem> commits = _mercurialLog.GetMercurialLog(settings, date, cancellationToken);
-                List<TaskTimeItem> taskTimes = _taskTimeDiscoverer.GetTaskTimes(settings, commits, cancellationToken);
+                List<TaskTimeItem> taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
 
                 if (cancellationToken.IsCancellationRequested)
                 {

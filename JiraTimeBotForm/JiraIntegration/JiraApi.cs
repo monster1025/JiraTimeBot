@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Atlassian.Jira;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.JiraIntegration.Comments;
-using JiraTimeBotForm.TaskTime;
 using JiraTimeBotForm.TaskTime.Objects;
 
 namespace JiraTimeBotForm.JiraIntegration
@@ -32,6 +32,16 @@ namespace JiraTimeBotForm.JiraIntegration
             {
                 return null;
             }
+        }
+
+        public List<Issue> GetTodayIssues(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
+            date = date.GetValueOrDefault(DateTime.Now.Date);
+
+            var jql = $"status changed by '{settings.JiraUserName}' during (\"{date.Value:yyyy-MM-dd}\",\"{date.Value.AddDays(1):yyyy-MM-dd}\")";
+            var affectedIssues = jira.Issues.GetIssuesFromJqlAsync(jql, 50, 0, cancellationToken).Result.ToList();
+            return affectedIssues;
         }
 
         public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false)

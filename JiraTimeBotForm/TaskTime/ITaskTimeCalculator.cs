@@ -7,8 +7,8 @@ using JiraTimeBotForm.TaskTime.Objects;
 
 namespace JiraTimeBotForm.TaskTime
 {
-    public interface ITaskTimeDiscoverer
+    public interface ITaskTimeCalculator
     {
-        List<TaskTimeItem> GetTaskTimes(Settings settings, List<MercurialCommitItem> commitItems, CancellationToken cancellationToken = default(CancellationToken));
+        List<TaskTimeItem> CalculateTaskTime(List<MercurialCommitItem> commitItems, Settings settings, CancellationToken cancellationToken = default(CancellationToken));
     }
 }
