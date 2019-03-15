@@ -4,11 +4,13 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Autofac;
 using JiraTimeBotForm.Configuration;
+using JiraTimeBotForm.DI;
 using JiraTimeBotForm.Mercurial;
-using JiraTimeBotForm.Passwords;
 using JiraTimeBotForm.TasksProcessors;
 using JiraTimeBotForm.TaskTime;
+using JiraTimeBotForm.UI;
 using Newtonsoft.Json;
 
 // This is the code for your desktop app.
@@ -18,11 +20,12 @@ namespace JiraTimeBotForm
 {
     public partial class frmMain : Form
     {
-        private readonly string _settingsPath;
         private readonly ILog _log;
-        private readonly NotifyIcon  _trayIcon;
-        private Job _job;
+        private readonly Job _job;
         private readonly IReadOnlyList<Control> _controls;
+        private readonly IContainer _container;
+        private readonly ITasksProcessors _tasksProcessors;
+        private readonly ITrayMenu _trayIcon;
         private CancellationTokenSource _tokenSource;
 
         private CancellationTokenSource GetTokenSource()
@@ -40,46 +43,21 @@ namespace JiraTimeBotForm
         public frmMain()
         {
             InitializeComponent();
-            _settingsPath = Path.Combine(Application.UserAppDataPath, "settings.json");
-            _log = new Logger(txtLog);
+            _container = new Bootstrapper().Build(txtLog);
 
-            var trayMenu = new ContextMenu();
-            trayMenu.MenuItems.Add("Exit", OnExit);
+            _trayIcon = _container.Resolve<ITrayMenu>();
+            _trayIcon.Create(this);
 
-            _trayIcon = new NotifyIcon
-            {
-                Text = "JiraTimeBot", 
-                Icon = this.Icon, 
-                ContextMenu = trayMenu,
-                Visible = false,
-
-            };
-            _trayIcon.Click += btnTray_Click;
-            _trayIcon.DoubleClick += btnTray_Click;
-
-            var mercurialLog = new MercurialLog(_log);
-            var taskTimeDiscoverer = new TaskTimeDiscoverer(_log);
-            _job = new Job(mercurialLog, taskTimeDiscoverer,  _log);
+            _job = _container.Resolve<Job>();
+            _log = _container.Resolve<ILog>();
+            _tasksProcessors = _container.Resolve<ITasksProcessors>();
 
             _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting, chkAddComments };
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _trayIcon.Visible = false;
-        }
-
-        private void OnExit(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void btnTray_Click(object sender, EventArgs e)
-        {
-            this.Visible = true;
-            this.Activate();
-            this.BringToFront();
-            Extensions.Extensions.Restore(this);
+            _trayIcon.Hide();
         }
 
         public Settings ReadSettingsAndLock()
@@ -116,33 +94,29 @@ namespace JiraTimeBotForm
             var settings = ReadSettingsAndLock();
             LockUnlock(true);
 
-            var password = new EncryptionClass().Encrypt(settings.JiraUserName, settings.JiraPassword, settings.JiraUrl);
-            settings.JiraPassword = password;
-
-            var settingsString = JsonConvert.SerializeObject(settings);
-            File.WriteAllText(_settingsPath, settingsString);
+            settings.Save();
 
             MessageBox.Show("Settings saved.");
-            LoadSettings();
+            settings = Settings.Load();
+            if (settings != null)
+            {
+                SetSettings(settings);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (File.Exists(_settingsPath))
+            var settings = Settings.Load();
+            if (settings != null)
             {
-                LoadSettings();
+                SetSettings(settings);
             }
         }
 
-        private void LoadSettings()
+        private void SetSettings(Settings settings)
         {
-            var settingsText = File.ReadAllText(_settingsPath);
-            var settings = JsonConvert.DeserializeObject<Settings>(settingsText);
-
-            var password = new EncryptionClass().Decrypt(settings.JiraUserName, settings.JiraPassword, settings.JiraUrl);
-
             txtJiraLogin.Text = settings.JiraUserName;
-            txtJiraPassword.Text = password;
+            txtJiraPassword.Text = settings.JiraPassword;
             txtMercurialEmail.Text = settings.MercurialAuthorEmail;
             txtRepoPath.Text = settings.RepositoryPath;
             actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
@@ -162,7 +136,7 @@ namespace JiraTimeBotForm
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.DoTheJob(settings, new WorkLogTasksProcessor(_log), _tokenSource.Token); 
+                await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, _tokenSource.Token); 
             }
 
             LockUnlock(true);
@@ -172,13 +146,13 @@ namespace JiraTimeBotForm
         {
             if (FormWindowState.Minimized == this.WindowState)
             {
-                _trayIcon.Visible = true;
+                _trayIcon.Show();
                 this.Hide();
             }
 
             else if (FormWindowState.Normal == this.WindowState)
             {
-                _trayIcon.Visible = false;
+                _trayIcon.Hide();
             }
         }
 
@@ -208,7 +182,7 @@ namespace JiraTimeBotForm
 
                 using (var tokenSource = GetTokenSource())
                 {
-                    await _job.DoTheJob(settings, new WorkLogTasksProcessor(_log), tokenSource.Token);
+                    await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, tokenSource.Token);
                 }
 
                 LockUnlock(true);
@@ -227,7 +201,7 @@ namespace JiraTimeBotForm
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.DoTheJob(settings, new MeetingProcessor(_log), _tokenSource.Token);
+                await _job.DoTheJob(settings, _tasksProcessors.MeetingProcessor, _tokenSource.Token);
             }
 
             LockUnlock(true);

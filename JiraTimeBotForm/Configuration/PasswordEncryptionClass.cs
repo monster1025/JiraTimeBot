@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
 
-namespace JiraTimeBotForm.Passwords
+namespace JiraTimeBotForm.Configuration
 {
-    public class EncryptionClass
+    public class PasswordEncryptionClass
     {
         private byte[] GetEntropy(string EntropyString)
         {

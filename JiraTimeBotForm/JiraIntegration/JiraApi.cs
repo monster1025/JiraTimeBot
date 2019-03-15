@@ -9,9 +9,7 @@ namespace JiraTimeBotForm.JiraIntegration
 {
     public class JiraApi
     {
-        private readonly Settings _settings;
         private readonly ILog _log;
-        private Jira _jira;
 
         private readonly List<string> _dummyComments = new List<string>
         {
@@ -19,18 +17,17 @@ namespace JiraTimeBotForm.JiraIntegration
             "кодинг", "написание кода и тестов"
         };
 
-        public JiraApi(Settings settings, ILog log = null)
+        public JiraApi(ILog log = null)
         {
-            _settings = settings;
             _log = log;
-            _jira = Jira.CreateRestClient(_settings.JiraUrl, _settings.JiraUserName, _settings.JiraPassword);
         }
 
-        public string GetTaskName(string branch)
+        public string GetTaskName(string branch, Settings settings)
         {
+            var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
             try
             {
-                var issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == branch);
+                var issue = jira.Issues.Queryable.FirstOrDefault(f => f.Key == branch);
                 return issue?.Summary;
             }
             catch (Exception)
@@ -39,8 +36,10 @@ namespace JiraTimeBotForm.JiraIntegration
             }
         }
 
-        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false)
+        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false)
         {
+            var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
+
             if (date == null)
             {
                 date = DateTime.Now.Date;
@@ -52,7 +51,7 @@ namespace JiraTimeBotForm.JiraIntegration
                 Issue issue = null;
                 try
                 {
-                    issue = _jira.Issues.Queryable.FirstOrDefault(f => f.Key == taskTimeItem.Branch);
+                    issue = jira.Issues.Queryable.FirstOrDefault(f => f.Key == taskTimeItem.Branch);
                 }
                 catch (Exception)
                 {
@@ -69,7 +68,7 @@ namespace JiraTimeBotForm.JiraIntegration
                 foreach (var workLog in workLogs)
                 {
                     var timeSpent = TimeSpan.FromSeconds(workLog.TimeSpentInSeconds);
-                    if (workLog.CreateDate.GetValueOrDefault().Date == date && workLog.Author == _settings.JiraUserName)
+                    if (workLog.CreateDate.GetValueOrDefault().Date == date && workLog.Author == settings.JiraUserName)
                     {
                         var timeDiff = Math.Abs((timeSpent - taskTimeItem.Time).TotalMinutes);
                         if (timeDiff > 1)

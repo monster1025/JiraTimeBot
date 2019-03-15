@@ -13,11 +13,11 @@ namespace JiraTimeBotForm
 {
     class Job
     {
-        private readonly MercurialLog _mercurialLog;
-        private readonly TaskTimeDiscoverer _taskTimeDiscoverer;
+        private readonly IMercurialLog _mercurialLog;
+        private readonly ITaskTimeDiscoverer _taskTimeDiscoverer;
         private readonly ILog _log;
 
-        public Job(MercurialLog mercurialLog, TaskTimeDiscoverer taskTimeDiscoverer, ILog log)
+        public Job(IMercurialLog mercurialLog, ITaskTimeDiscoverer taskTimeDiscoverer, ILog log)
         {
             _mercurialLog = mercurialLog;
             _taskTimeDiscoverer = taskTimeDiscoverer;

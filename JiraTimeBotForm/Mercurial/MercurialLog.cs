@@ -9,13 +9,15 @@ using Mercurial;
 
 namespace JiraTimeBotForm.Mercurial
 {
-    public class MercurialLog
+    public class MercurialLog: IMercurialLog
     {
         private readonly ILog _log;
+        private readonly ICommitSkipper _commitSkipper;
 
-        public MercurialLog(ILog log)
+        public MercurialLog(ILog log, ICommitSkipper commitSkipper)
         {
             _log = log;
+            _commitSkipper = commitSkipper;
         }
 
         public List<MercurialCommitItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -54,7 +56,7 @@ namespace JiraTimeBotForm.Mercurial
                     }
 
                     var commitMessage = FixEncoding(changeset.CommitMessage);
-                    if (IsNeedToSkip(changeset.Branch, commitMessage))
+                    if (_commitSkipper.IsNeedToSkip(changeset.Branch, commitMessage))
                     {
                         continue;
                     }
@@ -111,23 +113,6 @@ namespace JiraTimeBotForm.Mercurial
             message = message.TrimEnd('\r');
 
             return message;
-        }
-
-        private bool IsNeedToSkip(string branch, string commitMessage)
-        {
-            if (!branch.Contains("-"))
-            {
-                return true;
-            }
-
-            //Пропускаем Close и Merge коммиты
-            if (commitMessage.StartsWith($"Close {branch} ", StringComparison.InvariantCultureIgnoreCase) ||
-                commitMessage.StartsWith($"Merge with ", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         private string FixEncoding(string source)

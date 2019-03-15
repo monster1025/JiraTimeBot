@@ -7,13 +7,15 @@ using JiraTimeBotForm.TaskTime;
 
 namespace JiraTimeBotForm.TasksProcessors
 {
-    class WorkLogTasksProcessor : ITasksProcessor
+    public class WorkLogTasksProcessor : ITasksProcessor
     {
         private readonly ILog _log;
+        private readonly JiraApi _jiraApi;
 
-        public WorkLogTasksProcessor(ILog log)
+        public WorkLogTasksProcessor(ILog log, JiraApi jiraApi)
         {
             _log = log;
+            _jiraApi = jiraApi;
         }
 
         public void Process(DateTime date, List<TaskTimeItem> taskTimes, Settings settings)
@@ -24,8 +26,7 @@ namespace JiraTimeBotForm.TasksProcessors
                 _log.Trace($"- {taskTime.Branch} (коммитов {taskTime.Commits}): {taskTime.Time}");
             }
 
-            var jira = new JiraApi(settings, _log);
-            jira.SetTodayWorklog(taskTimes, dummy: settings.DummyMode, addCommentsToWorklog: settings.AddCommentsToWorklog);
+            _jiraApi.SetTodayWorklog(taskTimes, settings, dummy: settings.DummyMode, addCommentsToWorklog: settings.AddCommentsToWorklog);
         }
     }
 }
