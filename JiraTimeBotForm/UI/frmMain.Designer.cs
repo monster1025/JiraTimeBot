@@ -42,17 +42,17 @@
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(12, 16);
+            this.txtLog.Location = new System.Drawing.Point(132, 16);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(716, 294);
+            this.txtLog.Size = new System.Drawing.Size(596, 294);
             this.txtLog.TabIndex = 11;
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 324);
+            this.btnStart.Location = new System.Drawing.Point(12, 229);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(114, 23);
             this.btnStart.TabIndex = 12;
@@ -74,7 +74,7 @@
             // txtDummyMode
             // 
             this.txtDummyMode.AutoSize = true;
-            this.txtDummyMode.Location = new System.Drawing.Point(208, 328);
+            this.txtDummyMode.Location = new System.Drawing.Point(12, 206);
             this.txtDummyMode.Name = "txtDummyMode";
             this.txtDummyMode.Size = new System.Drawing.Size(114, 17);
             this.txtDummyMode.TabIndex = 13;
@@ -83,9 +83,9 @@
             // 
             // btnMeeting
             // 
-            this.btnMeeting.Location = new System.Drawing.Point(132, 324);
+            this.btnMeeting.Location = new System.Drawing.Point(12, 258);
             this.btnMeeting.Name = "btnMeeting";
-            this.btnMeeting.Size = new System.Drawing.Size(70, 23);
+            this.btnMeeting.Size = new System.Drawing.Size(114, 23);
             this.btnMeeting.TabIndex = 14;
             this.btnMeeting.Text = "Митинг";
             this.btnMeeting.UseVisualStyleBackColor = true;
@@ -94,9 +94,9 @@
             // btnCancel
             // 
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(328, 324);
+            this.btnCancel.Location = new System.Drawing.Point(12, 287);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(190, 23);
+            this.btnCancel.Size = new System.Drawing.Size(114, 23);
             this.btnCancel.TabIndex = 15;
             this.btnCancel.Text = "Отменить операцию";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -104,9 +104,9 @@
             // 
             // btnSettings
             // 
-            this.btnSettings.Location = new System.Drawing.Point(645, 324);
+            this.btnSettings.Location = new System.Drawing.Point(12, 16);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(82, 23);
+            this.btnSettings.Size = new System.Drawing.Size(114, 23);
             this.btnSettings.TabIndex = 16;
             this.btnSettings.Text = "Настройки";
             this.btnSettings.UseVisualStyleBackColor = true;
@@ -116,7 +116,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 357);
+            this.ClientSize = new System.Drawing.Size(740, 320);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnMeeting);
