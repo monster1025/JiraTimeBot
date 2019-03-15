@@ -73,18 +73,18 @@
             this.lbl1.AutoSize = true;
             this.lbl1.Location = new System.Drawing.Point(34, 45);
             this.lbl1.Name = "lbl1";
-            this.lbl1.Size = new System.Drawing.Size(60, 13);
+            this.lbl1.Size = new System.Drawing.Size(64, 13);
             this.lbl1.TabIndex = 2;
-            this.lbl1.Text = "Логин Jira:";
+            this.lbl1.Text = "Логин Jira*:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(27, 71);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 13);
+            this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Пароль Jira:";
+            this.label1.Text = "Пароль Jira*:";
             // 
             // txtJiraPassword
             // 
@@ -115,9 +115,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(7, 151);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 13);
+            this.label3.Size = new System.Drawing.Size(91, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Время запуска:";
+            this.label3.Text = "Время запуска*:";
             // 
             // btnSave
             // 
@@ -222,9 +222,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(-2, 124);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(96, 13);
+            this.label5.Size = new System.Drawing.Size(100, 13);
             this.label5.TabIndex = 18;
-            this.label5.Text = "Округл. времени:";
+            this.label5.Text = "Округл. времени*:";
             // 
             // txtRoundTo
             // 
