@@ -61,7 +61,7 @@ namespace JiraTimeBotForm
 
             _job = new Job(_buzzwordReplacer, _log);
 
-            _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting };
+            _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting, chkAddComments };
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
