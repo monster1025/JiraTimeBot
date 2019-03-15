@@ -13,5 +13,6 @@ namespace JiraTimeBotForm.Configuration
         public string JiraPassword { get; set; }
         public TimeSpan ActivationTime { get; set; }
         public bool DummyMode { get; set; }
+        public bool AddCommentsToWorklog { get; set; }
     }
 }

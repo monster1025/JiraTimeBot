@@ -25,7 +25,7 @@ namespace JiraTimeBotForm.TasksProcessors
             }
 
             var jira = new JiraApi(settings, _log);
-            jira.SetTodayWorklog(taskTimes, dummy: settings.DummyMode);
+            jira.SetTodayWorklog(taskTimes, dummy: settings.DummyMode, addCommentsToWorklog: settings.AddCommentsToWorklog);
         }
     }
 }

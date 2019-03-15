@@ -33,7 +33,7 @@ namespace JiraTimeBotForm.JiraIntegration
             }
         }
 
-        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, DateTime? date = null, bool dummy = false)
+        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false)
         {
             if (date == null)
             {
@@ -86,7 +86,11 @@ namespace JiraTimeBotForm.JiraIntegration
                 if (!hasTodayWorklog)
                 {
                     var timeSpentJira = $"{taskTimeItem.Time.TotalMinutes}m";
-                    var workLogToAdd = new Worklog(timeSpentJira, date.Value);
+                    Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value);
+                    if (addCommentsToWorklog)
+                    {
+                        workLogToAdd = new Worklog(timeSpentJira, date.Value, taskTimeItem.Description);
+                    }
                     if (!dummy)
                     {
                         workLogToAdd = issue.AddWorklogAsync(workLogToAdd).Result;

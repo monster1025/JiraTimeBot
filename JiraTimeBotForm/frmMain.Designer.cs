@@ -48,6 +48,7 @@
             this.txtDummyMode = new System.Windows.Forms.CheckBox();
             this.btnMeeting = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.chkAddComments = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // actTime
@@ -99,7 +100,6 @@
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "Mercurial name:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txtMercurialEmail
             // 
@@ -119,7 +119,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(62, 146);
+            this.btnSave.Location = new System.Drawing.Point(82, 169);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 8;
@@ -205,11 +205,22 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // chkAddComments
+            // 
+            this.chkAddComments.AutoSize = true;
+            this.chkAddComments.Location = new System.Drawing.Point(61, 146);
+            this.chkAddComments.Name = "chkAddComments";
+            this.chkAddComments.Size = new System.Drawing.Size(133, 17);
+            this.chkAddComments.TabIndex = 16;
+            this.chkAddComments.Text = "Добавлять описание";
+            this.chkAddComments.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 292);
+            this.Controls.Add(this.chkAddComments);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnMeeting);
             this.Controls.Add(this.txtDummyMode);
@@ -258,6 +269,7 @@
         private System.Windows.Forms.CheckBox txtDummyMode;
         private System.Windows.Forms.Button btnMeeting;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.CheckBox chkAddComments;
     }
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using JiraTimeBotForm.CommitWorks;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.TaskProcessors;
 using JiraTimeBotForm.TasksProcessors;
@@ -12,10 +13,12 @@ namespace JiraTimeBotForm
 {
     class Job
     {
+        private readonly BuzzwordReplacer _buzzwordReplacer;
         private readonly ILog _log;
 
-        public Job(ILog log)
+        public Job(BuzzwordReplacer buzzwordReplacer, ILog log)
         {
+            _buzzwordReplacer = buzzwordReplacer;
             _log = log;
         }
 
@@ -28,9 +31,7 @@ namespace JiraTimeBotForm
 
         private void DoTheJobImpl(Settings settings, ITasksProcessor tasksProcessor, CancellationToken cancellationToken)
         {
-            var taskDiscoverer = new TaskTimeDiscoverer(_log);
-
-            
+            var taskDiscoverer = new TaskTimeDiscoverer(_buzzwordReplacer, _log);
 
             int daysDiff = 0;
             if (tasksProcessor is MeetingProcessor)

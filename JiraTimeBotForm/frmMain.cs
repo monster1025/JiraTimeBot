@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using JiraTimeBotForm.CommitWorks;
 using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.JiraIntegration;
 using JiraTimeBotForm.Passwords;
 using JiraTimeBotForm.TasksProcessors;
-using JiraTimeBotForm.TaskTime;
 using Newtonsoft.Json;
 
 // This is the code for your desktop app.
@@ -27,6 +24,7 @@ namespace JiraTimeBotForm
         private Job _job;
         private readonly IReadOnlyList<Control> _controls;
         private CancellationTokenSource _tokenSource;
+        private BuzzwordReplacer _buzzwordReplacer;
 
         private CancellationTokenSource GetTokenSource()
         {
@@ -45,20 +43,23 @@ namespace JiraTimeBotForm
             InitializeComponent();
             _settingsPath = Path.Combine(Application.UserAppDataPath, "settings.json");
             _log = new Logger(txtLog);
+            _buzzwordReplacer = new BuzzwordReplacer();
 
             trayMenu = new ContextMenu();
             trayMenu.MenuItems.Add("Exit", OnExit);
- 
-            trayIcon      = new NotifyIcon();
-            trayIcon.Text = "JiraTimeBot";
-            trayIcon.Icon = this.Icon;// new Icon(SystemIcons.WinLogo, 40, 40);
 
-            trayIcon.ContextMenu = trayMenu;
+            trayIcon = new NotifyIcon
+            {
+                Text = "JiraTimeBot", 
+                Icon = this.Icon, 
+                ContextMenu = trayMenu,
+                Visible = false,
+
+            };
             trayIcon.Click += btnTray_Click;
             trayIcon.DoubleClick += btnTray_Click;
-            trayIcon.Visible = false;
 
-            _job = new Job(_log);
+            _job = new Job(_buzzwordReplacer, _log);
 
             _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting };
         }
@@ -90,7 +91,8 @@ namespace JiraTimeBotForm
                 MercurialAuthorEmail = txtMercurialEmail.Text,
                 ActivationTime = TimeSpan.Parse(actTime.Text),
                 RepositoryPath = txtRepoPath.Text,
-                DummyMode = txtDummyMode.Checked
+                DummyMode = txtDummyMode.Checked,
+                AddCommentsToWorklog = chkAddComments.Checked,
             };
             
             LockUnlock(false);
@@ -145,6 +147,7 @@ namespace JiraTimeBotForm
             txtRepoPath.Text = settings.RepositoryPath;
             actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
             txtDummyMode.Checked = settings.DummyMode;
+            chkAddComments.Checked = settings.AddCommentsToWorklog;
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
@@ -229,12 +232,7 @@ namespace JiraTimeBotForm
 
             LockUnlock(true);
         }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void btnCancel_Click(object sender, EventArgs e)
         {
             _tokenSource.Cancel();
