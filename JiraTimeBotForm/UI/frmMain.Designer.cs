@@ -49,19 +49,21 @@
             this.btnMeeting = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkAddComments = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtRoundTo = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // actTime
             // 
             this.actTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.actTime.Location = new System.Drawing.Point(94, 120);
+            this.actTime.Location = new System.Drawing.Point(100, 147);
             this.actTime.Name = "actTime";
             this.actTime.Size = new System.Drawing.Size(100, 20);
             this.actTime.TabIndex = 0;
             // 
             // txtJiraLogin
             // 
-            this.txtJiraLogin.Location = new System.Drawing.Point(94, 42);
+            this.txtJiraLogin.Location = new System.Drawing.Point(100, 42);
             this.txtJiraLogin.Name = "txtJiraLogin";
             this.txtJiraLogin.Size = new System.Drawing.Size(100, 20);
             this.txtJiraLogin.TabIndex = 1;
@@ -69,7 +71,7 @@
             // lbl1
             // 
             this.lbl1.AutoSize = true;
-            this.lbl1.Location = new System.Drawing.Point(28, 45);
+            this.lbl1.Location = new System.Drawing.Point(34, 45);
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(60, 13);
             this.lbl1.TabIndex = 2;
@@ -78,7 +80,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 71);
+            this.label1.Location = new System.Drawing.Point(27, 71);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 13);
             this.label1.TabIndex = 4;
@@ -86,7 +88,7 @@
             // 
             // txtJiraPassword
             // 
-            this.txtJiraPassword.Location = new System.Drawing.Point(94, 68);
+            this.txtJiraPassword.Location = new System.Drawing.Point(100, 68);
             this.txtJiraPassword.Name = "txtJiraPassword";
             this.txtJiraPassword.PasswordChar = '*';
             this.txtJiraPassword.Size = new System.Drawing.Size(100, 20);
@@ -95,7 +97,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 97);
+            this.label2.Location = new System.Drawing.Point(12, 98);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 6;
@@ -103,7 +105,7 @@
             // 
             // txtMercurialEmail
             // 
-            this.txtMercurialEmail.Location = new System.Drawing.Point(94, 94);
+            this.txtMercurialEmail.Location = new System.Drawing.Point(100, 95);
             this.txtMercurialEmail.Name = "txtMercurialEmail";
             this.txtMercurialEmail.Size = new System.Drawing.Size(100, 20);
             this.txtMercurialEmail.TabIndex = 5;
@@ -111,15 +113,15 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(45, 126);
+            this.label3.Location = new System.Drawing.Point(7, 151);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.Size = new System.Drawing.Size(87, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Время:";
+            this.label3.Text = "Время запуска:";
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(82, 169);
+            this.btnSave.Location = new System.Drawing.Point(78, 196);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 8;
@@ -130,7 +132,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 19);
+            this.label4.Location = new System.Drawing.Point(18, 19);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 10;
@@ -138,7 +140,7 @@
             // 
             // txtRepoPath
             // 
-            this.txtRepoPath.Location = new System.Drawing.Point(94, 16);
+            this.txtRepoPath.Location = new System.Drawing.Point(100, 16);
             this.txtRepoPath.Name = "txtRepoPath";
             this.txtRepoPath.Size = new System.Drawing.Size(100, 20);
             this.txtRepoPath.TabIndex = 9;
@@ -150,12 +152,12 @@
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(510, 264);
+            this.txtLog.Size = new System.Drawing.Size(510, 294);
             this.txtLog.TabIndex = 11;
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(9, 224);
+            this.btnStart.Location = new System.Drawing.Point(9, 254);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(114, 23);
             this.btnStart.TabIndex = 12;
@@ -177,7 +179,7 @@
             // txtDummyMode
             // 
             this.txtDummyMode.AutoSize = true;
-            this.txtDummyMode.Location = new System.Drawing.Point(9, 201);
+            this.txtDummyMode.Location = new System.Drawing.Point(9, 231);
             this.txtDummyMode.Name = "txtDummyMode";
             this.txtDummyMode.Size = new System.Drawing.Size(114, 17);
             this.txtDummyMode.TabIndex = 13;
@@ -186,7 +188,7 @@
             // 
             // btnMeeting
             // 
-            this.btnMeeting.Location = new System.Drawing.Point(142, 224);
+            this.btnMeeting.Location = new System.Drawing.Point(142, 254);
             this.btnMeeting.Name = "btnMeeting";
             this.btnMeeting.Size = new System.Drawing.Size(70, 23);
             this.btnMeeting.TabIndex = 14;
@@ -197,7 +199,7 @@
             // btnCancel
             // 
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(9, 256);
+            this.btnCancel.Location = new System.Drawing.Point(9, 286);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(203, 23);
             this.btnCancel.TabIndex = 15;
@@ -208,18 +210,37 @@
             // chkAddComments
             // 
             this.chkAddComments.AutoSize = true;
-            this.chkAddComments.Location = new System.Drawing.Point(61, 146);
+            this.chkAddComments.Location = new System.Drawing.Point(45, 175);
             this.chkAddComments.Name = "chkAddComments";
             this.chkAddComments.Size = new System.Drawing.Size(133, 17);
             this.chkAddComments.TabIndex = 16;
             this.chkAddComments.Text = "Добавлять описание";
             this.chkAddComments.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(-2, 124);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(96, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Округл. времени:";
+            // 
+            // txtRoundTo
+            // 
+            this.txtRoundTo.Location = new System.Drawing.Point(100, 121);
+            this.txtRoundTo.Name = "txtRoundTo";
+            this.txtRoundTo.Size = new System.Drawing.Size(100, 20);
+            this.txtRoundTo.TabIndex = 17;
+            this.txtRoundTo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 292);
+            this.ClientSize = new System.Drawing.Size(740, 318);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtRoundTo);
             this.Controls.Add(this.chkAddComments);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnMeeting);
@@ -270,6 +291,8 @@
         private System.Windows.Forms.Button btnMeeting;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.CheckBox chkAddComments;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtRoundTo;
     }
 }
 

@@ -14,13 +14,13 @@ namespace JiraTimeBotForm
 {
     class Job
     {
-        private readonly IMercurialLog _mercurialLog;
+        private readonly IAllMercurialProviders _mercurialProviders;
         private readonly ITaskTimeCalculator _taskTimeDiscoverer;
         private readonly ILog _log;
 
-        public Job(IMercurialLog mercurialLog, ITaskTimeCalculator taskTimeDiscoverer, ILog log)
+        public Job(IAllMercurialProviders mercurialProviders, ITaskTimeCalculator taskTimeDiscoverer, ILog log)
         {
-            _mercurialLog = mercurialLog;
+            _mercurialProviders = mercurialProviders;
             _taskTimeDiscoverer = taskTimeDiscoverer;
             _log = log;
         }
@@ -44,7 +44,13 @@ namespace JiraTimeBotForm
             {
                 DateTime date = DateTime.Now.Date.AddDays(daysDiff);
 
-                List<MercurialCommitItem> commits = _mercurialLog.GetMercurialLog(settings, date, cancellationToken);
+                IMercurialLog mercurial = _mercurialProviders.MercurialLog;
+                if (string.IsNullOrEmpty(settings.RepositoryPath))
+                {
+                    _log.Info("Путь до репозитория пуст, использую Jira как источник информации.");
+                    mercurial = _mercurialProviders.JiraCommitEmulator;
+                }
+                List<MercurialCommitItem> commits = mercurial.GetMercurialLog(settings, date, cancellationToken);
                 List<TaskTimeItem> taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
 
                 if (cancellationToken.IsCancellationRequested)

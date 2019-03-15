@@ -39,7 +39,10 @@ namespace JiraTimeBotForm.JiraIntegration
             var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
-            var jql = $"status changed by '{settings.JiraUserName}' during (\"{date.Value:yyyy-MM-dd}\",\"{date.Value.AddDays(1):yyyy-MM-dd}\")";
+            var userName = settings.JiraUserName;
+            //userName = "Zoya.Aleksandridi";
+
+            var jql = $"status changed by '{userName}' during (\"{date.Value:yyyy-MM-dd}\",\"{date.Value.AddDays(1):yyyy-MM-dd}\")";
             var affectedIssues = jira.Issues.GetIssuesFromJqlAsync(jql, 50, 0, cancellationToken).Result.ToList();
             return affectedIssues;
         }

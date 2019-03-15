@@ -59,6 +59,11 @@ namespace JiraTimeBotForm.UI
 
         public Settings ReadSettingsAndLock()
         {
+            if (!int.TryParse(txtRoundTo.Text, out var roundTo))
+            {
+                roundTo = 15;
+            }
+
             var settings = new Settings
             {
                 JiraUserName = txtJiraLogin.Text,
@@ -68,6 +73,7 @@ namespace JiraTimeBotForm.UI
                 RepositoryPath = txtRepoPath.Text,
                 DummyMode = txtDummyMode.Checked,
                 AddCommentsToWorklog = chkAddComments.Checked,
+                RountToMinutes = roundTo
             };
             
             LockUnlock(false);
@@ -119,17 +125,12 @@ namespace JiraTimeBotForm.UI
             actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
             txtDummyMode.Checked = settings.DummyMode;
             chkAddComments.Checked = settings.AddCommentsToWorklog;
+            txtRoundTo.Text = settings.RountToMinutes.ToString();
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
         {
             var settings = ReadSettingsAndLock();
-
-            if (!Directory.Exists(settings.RepositoryPath))
-            {
-                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
 
             using (_tokenSource = GetTokenSource())
             {
@@ -207,6 +208,11 @@ namespace JiraTimeBotForm.UI
         private void btnCancel_Click(object sender, EventArgs e)
         {
             _tokenSource.Cancel();
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
     }
 }

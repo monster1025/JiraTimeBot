@@ -87,6 +87,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\Settings.cs" />
     <Compile Include="JiraIntegration\JiraCommitEmulator.cs" />
+    <Compile Include="Mercurial\IAllMercurialProviders.cs" />
     <Compile Include="Mercurial\Modifiers\ITechnicalInfoSkipper.cs" />
     <Compile Include="Mercurial\Modifiers\CommitSkipper.cs" />
     <Compile Include="Mercurial\Modifiers\ICommitSkipper.cs" />
@@ -109,7 +110,7 @@
     <Compile Include="TasksProcessors\MeetingProcessor.cs" />
     <Compile Include="TasksProcessors\WorkLogTasksProcessor.cs" />
     <Compile Include="TaskTime\ITaskTimeCalculator.cs" />
-    <Compile Include="TaskTime\TaskTimeDiscoverer.cs" />
+    <Compile Include="TaskTime\TaskTimeByCommitsCalculator.cs" />
     <Compile Include="TaskTime\Objects\TaskTimeItem.cs" />
     <Compile Include="UI\Tray\ITrayMenu.cs" />
     <Compile Include="UI\Tray\RestoreFromTray.cs" />

@@ -26,6 +26,12 @@ namespace JiraTimeBotForm.Mercurial
 
         public List<MercurialCommitItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath))
+            {
+                _log.Error("Папка с репо не сушествует.");
+                return new List<MercurialCommitItem>();
+            }
+
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
             var workTasks = new List<MercurialCommitItem>();
