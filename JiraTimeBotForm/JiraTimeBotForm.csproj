@@ -112,6 +112,12 @@
     <Compile Include="TaskTime\ITaskTimeCalculator.cs" />
     <Compile Include="TaskTime\TaskTimeByCommitsCalculator.cs" />
     <Compile Include="TaskTime\Objects\TaskTimeItem.cs" />
+    <Compile Include="UI\frmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Tray\ITrayMenu.cs" />
     <Compile Include="UI\Tray\RestoreFromTray.cs" />
     <Compile Include="UI\Tray\TrayMenu.cs" />
@@ -127,6 +133,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

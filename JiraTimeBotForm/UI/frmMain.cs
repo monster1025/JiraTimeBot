@@ -24,6 +24,7 @@ namespace JiraTimeBotForm.UI
         private readonly IAllTasksProcessors _tasksProcessors;
         private readonly ITrayMenu _trayIcon;
         private CancellationTokenSource _tokenSource;
+        private Settings _settings;
 
         private CancellationTokenSource GetTokenSource()
         {
@@ -45,11 +46,13 @@ namespace JiraTimeBotForm.UI
             _trayIcon = _container.Resolve<ITrayMenu>();
             _trayIcon.Create(this);
 
+            _settings = Settings.Load();
+
             _job = _container.Resolve<Job>();
             _log = _container.Resolve<ILog>();
             _tasksProcessors = _container.Resolve<IAllTasksProcessors>();
 
-            _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting, chkAddComments, txtRoundTo };
+            _controls = new Control[] { txtDummyMode, btnStart, btnMeeting, btnSettings };
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -59,26 +62,11 @@ namespace JiraTimeBotForm.UI
 
         public Settings ReadSettingsAndLock()
         {
-            if (!int.TryParse(txtRoundTo.Text, out var roundTo))
-            {
-                roundTo = 15;
-            }
-
-            var settings = new Settings
-            {
-                JiraUserName = txtJiraLogin.Text,
-                JiraPassword = txtJiraPassword.Text,
-                MercurialAuthorEmail = txtMercurialEmail.Text,
-                ActivationTime = TimeSpan.Parse(actTime.Text),
-                RepositoryPath = txtRepoPath.Text,
-                DummyMode = txtDummyMode.Checked,
-                AddCommentsToWorklog = chkAddComments.Checked,
-                RountToMinutes = roundTo
-            };
+            _settings = Settings.Load();
             
             LockUnlock(false);
 
-            return settings;
+            return _settings;
         }
 
         public void LockUnlock(bool enabled)
@@ -91,41 +79,9 @@ namespace JiraTimeBotForm.UI
             btnCancel.Enabled = !enabled;
             tmrStart.Enabled = enabled;
         }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            var settings = ReadSettingsAndLock();
-            LockUnlock(true);
-
-            settings.Save();
-
-            MessageBox.Show("Settings saved.");
-            settings = Settings.Load();
-            if (settings != null)
-            {
-                SetSettings(settings);
-            }
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            var settings = Settings.Load();
-            if (settings != null)
-            {
-                SetSettings(settings);
-            }
-        }
-
-        private void SetSettings(Settings settings)
-        {
-            txtJiraLogin.Text = settings.JiraUserName;
-            txtJiraPassword.Text = settings.JiraPassword;
-            txtMercurialEmail.Text = settings.MercurialAuthorEmail;
-            txtRepoPath.Text = settings.RepositoryPath;
-            actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
-            txtDummyMode.Checked = settings.DummyMode;
-            chkAddComments.Checked = settings.AddCommentsToWorklog;
-            txtRoundTo.Text = settings.RountToMinutes.ToString();
+            _settings = Settings.Load();
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
@@ -156,7 +112,7 @@ namespace JiraTimeBotForm.UI
 
         private async void tmrStart_Tick(object sender, EventArgs e)
         {
-            var runTime = TimeSpan.Parse(actTime.Text);
+            var runTime = _settings.ActivationTime;
 
             if (Math.Abs((DateTime.Now.TimeOfDay - runTime).TotalSeconds) < 1)
             {
@@ -207,6 +163,12 @@ namespace JiraTimeBotForm.UI
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            var frm = new frmSettings();
+            frm.ShowDialog();
         }
     }
 }
