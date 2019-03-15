@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using JiraTimeBotForm.CommitWorks;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.Mercurial;
 using JiraTimeBotForm.Passwords;
@@ -21,12 +20,10 @@ namespace JiraTimeBotForm
     {
         private readonly string _settingsPath;
         private readonly ILog _log;
-        private readonly NotifyIcon  trayIcon;
-        private readonly ContextMenu trayMenu;
+        private readonly NotifyIcon  _trayIcon;
         private Job _job;
         private readonly IReadOnlyList<Control> _controls;
         private CancellationTokenSource _tokenSource;
-        private BuzzwordReplacer _buzzwordReplacer;
 
         private CancellationTokenSource GetTokenSource()
         {
@@ -45,12 +42,11 @@ namespace JiraTimeBotForm
             InitializeComponent();
             _settingsPath = Path.Combine(Application.UserAppDataPath, "settings.json");
             _log = new Logger(txtLog);
-            _buzzwordReplacer = new BuzzwordReplacer();
 
-            trayMenu = new ContextMenu();
+            var trayMenu = new ContextMenu();
             trayMenu.MenuItems.Add("Exit", OnExit);
 
-            trayIcon = new NotifyIcon
+            _trayIcon = new NotifyIcon
             {
                 Text = "JiraTimeBot", 
                 Icon = this.Icon, 
@@ -58,8 +54,8 @@ namespace JiraTimeBotForm
                 Visible = false,
 
             };
-            trayIcon.Click += btnTray_Click;
-            trayIcon.DoubleClick += btnTray_Click;
+            _trayIcon.Click += btnTray_Click;
+            _trayIcon.DoubleClick += btnTray_Click;
 
             var mercurialLog = new MercurialLog(_log);
             var taskTimeDiscoverer = new TaskTimeDiscoverer(_log);
@@ -70,7 +66,7 @@ namespace JiraTimeBotForm
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            trayIcon.Visible = false;
+            _trayIcon.Visible = false;
         }
 
         private void OnExit(object sender, EventArgs e)
@@ -176,13 +172,13 @@ namespace JiraTimeBotForm
         {
             if (FormWindowState.Minimized == this.WindowState)
             {
-                trayIcon.Visible = true;
+                _trayIcon.Visible = true;
                 this.Hide();
             }
 
             else if (FormWindowState.Normal == this.WindowState)
             {
-                trayIcon.Visible = false;
+                _trayIcon.Visible = false;
             }
         }
 

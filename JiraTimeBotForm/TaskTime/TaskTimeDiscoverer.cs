@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.Mercurial;
-using Mercurial;
 
 namespace JiraTimeBotForm.TaskTime
 {
@@ -38,7 +36,7 @@ namespace JiraTimeBotForm.TaskTime
                 int currentTaskTime = (int)RoundTo(settings.MinuterPerWorkDay / totalCommitsCount * currentTaskCommits);
                 remainMinutes = remainMinutes - currentTaskTime;
 
-                var orderedTasks = taskGroup.OrderBy(f => f.StartTime).ToArray();
+                var orderedTasks = taskGroup.OrderBy(f => f.Time).ToArray();
                 StringBuilder sb = new StringBuilder();
                 foreach (var task in orderedTasks)
                 {
@@ -52,8 +50,8 @@ namespace JiraTimeBotForm.TaskTime
                     Commits = taskGroup.Count(),
                     Description = sb.ToString(),
 
-                    StartTime = orderedTasks.First().StartTime,
-                    EndTime = orderedTasks.Last().StartTime
+                    StartTime = orderedTasks.First().Time,
+                    EndTime = orderedTasks.Last().Time
                 };
 
                 workTimeItems.Add(taskTimeItem);

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JiraTimeBotForm.Mercurial
 {
@@ -10,8 +6,7 @@ namespace JiraTimeBotForm.Mercurial
     {
         public string Description { get; set; }
         public string Branch { get; set; }
-
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime Time { get; set; }
+        public int FilesAffected { get; set; }
     }
 }

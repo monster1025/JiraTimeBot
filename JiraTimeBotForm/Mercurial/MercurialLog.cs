@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.TaskTime;
 using Mercurial;
 
 namespace JiraTimeBotForm.Mercurial
@@ -61,14 +59,13 @@ namespace JiraTimeBotForm.Mercurial
                         continue;
                     }
                     commitMessage = StripTechnicalInfo(commitMessage);
-                    //commitMessage = _buzzwordReplacer.FixBuzzwords(commitMessage);
 
                     workTasks.Add(new MercurialCommitItem
                     {
                         Description = commitMessage,
                         Branch = changeset.Branch,
-                        StartTime = changeset.Timestamp,
-                        EndTime = changeset.Timestamp
+                        Time = changeset.Timestamp,
+                        FilesAffected = changeset.PathActions.Count
                     });
                     _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");
                 }
