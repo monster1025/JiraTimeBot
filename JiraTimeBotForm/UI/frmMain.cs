@@ -49,7 +49,7 @@ namespace JiraTimeBotForm.UI
             _log = _container.Resolve<ILog>();
             _tasksProcessors = _container.Resolve<IAllTasksProcessors>();
 
-            _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting, chkAddComments };
+            _controls = new Control[] { txtJiraLogin, txtJiraPassword, txtMercurialEmail, actTime, txtRepoPath, txtDummyMode, btnSave, btnStart, btnMeeting, chkAddComments, txtRoundTo };
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -190,12 +190,6 @@ namespace JiraTimeBotForm.UI
         private async void btnMeeting_Click(object sender, EventArgs e)
         {
             var settings = ReadSettingsAndLock();
-
-            if (!Directory.Exists(settings.RepositoryPath))
-            {
-                MessageBox.Show("Папка с репо не сушествует.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
 
             using (_tokenSource = GetTokenSource())
             {
