@@ -90,7 +90,7 @@ namespace JiraTimeBotForm.UI
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, _tokenSource.Token); 
+                await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, _tokenSource.Token); 
             }
 
             LockUnlock(true);
@@ -128,15 +128,14 @@ namespace JiraTimeBotForm.UI
 
                 await Task.Delay(2000);
 
-                if (settings.DummyMode)
+                if (txtDummyMode.Checked)
                 {
-                    settings.DummyMode = false;
                     _log.Info("Выключаем режим Тестового прогона");
                 }
 
                 using (var tokenSource = GetTokenSource())
                 {
-                    await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, tokenSource.Token);
+                    await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, tokenSource.Token);
                 }
 
                 LockUnlock(true);
@@ -149,7 +148,7 @@ namespace JiraTimeBotForm.UI
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.DoTheJob(settings, _tasksProcessors.MeetingProcessor, _tokenSource.Token);
+                await _job.DoTheJob(settings, _tasksProcessors.MeetingProcessor, txtDummyMode.Checked, _tokenSource.Token);
             }
 
             LockUnlock(true);
@@ -158,11 +157,6 @@ namespace JiraTimeBotForm.UI
         private void btnCancel_Click(object sender, EventArgs e)
         {
             _tokenSource.Cancel();
-        }
-
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
         private void btnSettings_Click(object sender, EventArgs e)

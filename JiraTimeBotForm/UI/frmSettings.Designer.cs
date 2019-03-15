@@ -59,6 +59,7 @@
             this.txtRoundTo.Name = "txtRoundTo";
             this.txtRoundTo.Size = new System.Drawing.Size(100, 20);
             this.txtRoundTo.TabIndex = 27;
+            this.txtRoundTo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRoundTo_KeyPress);
             // 
             // label4
             // 

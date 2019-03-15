@@ -25,14 +25,14 @@ namespace JiraTimeBotForm
             _log = log;
         }
 
-        public Task DoTheJob(Settings settings, ITasksProcessor tasksProcessor, CancellationToken cancellationToken)
+        public Task DoTheJob(Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
         {
             _log.Info("Начинаем работу");
 
-            return Task.Run(() => DoTheJobImpl(settings, tasksProcessor, cancellationToken), cancellationToken);
+            return Task.Run(() => DoTheJobImpl(settings, tasksProcessor, dummyMode, cancellationToken), cancellationToken);
         }
 
-        private void DoTheJobImpl(Settings settings, ITasksProcessor tasksProcessor, CancellationToken cancellationToken)
+        private void DoTheJobImpl(Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
         {
             int daysDiff = 0;
             if (tasksProcessor is MeetingProcessor)
@@ -71,7 +71,7 @@ namespace JiraTimeBotForm
                     continue;
                 }
 
-                tasksProcessor.Process(date, taskTimes, settings);
+                tasksProcessor.Process(date, taskTimes, settings, dummyMode);
 
                 _log.Info("Готово.");
                 return;

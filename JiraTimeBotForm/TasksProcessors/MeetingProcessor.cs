@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.JiraIntegration;
-using JiraTimeBotForm.TaskTime;
 using JiraTimeBotForm.TaskTime.Objects;
 
 namespace JiraTimeBotForm.TasksProcessors
@@ -19,7 +18,7 @@ namespace JiraTimeBotForm.TasksProcessors
             _jiraApi = jiraApi;
         }
 
-        public void Process(DateTime date, List<TaskTimeItem> taskTimes, Settings settings)
+        public void Process(DateTime date, List<TaskTimeItem> taskTimes, Settings settings, bool dummyMode)
         {
             _log.Trace($"На реальную дату {date:dd.MM.yyyy} распределение по задачам:");
 

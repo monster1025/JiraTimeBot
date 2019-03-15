@@ -67,5 +67,10 @@ namespace JiraTimeBotForm.UI
             MessageBox.Show("Настройки сохранены.");
             this.Close();
         }
+
+        private void txtRoundTo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
     }
 }

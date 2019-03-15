@@ -38,7 +38,6 @@ namespace JiraTimeBotForm.DI
             _builder.RegisterType<WorkLogTasksProcessor>().AsSelf().As<ITasksProcessor>();
             _builder.RegisterType<MeetingProcessor>().AsSelf().As<ITasksProcessor>();
             _builder.RegisterAggregateService<IAllTasksProcessors>();
-            
 
             _builder.RegisterType<JiraDescriptionSource>().AsSelf().As<IJiraDescriptionSource>();
             _builder.RegisterType<JiraApi>().AsSelf().AsImplementedInterfaces();
