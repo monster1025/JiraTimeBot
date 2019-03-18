@@ -11,7 +11,10 @@ echo %VERSION%>semver.txt
 echo Updating to %VERSION%
 
 git add .
-git tag -m "Version v%VERSION%" -a v%VERSION%
 git commit -m "Commit new version"
+
+git tag -m "Version v%VERSION%" -a v%VERSION%
+git push origin v%VERSION%
+
 git push
 pause
