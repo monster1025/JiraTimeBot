@@ -1,4 +1,4 @@
-# JiraTimeBot
+# JiraTimeBot [![Build Status](https://travis-ci.org/monster1025/JiraTimeBot.svg?branch=master)](https://travis-ci.org/monster1025/JiraTimeBot)
 Приложение для автоматического добавления Jira Worklog'ов исходя из количества коммитов в ветку.
 
 # Предположения
