@@ -90,8 +90,8 @@ namespace JiraTimeBotForm.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            tmrStart.Enabled = true;
             PrintStartMessage();
+            tmrStart.Enabled = true;
         }
 
         private void PrintStartMessage()
