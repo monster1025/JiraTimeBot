@@ -1,9 +1,12 @@
 language: csharp
 solution: src/JiraTimeBot.sln
-
+mono:
+  - 5.18.1
+  
 before_deploy:
   - "mv src/JiraTimeBot/bin/Release JiraTimeBot"
   - "zip JiraTimeBot.zip JiraTimeBot"
+
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
