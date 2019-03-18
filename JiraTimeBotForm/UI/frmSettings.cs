@@ -31,6 +31,8 @@ namespace JiraTimeBotForm.UI
             chkAddComments.Checked = settings.AddCommentsToWorklog;
             txtRoundTo.Text = settings.RountToMinutes.ToString();
             cboWorkType.SelectedIndex = (int) settings.WorkType;
+            txtJQL.Text = settings.JiraQuery;
+            txtJQL.Enabled = settings.WorkType == WorkType.JiraLogs;
         }
 
         public Settings ReadSettingsAndLock()
@@ -50,7 +52,8 @@ namespace JiraTimeBotForm.UI
                 //DummyMode = txtDummyMode.Checked,
                 AddCommentsToWorklog = chkAddComments.Checked,
                 RountToMinutes = roundTo,
-                WorkType = (WorkType) cboWorkType.SelectedIndex
+                WorkType = (WorkType) cboWorkType.SelectedIndex,
+                JiraQuery = txtJQL.Text,
             };
             
             //LockUnlock(false);
@@ -72,6 +75,11 @@ namespace JiraTimeBotForm.UI
         private void txtRoundTo_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void cboWorkType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtJQL.Enabled = (cboWorkType.SelectedIndex == 1);
         }
     }
 }

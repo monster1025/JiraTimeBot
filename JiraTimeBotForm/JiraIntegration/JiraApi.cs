@@ -41,9 +41,26 @@ namespace JiraTimeBotForm.JiraIntegration
 
             var userName = settings.JiraUserName;
 
-            var jql = $"status changed by '{userName}' during (\"{date.Value:yyyy-MM-dd}\",\"{date.Value:yyyy-MM-dd}\")";
-            var affectedIssues = jira.Issues.GetIssuesFromJqlAsync(jql, 50, 0, cancellationToken).Result.ToList();
-            return affectedIssues;
+            var jql = settings.JiraQuery;
+            if (string.IsNullOrEmpty(jql))
+            {
+                jql = $"status changed by '%USER%' during (\"%DATE%\",\"%DATE%\")";
+            }
+
+            jql = jql.Replace("%USER%", userName);
+            jql = jql.Replace("%DATE%", $"{date.Value:yyyy-MM-dd}");
+
+            try
+            {
+                List<Issue> affectedIssues =
+                    jira.Issues.GetIssuesFromJqlAsync(jql, 50, 0, cancellationToken).Result.ToList();
+                return affectedIssues;
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Ошибка получения информации из JIRA: {ex.InnerException?.Message}");
+                return new List<Issue>();
+            }
         }
 
         public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false)

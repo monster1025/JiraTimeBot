@@ -44,6 +44,8 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.cboWorkType = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtJQL = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label5
@@ -131,7 +133,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 180);
+            this.label3.Location = new System.Drawing.Point(16, 206);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(91, 13);
             this.label3.TabIndex = 30;
@@ -140,7 +142,7 @@
             // actTime
             // 
             this.actTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.actTime.Location = new System.Drawing.Point(109, 176);
+            this.actTime.Location = new System.Drawing.Point(109, 202);
             this.actTime.Name = "actTime";
             this.actTime.Size = new System.Drawing.Size(100, 20);
             this.actTime.TabIndex = 29;
@@ -148,7 +150,7 @@
             // chkAddComments
             // 
             this.chkAddComments.AutoSize = true;
-            this.chkAddComments.Location = new System.Drawing.Point(39, 202);
+            this.chkAddComments.Location = new System.Drawing.Point(46, 242);
             this.chkAddComments.Name = "chkAddComments";
             this.chkAddComments.Size = new System.Drawing.Size(133, 17);
             this.chkAddComments.TabIndex = 31;
@@ -157,7 +159,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(61, 236);
+            this.btnSave.Location = new System.Drawing.Point(61, 276);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -176,6 +178,7 @@
             this.cboWorkType.Name = "cboWorkType";
             this.cboWorkType.Size = new System.Drawing.Size(99, 21);
             this.cboWorkType.TabIndex = 34;
+            this.cboWorkType.SelectedIndexChanged += new System.EventHandler(this.cboWorkType_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -186,11 +189,29 @@
             this.label6.TabIndex = 35;
             this.label6.Text = "Режим работы:";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(74, 179);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 13);
+            this.label7.TabIndex = 37;
+            this.label7.Text = "JQL:";
+            // 
+            // txtJQL
+            // 
+            this.txtJQL.Location = new System.Drawing.Point(109, 176);
+            this.txtJQL.Name = "txtJQL";
+            this.txtJQL.Size = new System.Drawing.Size(99, 20);
+            this.txtJQL.TabIndex = 36;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(220, 268);
+            this.ClientSize = new System.Drawing.Size(220, 311);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.txtJQL);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cboWorkType);
             this.Controls.Add(this.btnSave);
@@ -236,5 +257,7 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ComboBox cboWorkType;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtJQL;
     }
 }

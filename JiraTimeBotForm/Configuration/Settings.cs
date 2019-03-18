@@ -21,6 +21,7 @@ namespace JiraTimeBotForm.Configuration
         public TimeSpan ActivationTime { get; set; }
         public bool AddCommentsToWorklog { get; set; }
         public WorkType WorkType { get; set; }
+        public string JiraQuery { get; set; }
 
         public static Settings LoadAndCheck(Action settingsSource, Action<string> errorMessageReporter)
         {
