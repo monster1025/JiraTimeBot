@@ -12,5 +12,6 @@ echo Updating to %VERSION%
 
 git add .
 git tag -a v%VERSION%
+git commit -m "Commit new version"
 git push
 pause
