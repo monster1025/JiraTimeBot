@@ -4,8 +4,7 @@ mono:
   - 5.18.1
   
 before_deploy:
-  - "mv src/JiraTimeBot/bin/Release JiraTimeBot"
-  - "zip JiraTimeBot.zip JiraTimeBot"
+  - "zip -j JiraTimeBot.zip src/JiraTimeBot/bin/Release/*"
 
 deploy:
   provider: releases
