@@ -1,7 +1,5 @@
 language: csharp
 solution: src/JiraTimeBot.sln
-mono:
-  - 5.20.1
   
 before_deploy:
   - "zip -j JiraTimeBot.zip src/JiraTimeBot/bin/Release/*"
