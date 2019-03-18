@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Net.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,6 +25,8 @@ namespace JiraTimeBotForm.UI
         private readonly ITrayMenu _trayIcon;
         private CancellationTokenSource _tokenSource;
         private Settings _settings;
+        private readonly Action _settingsWindowShow;
+        private readonly Action<string> _settingsErrorReporter;
 
         private CancellationTokenSource GetTokenSource()
         {
@@ -46,13 +48,19 @@ namespace JiraTimeBotForm.UI
             _trayIcon = _container.Resolve<ITrayMenu>();
             _trayIcon.Create(this);
 
-            _settings = Settings.Load();
-
             _job = _container.Resolve<Job>();
             _log = _container.Resolve<ILog>();
             _tasksProcessors = _container.Resolve<IAllTasksProcessors>();
 
             _controls = new Control[] { txtDummyMode, btnStart, btnMeeting, btnSettings };
+
+            _settingsWindowShow = () =>
+            {
+                var frmSettings = new frmSettings();
+                frmSettings.ShowDialog(this);
+            };
+
+            _settingsErrorReporter = msg => MessageBox.Show(msg, "Загрузка настроек", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);;
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -62,7 +70,7 @@ namespace JiraTimeBotForm.UI
 
         public Settings ReadSettingsAndLock()
         {
-            _settings = Settings.Load();
+            _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
             
             LockUnlock(false);
 
@@ -79,9 +87,13 @@ namespace JiraTimeBotForm.UI
             btnCancel.Enabled = !enabled;
             tmrStart.Enabled = enabled;
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            _settings = Settings.Load();
+            _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
+            tmrStart.Enabled = true;
+
+            _log.Info($"Загружен бот для {_settings.JiraUserName}, работаем в {_settings.RepositoryPath}");
         }
 
         private async void btnStart_Click(object sender, EventArgs e)

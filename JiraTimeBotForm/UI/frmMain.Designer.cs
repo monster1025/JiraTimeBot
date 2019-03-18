@@ -67,7 +67,6 @@
             // 
             // tmrStart
             // 
-            this.tmrStart.Enabled = true;
             this.tmrStart.Interval = 1500;
             this.tmrStart.Tick += new System.EventHandler(this.tmrStart_Tick);
             // 

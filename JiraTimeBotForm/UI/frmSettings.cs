@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using JiraTimeBotForm.Configuration;
 
@@ -21,7 +14,10 @@ namespace JiraTimeBotForm.UI
         private void frmSettings_Load(object sender, EventArgs e)
         {
             var settings = Settings.Load();
-            SetSettings(settings);
+            if (settings != null)
+            {
+                SetSettings(settings);
+            }
         }
 
         private void SetSettings(Settings settings)
@@ -64,7 +60,10 @@ namespace JiraTimeBotForm.UI
         {
             var settings = ReadSettingsAndLock();
             settings.Save();
+
             MessageBox.Show("Настройки сохранены.");
+
+            DialogResult = DialogResult.OK;
             this.Close();
         }
 
