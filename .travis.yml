@@ -1,10 +1,11 @@
 language: csharp
-solution: JiraTimeBot.sln
+solution: src/JiraTimeBot.sln
 
-before_deploy: "tar -czf app.tgz JiraTimeBot/bin/Release/*"
+before_deploy: "zip -j JiraTimeBot.zip src/JiraTimeBot/bin/Release/*"
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
-  file_glob: true
-  file: app.tgz
+  file: JiraTimeBot.zip
   skip_cleanup: true
+  on:
+    tags: true
