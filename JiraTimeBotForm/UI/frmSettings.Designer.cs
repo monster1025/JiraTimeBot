@@ -173,7 +173,7 @@
             this.cboWorkType.FormattingEnabled = true;
             this.cboWorkType.Items.AddRange(new object[] {
             "Mercurial",
-            "Обновления Jira-задачь"});
+            "Jira"});
             this.cboWorkType.Location = new System.Drawing.Point(109, 18);
             this.cboWorkType.Name = "cboWorkType";
             this.cboWorkType.Size = new System.Drawing.Size(99, 21);
