@@ -20,6 +20,7 @@ namespace JiraTimeBotForm.Configuration
         public string JiraPassword { get; set; }
         public TimeSpan ActivationTime { get; set; }
         public bool AddCommentsToWorklog { get; set; }
+        public WorkType WorkType { get; set; }
 
         public static Settings LoadAndCheck(Action settingsSource, Action<string> errorMessageReporter)
         {
@@ -72,9 +73,9 @@ namespace JiraTimeBotForm.Configuration
                 errors.Add("Укажите UserName от Jira");
             }
 
-            if (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath))
+            if (settings.WorkType == WorkType.Mercurial && (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath)))
             {
-                errors.Add("Укажите RepositoryPath");
+                errors.Add("Укажите верный RepositoryPath");
             }
 
             var hasErrors = errors.Any();
@@ -127,5 +128,11 @@ namespace JiraTimeBotForm.Configuration
         }
 
         private static string _settingsFileName = "settings.json";
+    }
+
+    public enum WorkType
+    {
+        Mercurial = 0,
+        JiraLogs = 1,
     }
 }

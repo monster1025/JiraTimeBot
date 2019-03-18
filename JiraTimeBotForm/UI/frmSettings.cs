@@ -30,6 +30,7 @@ namespace JiraTimeBotForm.UI
             //txtDummyMode.Checked = settings.DummyMode;
             chkAddComments.Checked = settings.AddCommentsToWorklog;
             txtRoundTo.Text = settings.RountToMinutes.ToString();
+            cboWorkType.SelectedIndex = (int) settings.WorkType;
         }
 
         public Settings ReadSettingsAndLock()
@@ -48,7 +49,8 @@ namespace JiraTimeBotForm.UI
                 RepositoryPath = txtRepoPath.Text,
                 //DummyMode = txtDummyMode.Checked,
                 AddCommentsToWorklog = chkAddComments.Checked,
-                RountToMinutes = roundTo
+                RountToMinutes = roundTo,
+                WorkType = (WorkType) cboWorkType.SelectedIndex
             };
             
             //LockUnlock(false);

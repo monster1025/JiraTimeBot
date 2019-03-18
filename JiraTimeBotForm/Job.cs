@@ -45,9 +45,9 @@ namespace JiraTimeBotForm
                 DateTime date = DateTime.Now.Date.AddDays(daysDiff);
 
                 IMercurialLog mercurial = _mercurialProviders.MercurialLog;
-                if (string.IsNullOrEmpty(settings.RepositoryPath))
+                if (settings.WorkType == WorkType.JiraLogs)
                 {
-                    _log.Info("Путь до репозитория пуст, использую Jira как источник информации.");
+                    _log.Info("Использую Jira как источник информации.");
                     mercurial = _mercurialProviders.JiraCommitEmulator;
                 }
                 List<MercurialCommitItem> commits = mercurial.GetMercurialLog(settings, date, cancellationToken);

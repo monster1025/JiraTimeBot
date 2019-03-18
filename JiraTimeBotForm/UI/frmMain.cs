@@ -93,7 +93,7 @@ namespace JiraTimeBotForm.UI
             _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
             tmrStart.Enabled = true;
 
-            _log.Info($"Загружен бот для {_settings.JiraUserName}, работаем в {_settings.RepositoryPath}");
+            _log.Info($"Загружен бот для {_settings.JiraUserName}, Режим: {_settings.WorkType.ToString()}, работаем в {_settings.RepositoryPath}");
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
