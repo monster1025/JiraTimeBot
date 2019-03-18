@@ -167,10 +167,11 @@
             // 
             // cboWorkType
             // 
+            this.cboWorkType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboWorkType.FormattingEnabled = true;
             this.cboWorkType.Items.AddRange(new object[] {
             "Mercurial",
-            "Jira Updates"});
+            "Обновления Jira-задачь"});
             this.cboWorkType.Location = new System.Drawing.Point(109, 18);
             this.cboWorkType.Name = "cboWorkType";
             this.cboWorkType.Size = new System.Drawing.Size(99, 21);
@@ -179,11 +180,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(27, 21);
+            this.label6.Location = new System.Drawing.Point(18, 21);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(75, 13);
+            this.label6.Size = new System.Drawing.Size(85, 13);
             this.label6.TabIndex = 35;
-            this.label6.Text = "Работаем на:";
+            this.label6.Text = "Режим работы:";
             // 
             // frmSettings
             // 

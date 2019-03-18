@@ -40,7 +40,6 @@ namespace JiraTimeBotForm.JiraIntegration
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
             var userName = settings.JiraUserName;
-            //userName = "Zoya.Aleksandridi";
 
             var jql = $"status changed by '{userName}' during (\"{date.Value:yyyy-MM-dd}\",\"{date.Value:yyyy-MM-dd}\")";
             var affectedIssues = jira.Issues.GetIssuesFromJqlAsync(jql, 50, 0, cancellationToken).Result.ToList();

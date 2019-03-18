@@ -90,9 +90,13 @@ namespace JiraTimeBotForm.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
             tmrStart.Enabled = true;
+            PrintStartMessage();
+        }
 
+        private void PrintStartMessage()
+        {
+            _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
             _log.Info($"Загружен бот для {_settings.JiraUserName}, Режим: {_settings.WorkType.ToString()}, работаем в {_settings.RepositoryPath}");
         }
 
@@ -175,6 +179,8 @@ namespace JiraTimeBotForm.UI
         {
             var frm = new frmSettings();
             frm.ShowDialog();
+
+            PrintStartMessage();
         }
     }
 }
