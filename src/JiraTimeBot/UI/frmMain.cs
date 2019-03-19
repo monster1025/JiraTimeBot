@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
@@ -96,7 +97,15 @@ namespace JiraTimeBotForm.UI
 
             PrintStartMessage();
             tmrStart.Enabled = true;
-            tmrUpdate.Enabled = true;
+
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                _log.Trace("Приложение запущено в режиме отладки. Отключаю обновление.");
+            }
+            else
+            {
+                tmrUpdate.Enabled = true;
+            }
         }
 
         private void PrintStartMessage()
