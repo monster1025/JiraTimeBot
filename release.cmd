@@ -14,6 +14,7 @@ set VERSION=%MAJOR:~0,1%.%MINOR:~0,1%.%PATCH1%
 echo %VERSION%>.semver.txt
 echo Updating to %VERSION%
 
+call tools\SetVersion.cmd %VERSION%
 
 git add .
 git commit -m "%~1"
