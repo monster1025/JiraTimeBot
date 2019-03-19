@@ -95,7 +95,7 @@ namespace JiraTimeBot.JiraIntegration
                 foreach (var workLog in workLogs)
                 {
                     var timeSpent = TimeSpan.FromSeconds(workLog.TimeSpentInSeconds);
-                    if (workLog.CreateDate.GetValueOrDefault().Date == date && workLog.Author == settings.JiraUserName)
+                    if (workLog.CreateDate.GetValueOrDefault().Date == date && workLog.Author.Equals(settings.JiraUserName, StringComparison.InvariantCultureIgnoreCase))
                     {
                         var timeDiff = Math.Abs((timeSpent - taskTimeItem.Time).TotalMinutes);
                         if (timeDiff > 1)
