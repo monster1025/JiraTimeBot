@@ -78,7 +78,7 @@ namespace JiraTimeBot.TaskTime
                 _log.Trace($"Погрешность распределения времени: {remainMinutes}. Добавляю к первой задаче.");
             }
 
-            if (workTimeItems.First().Time.TotalMinutes > Math.Abs(remainMinutes))
+            if (workTimeItems.First().Time.TotalMinutes > Math.Abs(remainMinutes) && remainMinutes < 0)
             {
                 //если переборщили или не достаточно добавили до 8 часов - скореектируем остаток в первой задаче (она самая трудозатратная).
                 workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
