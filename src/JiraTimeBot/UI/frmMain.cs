@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Configuration;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,6 +9,7 @@ using JiraTimeBotForm.Configuration;
 using JiraTimeBotForm.DI;
 using JiraTimeBotForm.TasksProcessors;
 using JiraTimeBotForm.UI.Tray;
+using JiraTimeBotForm.Update;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -90,8 +91,11 @@ namespace JiraTimeBotForm.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Text = this.Text + " v." + Application.ProductVersion;
+
             PrintStartMessage();
             tmrStart.Enabled = true;
+            tmrUpdate.Enabled = true;
         }
 
         private void PrintStartMessage()
@@ -181,6 +185,28 @@ namespace JiraTimeBotForm.UI
             frm.ShowDialog();
 
             PrintStartMessage();
+        }
+
+        private void tmrUpdate_Tick(object sender, EventArgs e)
+        {
+            tmrUpdate.Interval = 8 * 60 * 60 * 1000;
+
+            var checker = new UpdateChecker();
+            var release = checker.GetRelease();
+            if (release == null)
+            {
+                return;
+            }
+
+            var gitVersionStr = checker.GetLatestVersion(release);
+            var gitVersion = new Version(gitVersionStr);
+            var appVersion = new Version(Application.ProductVersion);
+
+            if (gitVersion > appVersion)
+            {
+                var downloadUrl = checker.GetDownloadUrl(release);
+                _log.Info($"Доступна новая версия: {gitVersion} {downloadUrl}");
+            }
         }
     }
 }

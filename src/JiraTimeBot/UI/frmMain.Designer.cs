@@ -38,6 +38,7 @@
             this.btnMeeting = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
+            this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // txtLog
@@ -111,6 +112,11 @@
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
+            // tmrUpdate
+            // 
+            this.tmrUpdate.Interval = 1000;
+            this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -144,6 +150,7 @@
         private System.Windows.Forms.Button btnMeeting;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Timer tmrUpdate;
     }
 }
 
