@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace JiraTimeBotForm.Configuration
+namespace JiraTimeBot.Configuration
 {
     public class PasswordEncryptionClass
     {

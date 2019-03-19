@@ -1,4 +1,4 @@
-﻿namespace JiraTimeBotForm.TasksProcessors
+﻿namespace JiraTimeBot.TasksProcessors
 {
     public interface IAllTasksProcessors
     {

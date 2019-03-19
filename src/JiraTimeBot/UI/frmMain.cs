@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.DI;
-using JiraTimeBotForm.TasksProcessors;
-using JiraTimeBotForm.UI.Tray;
-using JiraTimeBotForm.Update;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.DI;
+using JiraTimeBot.TasksProcessors;
+using JiraTimeBot.UI.Tray;
+using JiraTimeBot.Update;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
-namespace JiraTimeBotForm.UI
+namespace JiraTimeBot.UI
 {
     public partial class frmMain : Form
     {

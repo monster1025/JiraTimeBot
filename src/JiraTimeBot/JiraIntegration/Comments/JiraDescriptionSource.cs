@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JiraTimeBotForm.TaskTime.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.TaskTime.Objects;
 
-namespace JiraTimeBotForm.JiraIntegration.Comments
+namespace JiraTimeBot.JiraIntegration.Comments
 {
     public class JiraDescriptionSource : IJiraDescriptionSource
     {
@@ -13,14 +14,19 @@ namespace JiraTimeBotForm.JiraIntegration.Comments
             "кодинг", "написание кода и тестов"
         };
 
-        public string GetDescription(TaskTimeItem taskTimeItem, bool addCommentsToWorklog)
+        public string GetDescription(TaskTimeItem taskTimeItem, bool addCommentsToWorklog, Settings settings)
         {
             if (addCommentsToWorklog)
             {
                 return taskTimeItem.Description;
             }
 
-            return _dummyComments.OrderBy(f => Guid.NewGuid()).FirstOrDefault();
+            if (settings.WorkType == WorkType.Mercurial)
+            {
+                return _dummyComments.OrderBy(f => Guid.NewGuid()).FirstOrDefault();
+            }
+
+            return "";
         }
     }
 }

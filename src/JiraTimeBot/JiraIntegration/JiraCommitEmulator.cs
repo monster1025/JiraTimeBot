@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.Mercurial;
-using JiraTimeBotForm.Mercurial.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.Mercurial;
+using JiraTimeBot.Mercurial.Objects;
 
-namespace JiraTimeBotForm.JiraIntegration
+namespace JiraTimeBot.JiraIntegration
 {
     public class JiraCommitEmulator : IMercurialLog
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JiraTimeBotForm.Mercurial.Objects
+namespace JiraTimeBot.Mercurial.Objects
 {
     public class MercurialCommitItem
     {

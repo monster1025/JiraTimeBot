@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.Mercurial.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.Mercurial.Objects;
 
-namespace JiraTimeBotForm.Mercurial
+namespace JiraTimeBot.Mercurial
 {
     public interface IMercurialLog
     {

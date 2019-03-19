@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using JiraTimeBotForm.Configuration;
+using JiraTimeBot.Configuration;
 
-namespace JiraTimeBotForm.UI
+namespace JiraTimeBot.UI
 {
     public partial class frmSettings : Form
     {

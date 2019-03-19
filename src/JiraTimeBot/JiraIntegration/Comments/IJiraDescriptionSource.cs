@@ -1,9 +1,10 @@
-﻿using JiraTimeBotForm.TaskTime.Objects;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.TaskTime.Objects;
 
-namespace JiraTimeBotForm.JiraIntegration.Comments
+namespace JiraTimeBot.JiraIntegration.Comments
 {
     public interface IJiraDescriptionSource
     {
-        string GetDescription(TaskTimeItem item, bool addCommentsToWorklog);
+        string GetDescription(TaskTimeItem item, bool addCommentsToWorklog, Settings settings);
     }
 }

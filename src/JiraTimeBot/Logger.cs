@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace JiraTimeBotForm
+namespace JiraTimeBot
 {
     public class Logger : ILog
     {

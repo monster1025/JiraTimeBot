@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.JiraIntegration;
-using JiraTimeBotForm.TaskTime;
-using JiraTimeBotForm.TaskTime.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.JiraIntegration;
+using JiraTimeBot.TaskTime.Objects;
 
-namespace JiraTimeBotForm.TasksProcessors
+namespace JiraTimeBot.TasksProcessors
 {
     public class WorkLogTasksProcessor : ITasksProcessor
     {

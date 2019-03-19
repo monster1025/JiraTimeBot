@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
-namespace JiraTimeBotForm.Configuration
+namespace JiraTimeBot.Configuration
 {
     public class Settings
     {

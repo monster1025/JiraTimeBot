@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace JiraTimeBotForm.Mercurial.Modifiers
+namespace JiraTimeBot.Mercurial.Modifiers
 {
     public class TechnicalInfoSkipper : ITechnicalInfoSkipper
     {

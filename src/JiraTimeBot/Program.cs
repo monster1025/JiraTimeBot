@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using JiraTimeBotForm.UI;
+using JiraTimeBot.UI;
 
-namespace JiraTimeBotForm
+namespace JiraTimeBot
 {
     static class Program
     {

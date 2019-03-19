@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.Mercurial;
-using JiraTimeBotForm.Mercurial.Objects;
-using JiraTimeBotForm.TaskTime.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.Mercurial.Objects;
+using JiraTimeBot.TaskTime.Objects;
 
-namespace JiraTimeBotForm.TaskTime
+namespace JiraTimeBot.TaskTime
 {
     public interface ITaskTimeCalculator
     {

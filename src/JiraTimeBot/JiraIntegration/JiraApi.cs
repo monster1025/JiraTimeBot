@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Atlassian.Jira;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.JiraIntegration.Comments;
-using JiraTimeBotForm.TaskTime.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.JiraIntegration.Comments;
+using JiraTimeBot.TaskTime.Objects;
 
-namespace JiraTimeBotForm.JiraIntegration
+namespace JiraTimeBot.JiraIntegration
 {
     public class JiraApi
     {
@@ -119,7 +119,7 @@ namespace JiraTimeBotForm.JiraIntegration
                 {
                     var timeSpentJira = $"{taskTimeItem.Time.TotalMinutes}m";
 
-                    var comment = _descriptionSource.GetDescription(taskTimeItem, addCommentsToWorklog);
+                    var comment = _descriptionSource.GetDescription(taskTimeItem, addCommentsToWorklog, settings);
 
                     Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value, comment);
                     if (!dummy)

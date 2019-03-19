@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JiraTimeBotForm.Mercurial.Modifiers
+namespace JiraTimeBot.Mercurial.Modifiers
 {
     public class CommitSkipper : ICommitSkipper
     {

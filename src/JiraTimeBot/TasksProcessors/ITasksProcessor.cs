@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.TaskTime.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.TaskTime.Objects;
 
-namespace JiraTimeBotForm.TasksProcessors
+namespace JiraTimeBot.TasksProcessors
 {
     interface ITasksProcessor
     {

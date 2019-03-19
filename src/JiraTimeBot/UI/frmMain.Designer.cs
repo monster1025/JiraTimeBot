@@ -1,4 +1,4 @@
-﻿namespace JiraTimeBotForm.UI
+﻿namespace JiraTimeBot.UI
 {
     partial class frmMain
     {

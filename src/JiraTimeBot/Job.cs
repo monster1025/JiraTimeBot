@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.Mercurial;
-using JiraTimeBotForm.Mercurial.Objects;
-using JiraTimeBotForm.TasksProcessors;
-using JiraTimeBotForm.TaskTime;
-using JiraTimeBotForm.TaskTime.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.Mercurial;
+using JiraTimeBot.Mercurial.Objects;
+using JiraTimeBot.TasksProcessors;
+using JiraTimeBot.TaskTime;
+using JiraTimeBot.TaskTime.Objects;
 
-namespace JiraTimeBotForm
+namespace JiraTimeBot
 {
     class Job
     {

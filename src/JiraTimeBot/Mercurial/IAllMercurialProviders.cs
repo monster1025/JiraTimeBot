@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JiraTimeBotForm.JiraIntegration;
+﻿using JiraTimeBot.JiraIntegration;
 
-namespace JiraTimeBotForm.Mercurial
+namespace JiraTimeBot.Mercurial
 {
     public interface IAllMercurialProviders
     {

@@ -1,16 +1,15 @@
 ﻿using System.Windows.Forms;
 using Autofac;
 using Autofac.Extras.AggregateService;
-using JiraTimeBotForm.JiraIntegration;
-using JiraTimeBotForm.JiraIntegration.Comments;
-using JiraTimeBotForm.Mercurial;
-using JiraTimeBotForm.Mercurial.Modifiers;
-using JiraTimeBotForm.TasksProcessors;
-using JiraTimeBotForm.TaskTime;
-using JiraTimeBotForm.UI;
-using JiraTimeBotForm.UI.Tray;
+using JiraTimeBot.JiraIntegration;
+using JiraTimeBot.JiraIntegration.Comments;
+using JiraTimeBot.Mercurial;
+using JiraTimeBot.Mercurial.Modifiers;
+using JiraTimeBot.TasksProcessors;
+using JiraTimeBot.TaskTime;
+using JiraTimeBot.UI.Tray;
 
-namespace JiraTimeBotForm.DI
+namespace JiraTimeBot.DI
 {
     public class Bootstrapper
     {

@@ -1,4 +1,4 @@
-﻿namespace JiraTimeBotForm.Mercurial.Modifiers
+﻿namespace JiraTimeBot.Mercurial.Modifiers
 {
     public interface ITechnicalInfoSkipper
     {

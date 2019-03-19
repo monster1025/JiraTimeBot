@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using JiraTimeBotForm.Configuration;
-using JiraTimeBotForm.Mercurial.Modifiers;
-using JiraTimeBotForm.Mercurial.Objects;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.Mercurial.Modifiers;
+using JiraTimeBot.Mercurial.Objects;
 using Mercurial;
 
-namespace JiraTimeBotForm.Mercurial
+namespace JiraTimeBot.Mercurial
 {
     public class MercurialLog: IMercurialLog
     {

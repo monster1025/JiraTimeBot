@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace JiraTimeBotForm.UI.Tray
+namespace JiraTimeBot.UI.Tray
 {
     public static class RestoreFromTray {
         [DllImport( "user32.dll" )]
