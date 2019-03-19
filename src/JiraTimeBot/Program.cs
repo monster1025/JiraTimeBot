@@ -1,45 +1,30 @@
-﻿using System;
-using System.Diagnostics;
+﻿using JiraTimeBot.UI;
+using System;
+using System.Threading;
 using System.Windows.Forms;
-using JiraTimeBot.UI;
 
 namespace JiraTimeBot
 {
     static class Program
     {
+        private static Mutex _mutex = new Mutex(true, "{44426B3E-B901-4792-ACEA-1385D79DBAD1}");
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            if (PriorProcess() != null)
+            if (_mutex.WaitOne(TimeSpan.Zero, true))
             {
-
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new frmMain());
+                _mutex.ReleaseMutex();
+            }
+            else
+            {
                 MessageBox.Show("Another instance of the app is already running.");
-                return;
             }
-            
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
-        }
-
-        public static Process PriorProcess()
-            // Returns a System.Diagnostics.Process pointing to
-            // a pre-existing process with the same name as the
-            // current one, if any; or null if the current process
-            // is unique.
-        {
-            Process curr = Process.GetCurrentProcess();
-            Process[] procs = Process.GetProcessesByName(curr.ProcessName);
-            foreach (Process p in procs)
-            {
-                if ((p.Id != curr.Id) &&
-                    (p.MainModule.FileName == curr.MainModule.FileName))
-                    return p;
-            }
-            return null;
         }
     }
 }
