@@ -90,7 +90,8 @@ namespace JiraTimeBotForm.Configuration
 
         public static Settings Load()
         {
-            var settingsPath = Path.Combine(Application.UserAppDataPath, _settingsFileName);
+            var configDir = Application.UserAppDataPath.Replace(Application.ProductVersion, "");
+            var settingsPath = Path.Combine(configDir, _settingsFileName);
             if (!File.Exists(settingsPath))
             {
                 return null;
@@ -123,7 +124,8 @@ namespace JiraTimeBotForm.Configuration
             var password = new PasswordEncryptionClass().Encrypt(this.JiraUserName, this.JiraPassword, this.JiraUrl);
             this.JiraPassword = password;
 
-            var settingsPath = Path.Combine(Application.UserAppDataPath, _settingsFileName);
+            var configDir = Application.UserAppDataPath.Replace(Application.ProductVersion, "");
+            var settingsPath = Path.Combine(configDir, _settingsFileName);
             var settingsString = JsonConvert.SerializeObject(this);
             File.WriteAllText(settingsPath, settingsString);
         }
