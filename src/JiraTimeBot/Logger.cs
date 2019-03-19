@@ -1,28 +1,22 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace JiraTimeBot
 {
     public class Logger : ILog
     {
-        private readonly TextBox _txt;
-        private readonly AppendLog _safeAppender;
+        private readonly Action<string> _logAction;
 
-        public Logger(TextBox txt)
+        public Logger(Action<string> logAction)
         {
-            _txt = txt;
-            _safeAppender = text => _txt.AppendText(text);
-
+            _logAction = logAction;
         }
 
         private void AppendText(string message)
         {
             message = $"{DateTime.Now:HH:mm} {message}";
-            _txt.Invoke(_safeAppender, message + Environment.NewLine);
+            _logAction(message);
         }
-
-        private delegate void AppendLog(string text);
 
         public void Info([Localizable(false)] string message)
         {

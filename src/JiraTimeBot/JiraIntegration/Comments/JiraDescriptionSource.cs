@@ -1,8 +1,8 @@
-﻿using System;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.TaskTime.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.JiraIntegration.Comments
 {

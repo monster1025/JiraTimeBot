@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.AggregateService;
 using JiraTimeBot.JiraIntegration;
 using JiraTimeBot.JiraIntegration.Comments;
@@ -8,6 +7,8 @@ using JiraTimeBot.Mercurial.Modifiers;
 using JiraTimeBot.TasksProcessors;
 using JiraTimeBot.TaskTime;
 using JiraTimeBot.UI.Tray;
+using System;
+using System.Windows.Forms;
 
 namespace JiraTimeBot.DI
 {
@@ -21,8 +22,17 @@ namespace JiraTimeBot.DI
 
         public IContainer Build(TextBox logTextBox)
         {
-            _builder.Register(f => new Logger(logTextBox)).As<ILog>().AsSelf();
-            
+            _builder.Register(c => logTextBox).AsSelf();
+
+            _builder.Register(f =>
+            {
+                var txt = f.Resolve<TextBox>();
+                return new Logger(message =>
+                {
+                    txt.Invoke(new Action<string>(text => txt.AppendText(text)), message + Environment.NewLine);
+                });
+            }).As<ILog>().AsSelf();
+
             _builder.Register(f => new TrayMenu()).As<ITrayMenu>().AsSelf();
             _builder.Register(c => new CommitSkipper()).As<ICommitSkipper>();
 

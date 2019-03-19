@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Autofac;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.DI;
+using JiraTimeBot.TasksProcessors;
+using JiraTimeBot.UI.Tray;
+using JiraTimeBot.Update;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Autofac;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.DI;
-using JiraTimeBot.TasksProcessors;
-using JiraTimeBot.UI.Tray;
-using JiraTimeBot.Update;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
