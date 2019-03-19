@@ -38,7 +38,7 @@ namespace JiraTimeBotForm.Update
             return release;
         }
 
-        public bool DownloadFile(string url)
+        public bool DownloadFile(string url, string to)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace JiraTimeBotForm.Update
                 {
                     client.Headers.Add("User-Agent",
                         "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0");
-                    client.DownloadFile(url, "update.zip");
+                    client.DownloadFile(url, to);
                     return true;
                 }
             }

@@ -210,13 +210,13 @@ namespace JiraTimeBotForm.UI
                     var downloadUrl = checker.GetDownloadUrl(release);
                     _log.Info($"Доступна новая версия: {gitVersion} {downloadUrl}");
 
-                    var success = checker.DownloadFile(downloadUrl);
+                    var success = checker.DownloadFile(downloadUrl, "update.zip");
                     if (!success)
                     {
                         return;
                     }
 
-                    var result = InstallUpdate(gitVersion);
+                    var result = InstallUpdate(gitVersion, "update.zip");
                     if (result)
                     {
                         //если обновились - отключаем до рестарта
@@ -231,7 +231,7 @@ namespace JiraTimeBotForm.UI
             }
         }
 
-        private bool InstallUpdate(Version gitVersion)
+        private bool InstallUpdate(Version gitVersion, string updateFile)
         {
             try
             {
@@ -244,7 +244,7 @@ namespace JiraTimeBotForm.UI
                     Directory.CreateDirectory(bkpDir);
                 }
 
-                using (ZipArchive archive = ZipFile.OpenRead(Path.Combine(appFile.DirectoryName, "update.zip")))
+                using (ZipArchive archive = ZipFile.OpenRead(Path.Combine(appFile.DirectoryName, updateFile)))
                 {
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
