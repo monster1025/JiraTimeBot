@@ -92,26 +92,34 @@ namespace JiraTimeBot.JiraIntegration
 
                 var hasTodayWorklog = false;
                 var workLogs = issue.GetWorklogsAsync().Result;
-                foreach (var workLog in workLogs)
+                var userWorklogs = workLogs.Where(w =>
+                    w.CreateDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
+                        StringComparison.InvariantCultureIgnoreCase)).ToList();
+
+                foreach (var workLog in userWorklogs)
                 {
                     var timeSpent = TimeSpan.FromSeconds(workLog.TimeSpentInSeconds);
-                    if (workLog.CreateDate.GetValueOrDefault().Date == date && workLog.Author.Equals(settings.JiraUserName, StringComparison.InvariantCultureIgnoreCase))
+                    var timeDiff = Math.Abs((timeSpent - taskTimeItem.Time).TotalMinutes);
+                    if (timeDiff > 1 || userWorklogs.Count > 1)
                     {
-                        var timeDiff = Math.Abs((timeSpent - taskTimeItem.Time).TotalMinutes);
                         if (timeDiff > 1)
                         {
                             _log.Trace($"Время отличается на {timeDiff} минут, удаляю worklog: {taskTimeItem.Branch} {workLog.Author} {workLog.CreateDate}: {workLog.TimeSpent}");
-                            if (!dummy)
-                            {
-                                issue.DeleteWorklogAsync(workLog);
-                            }
-                            hasTodayWorklog = false;
                         }
                         else
                         {
-                            _log.Trace($"По задаче {taskTimeItem.Branch} уже есть аналогичный worklog. Пропускаю.");
-                            hasTodayWorklog = true;
+                            _log.Trace($"Найдено более одного ворклога на задачу, удаляю worklog: {taskTimeItem.Branch} {workLog.Author} {workLog.CreateDate}: {workLog.TimeSpent}");
                         }
+                        if (!dummy)
+                        {
+                            issue.DeleteWorklogAsync(workLog);
+                        }
+                        hasTodayWorklog = false;
+                    }
+                    else
+                    {
+                        _log.Trace($"По задаче {taskTimeItem.Branch} уже есть аналогичный worklog. Пропускаю.");
+                        hasTodayWorklog = true;
                     }
                 }
 
