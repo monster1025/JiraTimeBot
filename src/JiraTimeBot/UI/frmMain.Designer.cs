@@ -114,7 +114,7 @@
             // 
             // tmrUpdate
             // 
-            this.tmrUpdate.Interval = 10000;
+            this.tmrUpdate.Interval = 1000;
             this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
             // 
             // frmMain
