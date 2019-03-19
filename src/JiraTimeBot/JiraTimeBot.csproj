@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F3B89316-C38C-4CE6-9D88-0B1373CFBA1A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>JiraTimeBotForm</RootNamespace>
-    <AssemblyName>JiraTimeBotForm</AssemblyName>
+    <RootNamespace>JiraTimeBot</RootNamespace>
+    <AssemblyName>JiraTimeBot</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -131,6 +131,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="UI\frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
