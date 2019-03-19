@@ -223,6 +223,10 @@ namespace JiraTimeBotForm.UI
                         tmrUpdate.Enabled = false;
                     }
                 }
+                else
+                {
+                    _log.Info($"Вы используете последнюю версию.");
+                }
             }
             catch (Exception ex)
             {
