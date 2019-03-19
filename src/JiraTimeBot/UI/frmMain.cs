@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -189,23 +190,86 @@ namespace JiraTimeBotForm.UI
 
         private void tmrUpdate_Tick(object sender, EventArgs e)
         {
-            tmrUpdate.Interval = 8 * 60 * 60 * 1000;
-
-            var checker = new UpdateChecker();
-            var release = checker.GetRelease();
-            if (release == null)
+            try
             {
-                return;
+                tmrUpdate.Interval = 8 * 60 * 60 * 1000;
+
+                var checker = new UpdateChecker();
+                var release = checker.GetRelease();
+                if (release == null)
+                {
+                    return;
+                }
+
+                var gitVersionStr = checker.GetLatestVersion(release);
+                var gitVersion = new Version(gitVersionStr);
+                var appVersion = new Version(Application.ProductVersion);
+
+                if (gitVersion > appVersion)
+                {
+                    var downloadUrl = checker.GetDownloadUrl(release);
+                    _log.Info($"Доступна новая версия: {gitVersion} {downloadUrl}");
+
+                    var success = checker.DownloadFile(downloadUrl);
+                    if (!success)
+                    {
+                        return;
+                    }
+
+                    var result = InstallUpdate(gitVersion);
+                    if (result)
+                    {
+                        //если обновились - отключаем до рестарта
+                        tmrUpdate.Enabled = false;
+                    }
+                }
             }
-
-            var gitVersionStr = checker.GetLatestVersion(release);
-            var gitVersion = new Version(gitVersionStr);
-            var appVersion = new Version(Application.ProductVersion);
-
-            if (gitVersion > appVersion)
+            catch (Exception ex)
             {
-                var downloadUrl = checker.GetDownloadUrl(release);
-                _log.Info($"Доступна новая версия: {gitVersion} {downloadUrl}");
+                //в процессе обновления ни при каком раскладе мы не должны уложить бота. 
+                _log.Error($"Фатальная ошибка в процессе обновления: {ex.Message}");
+            }
+        }
+
+        private bool InstallUpdate(Version gitVersion)
+        {
+            try
+            {
+                _log.Info($"Устанавливаю обновление до версии {gitVersion}.");
+                //Rename he executing file
+                System.IO.FileInfo appFile = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                var bkpDir = Path.Combine(appFile.DirectoryName, "bkp");
+                if (!Directory.Exists(bkpDir))
+                {
+                    Directory.CreateDirectory(bkpDir);
+                }
+
+                using (ZipArchive archive = ZipFile.OpenRead(Path.Combine(appFile.DirectoryName, "update.zip")))
+                {
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        var zipEntryPath = Path.Combine(appFile.DirectoryName, entry.FullName);
+                        if (File.Exists(zipEntryPath))
+                        {
+                            System.IO.FileInfo zipEntryFile = new System.IO.FileInfo(zipEntryPath);
+                            if (File.Exists(bkpDir + "\\" + zipEntryFile.Name))
+                            {
+                                File.Delete(bkpDir + "\\" + zipEntryFile.Name);
+                            }
+                            System.IO.File.Move(zipEntryFile.FullName, bkpDir + "\\" + zipEntryFile.Name);
+                        }
+
+                        entry.ExtractToFile(zipEntryPath);
+                    }
+                }
+
+                _log.Info("Обновление установлено. Перезапустите программу для применения изменений.");
+                return true;
+            }
+            catch (Exception)
+            {
+                _log.Error($"Что-то пошло не так при обновлении.");
+                return false;
             }
         }
     }

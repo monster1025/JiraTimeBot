@@ -38,12 +38,22 @@ namespace JiraTimeBotForm.Update
             return release;
         }
 
-        public void DownloadFile(string url)
+        public bool DownloadFile(string url)
         {
-            using (var client = new WebClient())
+            try
             {
-                client.Headers.Add("User-Agent", "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0");
-                client.DownloadFile(url, "update.zip");
+
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("User-Agent",
+                        "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0");
+                    client.DownloadFile(url, "update.zip");
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
