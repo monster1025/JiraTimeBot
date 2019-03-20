@@ -29,6 +29,7 @@ namespace JiraTimeBot.UI
         private Settings _settings;
         private readonly Action _settingsWindowShow;
         private readonly Action<string> _settingsErrorReporter;
+        private bool _updateChecked;
 
         private CancellationTokenSource GetTokenSource()
         {
@@ -61,7 +62,6 @@ namespace JiraTimeBot.UI
                 var frmSettings = new frmSettings();
                 frmSettings.ShowDialog(this);
             };
-
             _settingsErrorReporter = msg => MessageBox.Show(msg, "Загрузка настроек", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);;
         }
 
@@ -200,7 +200,9 @@ namespace JiraTimeBot.UI
         {
             try
             {
-                tmrUpdate.Interval = 8 * 60 * 60 * 1000;
+                var firstTime = !_updateChecked;
+                _updateChecked = true;
+                tmrUpdate.Interval = 1 * 60 * 60 * 1000;
 
                 var checker = new UpdateChecker();
                 var release = checker.GetRelease();
@@ -231,9 +233,9 @@ namespace JiraTimeBot.UI
                         tmrUpdate.Enabled = false;
                     }
                 }
-                else
+                else if (firstTime)
                 {
-                    _log.Info($"Вы используете последнюю версию.");
+                    _log.Info($"Вы используете актуальную версию.");
                 }
             }
             catch (Exception ex)
