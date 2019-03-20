@@ -34,14 +34,13 @@ namespace JiraTimeBot.JiraIntegration
             }
         }
 
-        public List<Issue> GetTodayIssues(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
+        public List<Issue> GetIssuesByJQL(string jql, Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
             var userName = settings.JiraUserName;
 
-            var jql = settings.JiraQuery;
             if (string.IsNullOrEmpty(jql))
             {
                 jql = $"status changed by '%USER%' during (\"%DATE%\",\"%DATE%\")";
@@ -53,7 +52,7 @@ namespace JiraTimeBot.JiraIntegration
             try
             {
                 List<Issue> affectedIssues =
-                    jira.Issues.GetIssuesFromJqlAsync(jql, 50, 0, cancellationToken).Result.ToList();
+                    jira.Issues.GetIssuesFromJqlAsync(jql, 100, 0, cancellationToken).Result.ToList();
                 return affectedIssues;
             }
             catch (Exception ex)
