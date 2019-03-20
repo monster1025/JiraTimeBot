@@ -27,7 +27,7 @@ namespace JiraTimeBot.TaskTime
             while (totalCommitsCount > (8 * (60.0 / settings.RountToMinutes)))
             {
                 settings.RountToMinutes = (int)RoundTo((decimal)(settings.RountToMinutes / 2.0), 5);
-                _log.Info($"Слишком много задачь - уменьшаю интервал до {settings.RountToMinutes}.");
+                _log.Info($"Слишком много задач - уменьшаю интервал до {settings.RountToMinutes}.");
                 if (settings.RountToMinutes == 5)
                 {
                     break;
