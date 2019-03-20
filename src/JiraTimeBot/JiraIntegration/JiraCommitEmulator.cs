@@ -34,20 +34,11 @@ namespace JiraTimeBot.JiraIntegration
                 {
                     return new List<MercurialCommitItem>();
                 }
-
-                List<Comment> comments = new List<Comment>();
-                if (issue.Type?.Name != "Дубликат")
-                {
-                    _log.Trace($"Получаю комментарии по задаче {issue.Key} ({issue.Type?.Name}).");
-                    comments = issue.GetCommentsAsync(cancellationToken).Result?.ToList() ?? new List<Comment>();
-                }
-                else
-                {
-                    _log.Trace($"Пропускаю комментарии по задаче {issue.Key} ({issue.Type?.Name}).");
-                }
+                var comments = issue.GetCommentsAsync(cancellationToken).Result?.ToList() ?? new List<Comment>();
 
                 var user = settings.JiraUserName;
                 var userComments = comments.Where(f => f.Author.Equals(user, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                _log.Trace($"Получены комментарии по задаче {issue.Key} ({issue.Type?.Name}): {userComments.Count}.");
 
                 if (userComments.Any())
                 {
