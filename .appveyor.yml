@@ -28,7 +28,7 @@ artifacts:
 deploy:
 - provider: GitHub
   auth_token:
-    secure: vcrXfbGk400wdnU45LZqhuGCdnPJsYn5lSHjguHSRm1riRDiVMC20BzvfvDIjcI/
+    secure: Jg8vtDMtgadXE5uifFSr5y9KNrGAjvFntqnRHzyuVWkssitctTtVq086svS2zXAq
   artifact: JiraTimeBot.zip
   on:
     APPVEYOR_REPO_TAG: true
