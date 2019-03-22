@@ -102,7 +102,7 @@ namespace JiraTimeBot.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Text = this.Text + " v." + Application.ProductVersion;
+            this.Text = this.Text + " v" + Application.ProductVersion;
 
             PrintStartMessage();
             tmrStart.Enabled = true;
