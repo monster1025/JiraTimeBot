@@ -116,6 +116,7 @@
     <Compile Include="UI\frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Tray\SingleInstance.cs" />
     <Compile Include="UI\Tray\ITrayMenu.cs" />
     <Compile Include="UI\Tray\RestoreFromTray.cs" />
     <Compile Include="UI\Tray\TrayMenu.cs" />

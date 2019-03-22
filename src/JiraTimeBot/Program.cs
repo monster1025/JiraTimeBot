@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using JiraTimeBot.UI.Tray;
 
 namespace JiraTimeBot
 {
@@ -25,7 +26,7 @@ namespace JiraTimeBot
             }
             else
             {
-                MessageBox.Show("Another instance of the app is already running.");
+                SingleInstance.ShowFirstInstance();
             }
         }
     }

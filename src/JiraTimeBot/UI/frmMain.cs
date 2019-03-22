@@ -31,6 +31,16 @@ namespace JiraTimeBot.UI
         private readonly Action<string> _settingsErrorReporter;
         private bool _updateChecked;
 
+        protected override void WndProc(ref Message message)
+        {
+            if (message.Msg == SingleInstance.WM_SHOWFIRSTINSTANCE) {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+                _trayIcon.Hide();
+            }
+            base.WndProc(ref message);
+        }
+
         private CancellationTokenSource GetTokenSource()
         {
             var tokenSource = new CancellationTokenSource();
