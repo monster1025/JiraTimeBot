@@ -92,7 +92,7 @@ namespace JiraTimeBot.TaskTime
             {
                 return new List<TaskTimeItem>();
             }
-            workTimeItems = workTimeItems.OrderBy(f => f.Time).ToList();
+            workTimeItems = workTimeItems.OrderByDescending(f => f.Time).ToList();
 
             if (remainMinutes != 0)
             {
