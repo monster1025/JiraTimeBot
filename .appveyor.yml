@@ -2,7 +2,7 @@ version: 1.0.{build}
 image: Visual Studio 2017
 
 init:
-  - ps: >-
+- ps: >-
     if ($env:APPVEYOR_REPO_TAG -eq "true")
     {
       Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
