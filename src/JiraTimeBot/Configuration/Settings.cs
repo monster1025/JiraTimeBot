@@ -22,6 +22,7 @@ namespace JiraTimeBot.Configuration
         public bool AddCommentsToWorklog { get; set; }
         public WorkType WorkType { get; set; }
         public string JiraQuery { get; set; }
+        public string TimeControlTask { get; set; }
 
         public static Settings LoadAndCheck(Action settingsSource, Action<string> errorMessageReporter)
         {
@@ -61,7 +62,7 @@ namespace JiraTimeBot.Configuration
 
             if (settings.RountToMinutes == default(int))
             {
-                errors.Add("Укажите округление времени, например, 10 минут");
+                errors.Add("Укажите округление времени, например, 10 (минут)");
             }
 
             if (string.IsNullOrEmpty(settings.JiraPassword))
@@ -77,6 +78,11 @@ namespace JiraTimeBot.Configuration
             if (settings.WorkType == WorkType.Mercurial && (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath)))
             {
                 errors.Add("Укажите верный RepositoryPath");
+            }
+
+            if (!string.IsNullOrEmpty(settings.TimeControlTask) && !settings.TimeControlTask.Contains("-"))
+            {
+                errors.Add("Укажите верно зажачу контроля времени. Она джолжна содержать знак '-', например, SV-1211");
             }
 
             var hasErrors = errors.Any();

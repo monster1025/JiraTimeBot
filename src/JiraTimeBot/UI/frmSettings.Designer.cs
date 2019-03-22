@@ -46,12 +46,14 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.txtJQL = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtTimeControlTask = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 153);
+            this.label5.Location = new System.Drawing.Point(33, 153);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(100, 13);
             this.label5.TabIndex = 28;
@@ -59,7 +61,7 @@
             // 
             // txtRoundTo
             // 
-            this.txtRoundTo.Location = new System.Drawing.Point(109, 150);
+            this.txtRoundTo.Location = new System.Drawing.Point(133, 150);
             this.txtRoundTo.Name = "txtRoundTo";
             this.txtRoundTo.Size = new System.Drawing.Size(100, 20);
             this.txtRoundTo.TabIndex = 27;
@@ -68,7 +70,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(27, 48);
+            this.label4.Location = new System.Drawing.Point(53, 48);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 26;
@@ -76,7 +78,7 @@
             // 
             // txtRepoPath
             // 
-            this.txtRepoPath.Location = new System.Drawing.Point(109, 45);
+            this.txtRepoPath.Location = new System.Drawing.Point(133, 45);
             this.txtRepoPath.Name = "txtRepoPath";
             this.txtRepoPath.Size = new System.Drawing.Size(100, 20);
             this.txtRepoPath.TabIndex = 25;
@@ -84,7 +86,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(21, 127);
+            this.label2.Location = new System.Drawing.Point(47, 127);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 24;
@@ -92,7 +94,7 @@
             // 
             // txtMercurialEmail
             // 
-            this.txtMercurialEmail.Location = new System.Drawing.Point(109, 124);
+            this.txtMercurialEmail.Location = new System.Drawing.Point(133, 124);
             this.txtMercurialEmail.Name = "txtMercurialEmail";
             this.txtMercurialEmail.Size = new System.Drawing.Size(100, 20);
             this.txtMercurialEmail.TabIndex = 23;
@@ -100,7 +102,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 100);
+            this.label1.Location = new System.Drawing.Point(62, 100);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 22;
@@ -108,7 +110,7 @@
             // 
             // txtJiraPassword
             // 
-            this.txtJiraPassword.Location = new System.Drawing.Point(109, 97);
+            this.txtJiraPassword.Location = new System.Drawing.Point(133, 97);
             this.txtJiraPassword.Name = "txtJiraPassword";
             this.txtJiraPassword.PasswordChar = '*';
             this.txtJiraPassword.Size = new System.Drawing.Size(100, 20);
@@ -117,7 +119,7 @@
             // lbl1
             // 
             this.lbl1.AutoSize = true;
-            this.lbl1.Location = new System.Drawing.Point(43, 74);
+            this.lbl1.Location = new System.Drawing.Point(69, 74);
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(64, 13);
             this.lbl1.TabIndex = 20;
@@ -125,7 +127,7 @@
             // 
             // txtJiraLogin
             // 
-            this.txtJiraLogin.Location = new System.Drawing.Point(109, 71);
+            this.txtJiraLogin.Location = new System.Drawing.Point(133, 71);
             this.txtJiraLogin.Name = "txtJiraLogin";
             this.txtJiraLogin.Size = new System.Drawing.Size(100, 20);
             this.txtJiraLogin.TabIndex = 19;
@@ -133,7 +135,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 206);
+            this.label3.Location = new System.Drawing.Point(41, 232);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(91, 13);
             this.label3.TabIndex = 30;
@@ -142,7 +144,7 @@
             // actTime
             // 
             this.actTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.actTime.Location = new System.Drawing.Point(109, 202);
+            this.actTime.Location = new System.Drawing.Point(133, 228);
             this.actTime.Name = "actTime";
             this.actTime.Size = new System.Drawing.Size(100, 20);
             this.actTime.TabIndex = 29;
@@ -150,7 +152,7 @@
             // chkAddComments
             // 
             this.chkAddComments.AutoSize = true;
-            this.chkAddComments.Location = new System.Drawing.Point(46, 242);
+            this.chkAddComments.Location = new System.Drawing.Point(56, 267);
             this.chkAddComments.Name = "chkAddComments";
             this.chkAddComments.Size = new System.Drawing.Size(133, 17);
             this.chkAddComments.TabIndex = 31;
@@ -159,7 +161,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(61, 276);
+            this.btnSave.Location = new System.Drawing.Point(72, 299);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -174,7 +176,7 @@
             this.cboWorkType.Items.AddRange(new object[] {
             "Mercurial",
             "Jira"});
-            this.cboWorkType.Location = new System.Drawing.Point(109, 18);
+            this.cboWorkType.Location = new System.Drawing.Point(133, 18);
             this.cboWorkType.Name = "cboWorkType";
             this.cboWorkType.Size = new System.Drawing.Size(99, 21);
             this.cboWorkType.TabIndex = 34;
@@ -183,7 +185,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 21);
+            this.label6.Location = new System.Drawing.Point(44, 21);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(85, 13);
             this.label6.TabIndex = 35;
@@ -192,7 +194,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(74, 179);
+            this.label7.Location = new System.Drawing.Point(100, 179);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(29, 13);
             this.label7.TabIndex = 37;
@@ -200,16 +202,34 @@
             // 
             // txtJQL
             // 
-            this.txtJQL.Location = new System.Drawing.Point(109, 176);
+            this.txtJQL.Location = new System.Drawing.Point(133, 176);
             this.txtJQL.Name = "txtJQL";
             this.txtJQL.Size = new System.Drawing.Size(99, 20);
             this.txtJQL.TabIndex = 36;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(-2, 206);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(133, 13);
+            this.label8.TabIndex = 39;
+            this.label8.Text = "Задача \"учёта времени\":";
+            // 
+            // txtTimeControlTask
+            // 
+            this.txtTimeControlTask.Location = new System.Drawing.Point(133, 202);
+            this.txtTimeControlTask.Name = "txtTimeControlTask";
+            this.txtTimeControlTask.Size = new System.Drawing.Size(99, 20);
+            this.txtTimeControlTask.TabIndex = 38;
             // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(220, 311);
+            this.ClientSize = new System.Drawing.Size(243, 334);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.txtTimeControlTask);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtJQL);
             this.Controls.Add(this.label6);
@@ -259,5 +279,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtJQL;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtTimeControlTask;
     }
 }

@@ -31,6 +31,7 @@ namespace JiraTimeBot.UI
             chkAddComments.Checked = settings.AddCommentsToWorklog;
             txtRoundTo.Text = settings.RountToMinutes.ToString();
             cboWorkType.SelectedIndex = (int) settings.WorkType;
+            txtTimeControlTask.Text = settings.TimeControlTask;
             txtJQL.Text = settings.JiraQuery;
             txtJQL.Enabled = settings.WorkType == WorkType.JiraLogs;
         }
@@ -54,6 +55,7 @@ namespace JiraTimeBot.UI
                 RountToMinutes = roundTo,
                 WorkType = (WorkType) cboWorkType.SelectedIndex,
                 JiraQuery = txtJQL.Text,
+                TimeControlTask = txtTimeControlTask.Text
             };
             
             //LockUnlock(false);

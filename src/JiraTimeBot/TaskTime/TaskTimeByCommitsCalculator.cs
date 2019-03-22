@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Web.UI.WebControls.WebParts;
 using JiraTimeBot.Configuration;
 using JiraTimeBot.Mercurial.Objects;
 using JiraTimeBot.TaskTime.Objects;
@@ -20,8 +21,14 @@ namespace JiraTimeBot.TaskTime
 
         public List<TaskTimeItem> CalculateTaskTime(List<MercurialCommitItem> commits, Settings settings, CancellationToken cancellationToken = default(CancellationToken))
         {
+            int minutesPerWorkDay = settings.MinuterPerWorkDay;
             int remainMinutes = settings.MinuterPerWorkDay;
             int totalCommitsCount = commits.Count;
+
+            if (!commits.Any())
+            {
+                return new List<TaskTimeItem>();
+            }
 
             //если кол-во коммитов более чем кол-во интервалов - то уменьшим интервал вдвое.
             while (totalCommitsCount > (8 * (60.0 / settings.RountToMinutes)))
@@ -35,6 +42,19 @@ namespace JiraTimeBot.TaskTime
             }
 
             List<TaskTimeItem> workTimeItems = new List<TaskTimeItem>();
+            //Если указана задача контроля времени - то спишем туда 30 минут и вычеркнем их из общего рабочего времени.
+            if (!string.IsNullOrEmpty(settings.TimeControlTask))
+            {
+                minutesPerWorkDay = minutesPerWorkDay - 30;
+                workTimeItems.Add(new TaskTimeItem
+                {
+                    Time = TimeSpan.FromMinutes(30),
+                    Branch = settings.TimeControlTask,
+                    Commits = 1,
+                    Description = "Время на учет задач",
+                    StartTime = DateTime.Now.Date
+                });
+            }
 
             //Нам нужно раскидать 480 минут в день.
             foreach (var taskGroup in commits.GroupBy(f => f.Branch).OrderByDescending(f=>f.Count()))
@@ -45,7 +65,7 @@ namespace JiraTimeBot.TaskTime
                 }
 
                 int currentTaskCommits = taskGroup.Count();
-                int currentTaskTime = (int)RoundTo(settings.MinuterPerWorkDay / totalCommitsCount * currentTaskCommits, settings.RountToMinutes);
+                int currentTaskTime = (int)RoundTo(minutesPerWorkDay / totalCommitsCount * currentTaskCommits, settings.RountToMinutes);
                 remainMinutes = remainMinutes - currentTaskTime;
 
                 var orderedTasks = taskGroup.OrderBy(f => f.Time).ToArray();
@@ -72,6 +92,7 @@ namespace JiraTimeBot.TaskTime
             {
                 return new List<TaskTimeItem>();
             }
+            workTimeItems = workTimeItems.OrderBy(f => f.Time).ToList();
 
             if (remainMinutes != 0)
             {
