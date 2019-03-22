@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Web.UI.WebControls.WebParts;
 using JiraTimeBot.Configuration;
 using JiraTimeBot.Mercurial.Objects;
 using JiraTimeBot.TaskTime.Objects;
