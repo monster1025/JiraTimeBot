@@ -51,7 +51,7 @@ namespace JiraTimeBot.TaskTime
                     Time = TimeSpan.FromMinutes(30),
                     Branch = settings.TimeControlTask,
                     Commits = 1,
-                    Description = "Время на учет задач",
+                    Description = "Ведение учета времени",
                     StartTime = DateTime.Now.Date
                 });
             }

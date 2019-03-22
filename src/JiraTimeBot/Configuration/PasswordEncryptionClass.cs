@@ -17,10 +17,10 @@ namespace JiraTimeBot.Configuration
         {
             byte[] entropy = GetEntropy(address + username);
             byte[] pass = Encoding.UTF8.GetBytes(password);
-            byte[] crypted = ProtectedData.Protect(pass, entropy, DataProtectionScope.LocalMachine);
-            var cryptedBase64 = Convert.ToBase64String(crypted);
+            byte[] encrypted = ProtectedData.Protect(pass, entropy, DataProtectionScope.LocalMachine);
+            var encryptedBase64 = Convert.ToBase64String(encrypted);
 
-            return cryptedBase64;
+            return encryptedBase64;
         }
 
         public string Decrypt(string username, string password, string address)
@@ -32,7 +32,7 @@ namespace JiraTimeBot.Configuration
                 pass = ProtectedData.Unprotect(pass, entropy, DataProtectionScope.LocalMachine);
                 return Encoding.UTF8.GetString(pass);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "";
             }

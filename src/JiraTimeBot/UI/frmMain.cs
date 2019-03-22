@@ -100,6 +100,7 @@ namespace JiraTimeBot.UI
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 _log.Trace("Приложение запущено в режиме отладки. Отключаю обновление.");
+                //tmrUpdate.Enabled = true;
             }
             else
             {

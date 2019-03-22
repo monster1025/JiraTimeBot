@@ -69,7 +69,7 @@ namespace JiraTimeBot.Update
                     return reader.ReadToEnd();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "";
             }
