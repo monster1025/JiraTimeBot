@@ -1,4 +1,4 @@
-# JiraTimeBot [![Build Status](https://travis-ci.org/monster1025/JiraTimeBot.svg?branch=master)](https://travis-ci.org/monster1025/JiraTimeBot)
+# JiraTimeBot [![Build status](https://ci.appveyor.com/api/projects/status/anmhfvuj4oq84j1f?svg=true)](https://ci.appveyor.com/project/Monster1025/JiraTimeBot)
 Приложение для автоматического добавления Jira Worklog'ов исходя из количества коммитов в ветку.
 
 # Ограничения
