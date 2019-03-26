@@ -9,6 +9,8 @@ using JiraTimeBot.TaskTime;
 using JiraTimeBot.UI.Tray;
 using System;
 using System.Windows.Forms;
+using JiraTimeBot.UI;
+using JiraTimeBot.UI.Startup;
 
 namespace JiraTimeBot.DI
 {
@@ -50,8 +52,11 @@ namespace JiraTimeBot.DI
 
             _builder.RegisterType<JiraDescriptionSource>().AsSelf().As<IJiraDescriptionSource>();
             _builder.RegisterType<JiraApi>().AsSelf().AsImplementedInterfaces();
-
+            
             _builder.Register(c => new Job(c.Resolve<IAllMercurialProviders>(), c.Resolve<ITaskTimeCalculator>(), c.Resolve<ILog>())).AsSelf();
+
+            _builder.RegisterType<AutoStartUp>().AsSelf().AsImplementedInterfaces();
+            _builder.RegisterType<frmSettings>().AsSelf().AsImplementedInterfaces();
 
             var container = _builder.Build();
             return container;

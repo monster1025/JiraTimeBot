@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
 using JiraTimeBot.Configuration;
+using JiraTimeBot.UI.Startup;
 
 namespace JiraTimeBot.UI
 {
     public partial class frmSettings : Form
     {
-        public frmSettings()
+        private readonly AutoStartUp _autoStart;
+
+        public frmSettings(AutoStartUp autoStart)
         {
+            _autoStart = autoStart;
             InitializeComponent();
         }
 
@@ -18,6 +22,8 @@ namespace JiraTimeBot.UI
             {
                 SetSettings(settings);
             }
+
+            chkAutostart.Checked = _autoStart.Get();
         }
 
         private void SetSettings(Settings settings)
@@ -67,6 +73,7 @@ namespace JiraTimeBot.UI
         {
             var settings = ReadSettingsAndLock();
             settings.Save();
+             _autoStart.Set(chkAutostart.Checked);
 
             MessageBox.Show("Настройки сохранены.");
 

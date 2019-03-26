@@ -11,6 +11,7 @@ using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using JiraTimeBot.UI.Startup;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -69,7 +70,7 @@ namespace JiraTimeBot.UI
 
             _settingsWindowShow = () =>
             {
-                var frmSettings = new frmSettings();
+                var frmSettings = new frmSettings(_container.Resolve<AutoStartUp>());
                 frmSettings.ShowDialog(this);
             };
             _settingsErrorReporter = msg => MessageBox.Show(msg, "Загрузка настроек", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);;
@@ -201,7 +202,7 @@ namespace JiraTimeBot.UI
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            var frm = new frmSettings();
+            var frm = _container.Resolve<frmSettings>();
             frm.ShowDialog();
 
             PrintStartMessage();
