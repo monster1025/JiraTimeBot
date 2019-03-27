@@ -9,7 +9,9 @@
         SizeToContent="WidthAndHeight"
         d:DataContext="{d:DesignInstance viewModels:ApplicationViewModel}"
         Title="ApplicationWindow"
-        ShowInTaskbar="True" d:DesignWidth="517.579" d:DesignHeight="260.977"
+        Icon="../app.ico"
+        ShowInTaskbar="True" 
+        d:DesignWidth="517.579" d:DesignHeight="260.977"
         >
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModels:MainPageViewModel}">
