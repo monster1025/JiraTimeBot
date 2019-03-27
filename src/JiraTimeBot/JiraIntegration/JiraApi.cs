@@ -76,13 +76,14 @@ namespace JiraTimeBot.JiraIntegration
             {
                 if (!taskTimeItems.Any(f => f.Branch.Equals(issue.Key.Value, StringComparison.InvariantCulture)))
                 {
-                    _log.Trace($"Удаляю добавленный руками WorkLog для задачи {issue.Key.Value}.");
                     var workLogs = issue.GetWorklogsAsync(cancellationToken).Result;
                     var userWorklogs = workLogs.Where(w =>
                         w.CreateDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
                             StringComparison.InvariantCultureIgnoreCase)).ToList();
                     foreach (var userWorklog in userWorklogs)
                     {
+                        _log.Trace($"Удаляю добавленный руками WorkLog для задачи {issue.Key.Value}: {userWorklog.TimeSpent}, {userWorklog.Comment}.");
+
                         if (!dummy)
                         {
                             issue.DeleteWorklogAsync(userWorklog, token: cancellationToken);
@@ -103,10 +104,7 @@ namespace JiraTimeBot.JiraIntegration
             date = date.Value.Date;
 
             //Удаляем добавленные вручную пользователем данные.
-            if (settings.AddCommentsToWorklog)
-            {
-                RemoveWorklogsAddedByUser(taskTimeItems, settings, date, dummy, cancellationToken);
-            }
+            RemoveWorklogsAddedByUser(taskTimeItems, settings, date, dummy, cancellationToken);
 
             foreach (TaskTimeItem taskTimeItem in taskTimeItems)
             {

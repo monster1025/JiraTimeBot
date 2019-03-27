@@ -23,7 +23,6 @@ namespace JiraTimeBot.Configuration
         public WorkType WorkType { get; set; }
         public string JiraQuery { get; set; }
         public string TimeControlTask { get; set; }
-        public bool RemoveWorklogsAddedByUser { get; set; }
 
         public static Settings LoadAndCheck(Action settingsSource, Action<string> errorMessageReporter)
         {

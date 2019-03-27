@@ -37,7 +37,6 @@ namespace JiraTimeBot.UI
             txtRoundTo.Text = settings.RountToMinutes.ToString();
             cboWorkType.SelectedIndex = (int) settings.WorkType;
             txtTimeControlTask.Text = settings.TimeControlTask;
-            chkRemoveAddedByUser.Checked = settings.RemoveWorklogsAddedByUser;
             txtJQL.Text = settings.JiraQuery;
             txtJQL.Enabled = settings.WorkType == WorkType.JiraLogs;
         }
@@ -61,7 +60,6 @@ namespace JiraTimeBot.UI
                 WorkType = (WorkType) cboWorkType.SelectedIndex,
                 JiraQuery = txtJQL.Text,
                 TimeControlTask = txtTimeControlTask.Text,
-                RemoveWorklogsAddedByUser = chkRemoveAddedByUser.Checked
             };
 
             //LockUnlock(false);
