@@ -4,35 +4,30 @@ namespace JiraTimeBot.Ui
 {
     public interface IRegisteredViewModels
     {
-        MainViewModel Main { get; set; }
         SettingsViewModel Settings { get; set; }
+        MainPageViewModel MainPage { get; set; }
     }
 
     public class ApplicationNavigator : IApplicationNavigator
     {
-        private readonly MainWindow _mainWindow;
-        private readonly IRegisteredPages _pages;
+        private readonly ApplicationViewModel _applicationViewModel;
         private readonly IRegisteredViewModels _viewModels;
 
-        public ApplicationNavigator(MainWindow mainWindow, 
-                                    IRegisteredPages pages, 
+        public ApplicationNavigator(ApplicationViewModel applicationViewModel, 
                                     IRegisteredViewModels viewModels)
         {
-            _mainWindow = mainWindow;
-            _pages = pages;
+            _applicationViewModel = applicationViewModel;
             _viewModels = viewModels;
         }
 
         public void NavigateToMain()
         {
-            _pages.Main.DataContext = _viewModels.Main;
-            _mainWindow.Navigate(_pages.Main);
+            _applicationViewModel.CurrentViewModel = _viewModels.MainPage;
         }
 
         public void NavigateToSettings()
         {
-            _pages.Settings.DataContext = _viewModels.Settings;
-            _mainWindow.Navigate(_pages.Settings);
+            _applicationViewModel.CurrentViewModel = _viewModels.Settings;
         }
     }
 }

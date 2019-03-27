@@ -20,20 +20,23 @@ namespace JiraTimeBot.Ui
         protected override void OnStartup(StartupEventArgs e)
         {
             var builder = new ContainerBuilder();
-            builder.Register(c => new MainWindow())
-                   .SingleInstance();
 
-            builder.Register(c => new ApplicationModel()).SingleInstance();
-            builder.Register(c => new SettingsViewModel()).SingleInstance();
+            builder.Register<MainWindow>(c =>
+            {
+                var result = new MainWindow();
+                result.DataContext = c.Resolve<ApplicationViewModel>();
+                return result;
+            }).SingleInstance();
 
-            builder.RegisterType<SettingsPage>().SingleInstance();
-            builder.RegisterType<MainPage>().SingleInstance();
+            builder.RegisterType<ApplicationModel>().SingleInstance();
 
-            builder.RegisterType<MainViewModel>().SingleInstance();
+            builder.RegisterType<ApplicationViewModel>().SingleInstance();
+            builder.RegisterType<MainPageViewModel>().SingleInstance();
             builder.RegisterType<SettingsViewModel>().SingleInstance();
-
-
-            builder.RegisterAggregateService<IRegisteredPages>();
+            
+            builder.RegisterType<MainPage>().SingleInstance();
+            builder.RegisterType<SettingsPage>().SingleInstance();
+            
             builder.RegisterAggregateService<IRegisteredViewModels>();
 
             builder.RegisterType<ApplicationNavigator>()
@@ -43,13 +46,10 @@ namespace JiraTimeBot.Ui
             _container = builder.Build();
 
             var mainWindow = _container.Resolve<MainWindow>();
-
             var nav = _container.Resolve<IApplicationNavigator>();
-            nav.NavigateToMain();
-
-            //var mainPage = _container.Resolve<MainPage>();
-            //mainWindow.Navigate(mainPage);
-            mainWindow.ShowDialog();
+            
+            nav.NavigateToSettings();
+            mainWindow.Show();
             base.OnStartup(e);
         }
     }
