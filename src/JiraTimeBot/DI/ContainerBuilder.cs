@@ -11,6 +11,7 @@ using System;
 using System.Windows.Forms;
 using JiraTimeBot.UI;
 using JiraTimeBot.UI.Startup;
+using JiraTimeBot.Update;
 
 namespace JiraTimeBot.DI
 {
@@ -37,6 +38,8 @@ namespace JiraTimeBot.DI
 
             _builder.Register(f => new TrayMenu()).As<ITrayMenu>().AsSelf();
             _builder.Register(c => new CommitSkipper()).As<ICommitSkipper>();
+
+            _builder.RegisterType<Updater>().As<IUpdater>();
 
             _builder.RegisterType<TechnicalInfoSkipper>().As<ITechnicalInfoSkipper>().AsSelf();
 

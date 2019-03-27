@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using JiraTimeBot.Configuration;
 using JiraTimeBot.JiraIntegration;
 using JiraTimeBot.TaskTime.Objects;
@@ -18,9 +19,9 @@ namespace JiraTimeBot.TasksProcessors
             _jiraApi = jiraApi;
         }
 
-        public void Process(DateTime date, List<TaskTimeItem> taskTimes, Settings settings, bool dummyMode)
+        public void Process(DateTime setForDate, DateTime realDate, List<TaskTimeItem> taskTimes, Settings settings, bool dummyMode, CancellationToken cancellationToken = default(CancellationToken))
         {
-            _log.Trace($"На реальную дату {date:dd.MM.yyyy} распределение по задачам:");
+            _log.Trace($"На реальную дату {realDate:dd.MM.yyyy} распределение по задачам:");
 
             foreach (var taskTime in taskTimes.OrderByDescending(f => f.Time))
             {

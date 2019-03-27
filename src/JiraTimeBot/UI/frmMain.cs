@@ -66,7 +66,7 @@ namespace JiraTimeBot.UI
             _log = _container.Resolve<ILog>();
             _tasksProcessors = _container.Resolve<IAllTasksProcessors>();
 
-            _controls = new Control[] { txtDummyMode, btnStart, btnMeeting, btnSettings };
+            _controls = new Control[] { txtDummyMode, btnStart, btnMeeting, btnSettings, dteForDay, btnDoForDate };
 
             _settingsWindowShow = () =>
             {
@@ -216,38 +216,11 @@ namespace JiraTimeBot.UI
                 _updateChecked = true;
                 tmrUpdate.Interval = 1 * 60 * 60 * 1000;
 
-                var checker = new UpdateChecker();
-                var release = checker.GetRelease();
-                if (release == null)
+                var updater = _container.Resolve<IUpdater>();
+                if (updater.UpdateToNewVersion(firstTime))
                 {
-                    return;
-                }
-
-                var gitVersionStr = checker.GetLatestVersion(release);
-                var gitVersion = new Version(gitVersionStr);
-                var appVersion = new Version(Application.ProductVersion);
-
-                if (gitVersion > appVersion)
-                {
-                    var downloadUrl = checker.GetDownloadUrl(release);
-                    _log.Info($"Доступна новая версия: {gitVersion} {downloadUrl}");
-
-                    var success = checker.DownloadFile(downloadUrl, "update.zip");
-                    if (!success)
-                    {
-                        return;
-                    }
-
-                    var result = InstallUpdate(gitVersion, "update.zip");
-                    if (result)
-                    {
-                        //если обновились - отключаем до рестарта
-                        tmrUpdate.Enabled = false;
-                    }
-                }
-                else if (firstTime)
-                {
-                    _log.Info($"Вы используете актуальную версию.");
+                    //если обновились - отключаем до рестарта
+                    tmrUpdate.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -257,46 +230,17 @@ namespace JiraTimeBot.UI
             }
         }
 
-        private bool InstallUpdate(Version gitVersion, string updateFile)
+        private async void btnDoForDate_Click(object sender, EventArgs e)
         {
-            try
+            var settings = ReadSettingsAndLock();
+
+            using (_tokenSource = GetTokenSource())
             {
-                _log.Info($"Устанавливаю обновление до версии {gitVersion}.");
-                //Rename he executing file
-                System.IO.FileInfo appFile = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                var bkpDir = Path.Combine(appFile.DirectoryName, "bkp");
-                if (!Directory.Exists(bkpDir))
-                {
-                    Directory.CreateDirectory(bkpDir);
-                }
-
-                using (ZipArchive archive = ZipFile.OpenRead(Path.Combine(appFile.DirectoryName, updateFile)))
-                {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        var zipEntryPath = Path.Combine(appFile.DirectoryName, entry.FullName);
-                        if (File.Exists(zipEntryPath))
-                        {
-                            System.IO.FileInfo zipEntryFile = new System.IO.FileInfo(zipEntryPath);
-                            if (File.Exists(bkpDir + "\\" + zipEntryFile.Name))
-                            {
-                                File.Delete(bkpDir + "\\" + zipEntryFile.Name);
-                            }
-                            System.IO.File.Move(zipEntryFile.FullName, bkpDir + "\\" + zipEntryFile.Name);
-                        }
-
-                        entry.ExtractToFile(zipEntryPath);
-                    }
-                }
-
-                _log.Info("Обновление установлено. Перезапустите программу для применения изменений.");
-                return true;
+                await _job.SetTaskTimesForDate(dteForDay.Value, dteForDay.Value, settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, _tokenSource.Token);
             }
-            catch (Exception)
-            {
-                _log.Error($"Что-то пошло не так при обновлении.");
-                return false;
-            }
+
+            LockUnlock(true);
+
         }
     }
 }

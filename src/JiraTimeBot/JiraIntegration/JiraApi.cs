@@ -62,15 +62,44 @@ namespace JiraTimeBot.JiraIntegration
             }
         }
 
-        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false)
+        public List<Issue> GetWorkloggedIssuesByDate(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
         {
+            date = date.GetValueOrDefault(DateTime.Now.Date);
+            var jql = "issueFunction in workLogged(\"on %DATE% by '%USER%'\")";
+            return GetIssuesByJQL(jql, settings, date, cancellationToken);
+        }
+
+        private void RemoveWorklogsAddedByUser(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null,  bool dummy = false, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var alreadyLoggedToday = GetWorkloggedIssuesByDate(settings, date);
+            foreach (var issue in alreadyLoggedToday)
+            {
+                if (!taskTimeItems.Any(f => f.Branch.Equals(issue.Key.Value, StringComparison.InvariantCulture)))
+                {
+                    var workLogs = issue.GetWorklogsAsync(cancellationToken).Result;
+                    var userWorklogs = workLogs.Where(w =>
+                        w.CreateDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
+                            StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    foreach (var userWorklog in userWorklogs)
+                    {
+                        _log.Trace($"Удаляю добавленный руками WorkLog для задачи {issue.Key.Value}: {userWorklog.TimeSpent}, {userWorklog.Comment}.");
+
+                        if (!dummy)
+                        {
+                            issue.DeleteWorklogAsync(userWorklog, token: cancellationToken);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            date = date.GetValueOrDefault(DateTime.Now.Date).Date;
             var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
 
-            if (date == null)
-            {
-                date = DateTime.Now.Date;
-            }
-            date = date.Value.Date;
+            //Удаляем добавленные вручную пользователем данные.
+            RemoveWorklogsAddedByUser(taskTimeItems, settings, date, dummy, cancellationToken);
 
             foreach (TaskTimeItem taskTimeItem in taskTimeItems)
             {
@@ -90,9 +119,9 @@ namespace JiraTimeBot.JiraIntegration
                 }
 
                 var hasTodayWorklog = false;
-                var workLogs = issue.GetWorklogsAsync().Result;
+                var workLogs = issue.GetWorklogsAsync(cancellationToken).Result;
                 var userWorklogs = workLogs.Where(w =>
-                    w.CreateDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
+                    w.StartDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
                         StringComparison.InvariantCultureIgnoreCase)).ToList();
 
                 foreach (var workLog in userWorklogs)
@@ -111,7 +140,7 @@ namespace JiraTimeBot.JiraIntegration
                         }
                         if (!dummy)
                         {
-                            issue.DeleteWorklogAsync(workLog);
+                            issue.DeleteWorklogAsync(workLog, token: cancellationToken);
                         }
                         hasTodayWorklog = false;
                     }
@@ -131,7 +160,7 @@ namespace JiraTimeBot.JiraIntegration
                     Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value, comment);
                     if (!dummy)
                     {
-                        workLogToAdd = issue.AddWorklogAsync(workLogToAdd).Result;
+                        workLogToAdd = issue.AddWorklogAsync(workLogToAdd, token: cancellationToken).Result;
                     }
                     _log.Trace($"Добавили Worklog для {taskTimeItem.Branch}: {workLogToAdd.Author} {workLogToAdd.CreateDate}: {workLogToAdd.TimeSpent}");
                 }
