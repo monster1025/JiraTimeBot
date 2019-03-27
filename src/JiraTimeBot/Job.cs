@@ -31,7 +31,7 @@ namespace JiraTimeBot
 
             return Task.Run(() => DoTheJobImpl(settings, tasksProcessor, dummyMode, cancellationToken), cancellationToken);
         }
-
+        
         private void DoTheJobImpl(Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
         {
             int daysDiff = 0;
@@ -40,43 +40,58 @@ namespace JiraTimeBot
                 daysDiff = -1;
             }
 
+            var setForDate = DateTime.Now.Date;
             while (true)
             {
-                DateTime date = DateTime.Now.Date.AddDays(daysDiff);
+                DateTime realDate = DateTime.Now.Date.AddDays(daysDiff);
 
-                IMercurialLog mercurial = _mercurialProviders.MercurialLog;
-                if (settings.WorkType == WorkType.JiraLogs)
-                {
-                    _log.Info("Использую Jira как источник информации.");
-                    mercurial = _mercurialProviders.JiraCommitEmulator;
-                }
-                List<MercurialCommitItem> commits = mercurial.GetMercurialLog(settings, date, cancellationToken);
-                List<TaskTimeItem> taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
-
-                if (cancellationToken.IsCancellationRequested)
+                if (SetTaskTimesForDateImpl(setForDate, realDate, settings, tasksProcessor, dummyMode, cancellationToken))
                 {
                     return;
                 }
 
-                if (!taskTimes.Any())
+                _log.Warn($"{realDate:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
+                daysDiff--;
+                if (daysDiff < -7)
                 {
-                    _log.Warn($"{date:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
-                    daysDiff--;
-                    if (daysDiff < -7)
-                    {
-                        _log.Error("Не нашли ни одного коммита за предыдущие 7 дней. Возможно вы в отпуске? Выхожу.");
-                        return;
-                    }
-
-                    continue;
+                    _log.Error("Не нашли ни одного коммита за предыдущие 7 дней. Возможно вы в отпуске? Выхожу.");
+                    return;
                 }
-
-                tasksProcessor.Process(date, taskTimes, settings, dummyMode, cancellationToken);
-
-                _log.Info("Готово.");
-                return;
             }
         }
 
+        public Task SetTaskTimesForDate(DateTime setForDate, DateTime realDate, Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
+        {
+            _log.Info("Начинаем работу");
+
+            return Task.Run(() => SetTaskTimesForDateImpl(setForDate, realDate, settings, tasksProcessor, dummyMode, cancellationToken), cancellationToken);
+        }
+
+        private bool SetTaskTimesForDateImpl(DateTime setForDate, DateTime realDate, Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
+        {
+            IMercurialLog mercurial = _mercurialProviders.MercurialLog;
+            if (settings.WorkType == WorkType.JiraLogs)
+            {
+                _log.Info("Использую Jira как источник информации.");
+                mercurial = _mercurialProviders.JiraCommitEmulator;
+            }
+            List<MercurialCommitItem> commits = mercurial.GetMercurialLog(settings, realDate, cancellationToken);
+            List<TaskTimeItem> taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return false;
+            }
+
+            if (!taskTimes.Any())
+            {
+                return false;
+            }
+
+            tasksProcessor.Process(setForDate, realDate, taskTimes, settings, dummyMode, cancellationToken);
+
+            _log.Info("Готово.");
+            return true;
+        }
     }
 }

@@ -122,7 +122,8 @@
     <Compile Include="UI\Tray\RestoreFromTray.cs" />
     <Compile Include="UI\Tray\TrayMenu.cs" />
     <Compile Include="Update\GitHubDataObjects.cs" />
-    <Compile Include="Update\UpdateChecker.cs" />
+    <Compile Include="Update\IUpdater.cs" />
+    <Compile Include="Update\Updater.cs" />
     <EmbeddedResource Include="UI\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

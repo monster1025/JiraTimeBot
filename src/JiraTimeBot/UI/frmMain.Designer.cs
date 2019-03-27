@@ -39,6 +39,8 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
+            this.dteForDay = new System.Windows.Forms.DateTimePicker();
+            this.btnDoForDate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtLog
@@ -117,11 +119,34 @@
             this.tmrUpdate.Interval = 1000;
             this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
             // 
+            // dteForDay
+            // 
+            this.dteForDay.CustomFormat = "dd.MM.yyyy";
+            this.dteForDay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dteForDay.Location = new System.Drawing.Point(12, 69);
+            this.dteForDay.MinDate = new System.DateTime(2019, 1, 1, 0, 0, 0, 0);
+            this.dteForDay.Name = "dteForDay";
+            this.dteForDay.ShowUpDown = true;
+            this.dteForDay.Size = new System.Drawing.Size(113, 20);
+            this.dteForDay.TabIndex = 17;
+            // 
+            // btnDoForDate
+            // 
+            this.btnDoForDate.Location = new System.Drawing.Point(13, 96);
+            this.btnDoForDate.Name = "btnDoForDate";
+            this.btnDoForDate.Size = new System.Drawing.Size(112, 36);
+            this.btnDoForDate.TabIndex = 18;
+            this.btnDoForDate.Text = "Проставить на дату";
+            this.btnDoForDate.UseVisualStyleBackColor = true;
+            this.btnDoForDate.Click += new System.EventHandler(this.btnDoForDate_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 320);
+            this.Controls.Add(this.btnDoForDate);
+            this.Controls.Add(this.dteForDay);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnMeeting);
@@ -151,6 +176,8 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Timer tmrUpdate;
+        private System.Windows.Forms.DateTimePicker dteForDay;
+        private System.Windows.Forms.Button btnDoForDate;
     }
 }
 
