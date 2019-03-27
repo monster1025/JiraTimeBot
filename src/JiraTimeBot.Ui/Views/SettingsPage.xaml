@@ -5,10 +5,84 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:JiraTimeBot.Ui"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
       >
 
     <Grid>
-        <TextBlock Text="Settings"></TextBlock>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20px"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   Text="Режим работы" />
+
+        <ComboBox Grid.Row="0" Grid.Column="1">
+        </ComboBox>
+
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   Text="Путь до репо" />
+        
+        <TextBox Grid.Row="1" Grid.Column="1" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0"
+                   Text="Логин Jira" />
+        
+        <TextBox Grid.Row="2" Grid.Column="1" />
+
+        <TextBlock Grid.Row="3" Grid.Column="0"
+                   Text="Пароль Jira" />
+
+        <PasswordBox Grid.Row="3" Grid.Column="1"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0"
+                   Text="Mercurial Name" />
+
+        <TextBox Grid.Row="4" Grid.Column="1" />
+
+        <TextBlock Grid.Row="5" Grid.Column="0"
+                   Text="Округл. Времени" />
+
+        <TextBox Grid.Row="5" Grid.Column="1" />
+
+        <TextBlock Grid.Row="6" Grid.Column="0"
+                   Text="JQL" />
+
+        <TextBox Grid.Row="6" Grid.Column="1" />
+
+        <TextBlock Grid.Row="7" Grid.Column="0"
+                   Text="Задача учета времени" />
+
+        <TextBox Grid.Row="7" Grid.Column="1" />
+
+        <TextBlock Grid.Row="8" Grid.Column="0"
+                   Text="Время запуска" />
+        
+        <DatePicker Grid.Row="8" Grid.Column="1"/>
+        <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Vertical"
+                    >
+
+            <CheckBox Content="Автозагрузка" />
+        
+            <CheckBox Content="Добавлять описание" />
+        </StackPanel>
+        <Button Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" 
+                Content="Сохранить"/>
+
+
     </Grid>
 </UserControl>

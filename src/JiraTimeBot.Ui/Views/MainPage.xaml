@@ -9,6 +9,7 @@
       Height="100"
       Width="400"
       d:DataContext="{d:DesignInstance viewModels:MainPageViewModel}" >
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

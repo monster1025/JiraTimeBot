@@ -49,6 +49,7 @@ namespace JiraTimeBot.Ui
             var nav = _container.Resolve<IApplicationNavigator>();
             
             nav.NavigateToSettings();
+            mainWindow.ShowActivated = true;
             mainWindow.Show();
             base.OnStartup(e);
         }
