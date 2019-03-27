@@ -66,7 +66,7 @@ namespace JiraTimeBot.UI
             _log = _container.Resolve<ILog>();
             _tasksProcessors = _container.Resolve<IAllTasksProcessors>();
 
-            _controls = new Control[] { txtDummyMode, btnStart, btnMeeting, btnSettings };
+            _controls = new Control[] { txtDummyMode, btnStart, btnMeeting, btnSettings, dteForDay, btnDoForDate };
 
             _settingsWindowShow = () =>
             {
