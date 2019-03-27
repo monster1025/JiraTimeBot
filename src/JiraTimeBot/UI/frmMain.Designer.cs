@@ -34,6 +34,7 @@
             this.tmrStart = new System.Windows.Forms.Timer(this.components);
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.tlpControls = new System.Windows.Forms.TableLayoutPanel();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnMeeting = new System.Windows.Forms.Button();
@@ -43,7 +44,6 @@
             this.btnDoForDate = new System.Windows.Forms.Button();
             this.dteForDay = new System.Windows.Forms.DateTimePicker();
             this.btnSettings = new System.Windows.Forms.Button();
-            this.txtLog = new System.Windows.Forms.TextBox();
             this.tlpControls.SuspendLayout();
             this.panel2.SuspendLayout();
             this.pnlTopControls.SuspendLayout();
@@ -82,6 +82,18 @@
             this.tlpControls.Size = new System.Drawing.Size(759, 416);
             this.tlpControls.TabIndex = 19;
             // 
+            // txtLog
+            // 
+            this.txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtLog.Location = new System.Drawing.Point(153, 3);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            this.tlpControls.SetRowSpan(this.txtLog, 2);
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtLog.Size = new System.Drawing.Size(603, 410);
+            this.txtLog.TabIndex = 27;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.btnCancel);
@@ -103,6 +115,7 @@
             this.btnCancel.TabIndex = 19;
             this.btnCancel.Text = "Отменить операцию";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnMeeting
             // 
@@ -112,6 +125,7 @@
             this.btnMeeting.TabIndex = 18;
             this.btnMeeting.Text = "Митинг";
             this.btnMeeting.UseVisualStyleBackColor = true;
+            this.btnMeeting.Click += new System.EventHandler(this.btnMeeting_Click);
             // 
             // txtDummyMode
             // 
@@ -131,6 +145,7 @@
             this.btnStart.TabIndex = 16;
             this.btnStart.Text = "Проставить время";
             this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // pnlTopControls
             // 
@@ -151,6 +166,7 @@
             this.btnDoForDate.TabIndex = 25;
             this.btnDoForDate.Text = "Проставить на дату";
             this.btnDoForDate.UseVisualStyleBackColor = true;
+            this.btnDoForDate.Click += new System.EventHandler(this.btnDoForDate_Click);
             // 
             // dteForDay
             // 
@@ -171,18 +187,7 @@
             this.btnSettings.TabIndex = 23;
             this.btnSettings.Text = "Настройки";
             this.btnSettings.UseVisualStyleBackColor = true;
-            // 
-            // txtLog
-            // 
-            this.txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtLog.Location = new System.Drawing.Point(153, 3);
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ReadOnly = true;
-            this.tlpControls.SetRowSpan(this.txtLog, 2);
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(603, 410);
-            this.txtLog.TabIndex = 27;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // frmMain
             // 
