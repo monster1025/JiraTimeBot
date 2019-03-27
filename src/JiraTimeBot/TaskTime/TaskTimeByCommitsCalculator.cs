@@ -104,9 +104,21 @@ namespace JiraTimeBot.TaskTime
                 workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
             }
 
+            PrintTotal(workTimeItems);
+
             return workTimeItems;
         }
 
+        private void PrintTotal(List<TaskTimeItem> workTimeItems)
+        {
+            var totalTime = TimeSpan.Zero;
+            foreach (var workTimeItem in workTimeItems)
+            {
+                totalTime += workTimeItem.Time;
+            }
+
+            _log.Trace($"Итоговое реально проставляемое время: {totalTime}");
+        }
 
 
         private decimal RoundTo(decimal value, decimal to = 15, bool up = true)

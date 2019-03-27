@@ -33,11 +33,11 @@ namespace JiraTimeBot.UI
             txtMercurialEmail.Text = settings.MercurialAuthorEmail;
             txtRepoPath.Text = settings.RepositoryPath;
             actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
-            //txtDummyMode.Checked = settings.DummyMode;
             chkAddComments.Checked = settings.AddCommentsToWorklog;
             txtRoundTo.Text = settings.RountToMinutes.ToString();
             cboWorkType.SelectedIndex = (int) settings.WorkType;
             txtTimeControlTask.Text = settings.TimeControlTask;
+            chkRemoveAddedByUser.Checked = settings.RemoveWorklogsAddedByUser;
             txtJQL.Text = settings.JiraQuery;
             txtJQL.Enabled = settings.WorkType == WorkType.JiraLogs;
         }
@@ -56,14 +56,14 @@ namespace JiraTimeBot.UI
                 MercurialAuthorEmail = txtMercurialEmail.Text,
                 ActivationTime = TimeSpan.Parse(actTime.Text),
                 RepositoryPath = txtRepoPath.Text,
-                //DummyMode = txtDummyMode.Checked,
                 AddCommentsToWorklog = chkAddComments.Checked,
                 RountToMinutes = roundTo,
                 WorkType = (WorkType) cboWorkType.SelectedIndex,
                 JiraQuery = txtJQL.Text,
-                TimeControlTask = txtTimeControlTask.Text
+                TimeControlTask = txtTimeControlTask.Text,
+                RemoveWorklogsAddedByUser = chkRemoveAddedByUser.Checked
             };
-            
+
             //LockUnlock(false);
 
             return settings;

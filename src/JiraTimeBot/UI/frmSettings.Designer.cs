@@ -49,6 +49,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.txtTimeControlTask = new System.Windows.Forms.TextBox();
             this.chkAutostart = new System.Windows.Forms.CheckBox();
+            this.chkRemoveAddedByUser = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label5
@@ -162,7 +163,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(72, 310);
+            this.btnSave.Location = new System.Drawing.Point(92, 322);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -234,11 +235,22 @@
             this.chkAutostart.Text = "Автозагрузка";
             this.chkAutostart.UseVisualStyleBackColor = true;
             // 
+            // chkRemoveAddedByUser
+            // 
+            this.chkRemoveAddedByUser.AutoSize = true;
+            this.chkRemoveAddedByUser.Location = new System.Drawing.Point(56, 299);
+            this.chkRemoveAddedByUser.Name = "chkRemoveAddedByUser";
+            this.chkRemoveAddedByUser.Size = new System.Drawing.Size(153, 17);
+            this.chkRemoveAddedByUser.TabIndex = 41;
+            this.chkRemoveAddedByUser.Text = "Заменять время за день";
+            this.chkRemoveAddedByUser.UseVisualStyleBackColor = true;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 342);
+            this.ClientSize = new System.Drawing.Size(243, 357);
+            this.Controls.Add(this.chkRemoveAddedByUser);
             this.Controls.Add(this.chkAutostart);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtTimeControlTask);
@@ -294,5 +306,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtTimeControlTask;
         private System.Windows.Forms.CheckBox chkAutostart;
+        private System.Windows.Forms.CheckBox chkRemoveAddedByUser;
     }
 }

@@ -71,7 +71,7 @@ namespace JiraTimeBot
                     continue;
                 }
 
-                tasksProcessor.Process(date, taskTimes, settings, dummyMode);
+                tasksProcessor.Process(date, taskTimes, settings, dummyMode, cancellationToken);
 
                 _log.Info("Готово.");
                 return;
