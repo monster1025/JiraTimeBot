@@ -38,7 +38,8 @@ namespace JiraTimeBot.UI
             cboWorkType.SelectedIndex = (int) settings.WorkType;
             txtTimeControlTask.Text = settings.TimeControlTask;
             txtJQL.Text = settings.JiraQuery;
-            txtJQL.Enabled = settings.WorkType == WorkType.JiraLogs;
+
+            cboWorkType_SelectedIndexChanged(null, null);
         }
 
         public Settings ReadSettingsAndLock()
@@ -87,6 +88,7 @@ namespace JiraTimeBot.UI
         private void cboWorkType_SelectedIndexChanged(object sender, EventArgs e)
         {
             txtJQL.Enabled = (cboWorkType.SelectedIndex == 1);
+            txtRepoPath.Enabled = (cboWorkType.SelectedIndex == 0);
         }
     }
 }
