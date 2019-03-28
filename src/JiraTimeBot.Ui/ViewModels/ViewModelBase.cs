@@ -1,10 +1,11 @@
 ﻿using JiraTimeBot.Ui.Annotations;
+using JiraTimeBot.Ui.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace JiraTimeBot.Ui.ViewModels
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -12,6 +13,16 @@ namespace JiraTimeBot.Ui.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public abstract class ViewModelBase<T> : ViewModelBase where T : IModel
+    {
+        protected T Model { get; }
+
+        protected ViewModelBase(T model)
+        {
+            Model = model;
         }
     }
 }

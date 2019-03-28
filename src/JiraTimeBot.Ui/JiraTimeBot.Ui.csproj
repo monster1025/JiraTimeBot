@@ -96,6 +96,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,11 +113,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ApplicationNavigator.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commands\RelayCommand%27.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandAsync%27.cs" />
     <Compile Include="IApplicationNavigator.cs" />
     <Compile Include="Models\ApplicationModel.cs" />
+    <Compile Include="Models\IModel.cs" />
+    <Compile Include="Models\MainModel.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />

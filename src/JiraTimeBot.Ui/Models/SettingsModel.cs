@@ -1,6 +1,6 @@
 ﻿namespace JiraTimeBot.Ui.Models
 {
-    public class ApplicationModel : IModel
+    public class SettingsModel : IModel
     {
         
     }

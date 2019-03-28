@@ -11,6 +11,7 @@
         Title="ApplicationWindow"
         Icon="../app.ico"
         ShowInTaskbar="True" 
+        ResizeMode="NoResize"
         d:DesignWidth="517.579" d:DesignHeight="260.977"
         >
     <Window.Resources>
@@ -22,20 +23,7 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="0"
-            Content="NavToMain" Command="{Binding Path=NavigateToMain}" />
-        <Button Grid.Row="0" Grid.Column="1"
-            Content="NavToSettings" Command="{Binding Path=NavigateToSettings}" />
-        <ContentControl  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                         Content="{Binding Path=CurrentViewModel}" />
+        <ContentControl Content="{Binding Path=CurrentViewModel}" />
     </Grid>
     
 </Window>

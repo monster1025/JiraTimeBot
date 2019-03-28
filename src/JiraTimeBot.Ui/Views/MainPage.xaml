@@ -6,15 +6,42 @@
       xmlns:local="clr-namespace:JiraTimeBot.Ui"
       xmlns:viewModels="clr-namespace:JiraTimeBot.Ui.ViewModels"
       mc:Ignorable="d" 
-      Height="100"
-      Width="400"
       d:DataContext="{d:DesignInstance viewModels:MainPageViewModel}" >
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="Application"></TextBlock>
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Styles.xaml"/>
+    </UserControl.Resources>
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" 
+                        Orientation="Vertical">
+                <Button Content="Настройки" Command="{Binding Path=OpenSettingsCommand}" />
+                <DatePicker />
+                <Button>
+                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="Проставить на дату" />
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Row="2">
+                <CheckBox>Тестовый прогон</CheckBox>
+                <Button Content="Проставить время"/>
+                <Button Content="Митинг"/>
+                <Button Content="Отменить"/>
+            </StackPanel>
+        </Grid>
+
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 IsReadOnly="True"
+                 Width="400"
+                 Height="300"
+                 ></TextBox>
+
     </Grid>
 </UserControl>

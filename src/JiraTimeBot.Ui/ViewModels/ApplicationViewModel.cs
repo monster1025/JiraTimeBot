@@ -1,26 +1,16 @@
-﻿using Aeroclub.CL.ASIA.Application.UI.Wpf.Commands;
+﻿using JiraTimeBot.Ui.Models;
 using System;
 
 namespace JiraTimeBot.Ui.ViewModels
 {
-    public class ApplicationViewModel : ViewModelBase
+    public class ApplicationViewModel : ViewModelBase<ApplicationModel>
     {
         private readonly Func<IApplicationNavigator> _appNavigator;
+        
         private ViewModelBase _currentViewModel;
 
-        public ApplicationViewModel(Func<IApplicationNavigator> appNavigator)
+        public ApplicationViewModel(ApplicationModel model) : base(model)
         {
-            _appNavigator = appNavigator;
-
-            NavigateToSettings = new RelayCommand(() =>
-            {
-                _appNavigator().NavigateToSettings();
-            });
-
-            NavigateToMain = new RelayCommand(() =>
-            {
-                _appNavigator().NavigateToMain();
-            });
         }
 
         public ViewModelBase CurrentViewModel
@@ -32,9 +22,5 @@ namespace JiraTimeBot.Ui.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public RelayCommand NavigateToSettings { get; set; }
-
-        public RelayCommand NavigateToMain { get; set; }
     }
 }

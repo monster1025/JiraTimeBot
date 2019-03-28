@@ -1,7 +1,4 @@
 ﻿using Autofac;
-using Autofac.Extras.AggregateService;
-using JiraTimeBot.Ui.Models;
-using JiraTimeBot.Ui.ViewModels;
 using JiraTimeBot.UI.Tray;
 using System;
 using System.Threading;
@@ -22,6 +19,8 @@ namespace JiraTimeBot.Ui
         {
             if (Mutex.WaitOne(TimeSpan.Zero, true))
             {
+                Bootstrapper bootstrapper = new Bootstrapper();
+                _container = bootstrapper.Build();
                 Mutex.ReleaseMutex();
             }
             else
@@ -34,32 +33,6 @@ namespace JiraTimeBot.Ui
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var builder = new ContainerBuilder();
-
-            builder.Register(c =>
-            {
-                var result = new MainWindow();
-                result.DataContext = c.Resolve<ApplicationViewModel>();
-                return result;
-            }).SingleInstance();
-
-            builder.RegisterType<ApplicationModel>().SingleInstance();
-
-            builder.RegisterType<ApplicationViewModel>().SingleInstance();
-            builder.RegisterType<MainPageViewModel>().SingleInstance();
-            builder.RegisterType<SettingsViewModel>().SingleInstance();
-            
-            builder.RegisterType<MainPage>().SingleInstance();
-            builder.RegisterType<SettingsPage>().SingleInstance();
-            
-            builder.RegisterAggregateService<IRegisteredViewModels>();
-
-            builder.RegisterType<ApplicationNavigator>()
-                   .As<IApplicationNavigator>()
-                   .SingleInstance();
-
-            _container = builder.Build();
-
             var mainWindow = _container.Resolve<MainWindow>();
             var nav = _container.Resolve<IApplicationNavigator>();
             
