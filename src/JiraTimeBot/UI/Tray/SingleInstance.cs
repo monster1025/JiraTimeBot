@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace JiraTimeBot.UI.Tray
 {
-    static class SingleInstance
+    public static class SingleInstance
     {
         public static readonly int WM_SHOWFIRSTINSTANCE = RegisterWindowMessage($"WM_SHOWFIRSTINSTANCE|{AssemblyGuid}");
         

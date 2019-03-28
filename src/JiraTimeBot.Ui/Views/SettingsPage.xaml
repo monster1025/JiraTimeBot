@@ -4,7 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:JiraTimeBot.Ui"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
+      d:DesignWidth="250"
+      d:DesignHeight="300"
       >
 
     <Grid>
@@ -68,9 +71,17 @@
         <TextBox Grid.Row="7" Grid.Column="1" />
 
         <TextBlock Grid.Row="8" Grid.Column="0"
-                   Text="Время запуска" />
+                   Text="Время запуска" 
+                   
+                   />
         
-        <DatePicker Grid.Row="8" Grid.Column="1"/>
+        <xctk:DateTimePicker Grid.Row="8" Grid.Column="1"
+                             Format="ShortTime"
+                             ShowDropDownButton="False"
+                             TimePickerAllowSpin="True"
+                             TimePickerShowButtonSpinner="True"
+                             TimePickerVisibility="Visible"
+                             />
         <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
                     HorizontalAlignment="Center"
                     Orientation="Vertical"
