@@ -18,6 +18,7 @@ namespace JiraTimeBot.Ui.ViewModels
 
     public abstract class ViewModelBase<T> : ViewModelBase where T : IModel
     {
+        // ReSharper disable once MemberCanBePrivate.Global
         protected T Model { get; }
 
         protected ViewModelBase(T model)

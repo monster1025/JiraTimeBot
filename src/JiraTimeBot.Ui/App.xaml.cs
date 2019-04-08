@@ -25,6 +25,7 @@ namespace JiraTimeBot.Ui
             }
             else
             {
+                Mutex.Dispose();
                 SingleInstance.ShowFirstInstance();
                 this.Shutdown();
             }
