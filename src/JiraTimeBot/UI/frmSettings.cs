@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.UI.Startup;
+using JiraTimeBot.Core.Configuration;
+using JiraTimeBot.Core.StartUp;
 
 namespace JiraTimeBot.UI
 {

@@ -1,17 +1,19 @@
 ﻿using Autofac;
 using Autofac.Extras.AggregateService;
-using JiraTimeBot.JiraIntegration;
-using JiraTimeBot.JiraIntegration.Comments;
-using JiraTimeBot.Mercurial;
-using JiraTimeBot.Mercurial.Modifiers;
-using JiraTimeBot.TasksProcessors;
-using JiraTimeBot.TaskTime;
 using JiraTimeBot.UI.Tray;
 using System;
 using System.Windows.Forms;
+using JiraTimeBot.Core;
+using JiraTimeBot.Core.JiraIntegration;
+using JiraTimeBot.Core.JiraIntegration.Comments;
+using JiraTimeBot.Core.Mercurial;
+using JiraTimeBot.Core.Mercurial.Modifiers;
+using JiraTimeBot.Core.StartUp;
+using JiraTimeBot.Core.TasksProcessors;
+using JiraTimeBot.Core.TaskTime;
+using JiraTimeBot.Core.Update;
+using JiraTimeBot.Core.Update.Update;
 using JiraTimeBot.UI;
-using JiraTimeBot.UI.Startup;
-using JiraTimeBot.Update;
 
 namespace JiraTimeBot.DI
 {

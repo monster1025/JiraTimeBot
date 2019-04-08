@@ -28,7 +28,7 @@ namespace JiraTimeBot.UI.Tray
         
         [DllImport("user32")]
         public static extern int RegisterWindowMessage(string message);
-	
+    
         [DllImport("user32")]
         public static extern bool PostMessage(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam);
     }

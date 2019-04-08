@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>JiraTimeBot</RootNamespace>
     <AssemblyName>JiraTimeBot</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,51 +80,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI\ContainerBuilder.cs" />
-    <Compile Include="JiraIntegration\Comments\IJiraDescriptionSource.cs" />
-    <Compile Include="JiraIntegration\Comments\JiraDescriptionSource.cs" />
-    <Compile Include="Job.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Configuration\Settings.cs" />
-    <Compile Include="JiraIntegration\JiraCommitEmulator.cs" />
-    <Compile Include="Mercurial\IAllMercurialProviders.cs" />
-    <Compile Include="Mercurial\Modifiers\ITechnicalInfoSkipper.cs" />
-    <Compile Include="Mercurial\Modifiers\CommitSkipper.cs" />
-    <Compile Include="Mercurial\Modifiers\ICommitSkipper.cs" />
-    <Compile Include="Mercurial\IMercurialLog.cs" />
-    <Compile Include="Mercurial\Modifiers\TechnicalInfoSkipper.cs" />
-    <Compile Include="TasksProcessors\IAllTasksProcessors.cs" />
     <Compile Include="UI\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="JiraIntegration\JiraApi.cs" />
-    <Compile Include="Mercurial\Objects\MercurialCommitItem.cs" />
-    <Compile Include="Mercurial\MercurialLog.cs" />
-    <Compile Include="Configuration\PasswordEncryptionClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TasksProcessors\ITasksProcessor.cs" />
-    <Compile Include="TasksProcessors\MeetingProcessor.cs" />
-    <Compile Include="TasksProcessors\WorkLogTasksProcessor.cs" />
-    <Compile Include="TaskTime\ITaskTimeCalculator.cs" />
-    <Compile Include="TaskTime\TaskTimeByCommitsCalculator.cs" />
-    <Compile Include="TaskTime\Objects\TaskTimeItem.cs" />
     <Compile Include="UI\frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Startup\AutoStartUp.cs" />
     <Compile Include="UI\Tray\SingleInstance.cs" />
     <Compile Include="UI\Tray\ITrayMenu.cs" />
     <Compile Include="UI\Tray\RestoreFromTray.cs" />
     <Compile Include="UI\Tray\TrayMenu.cs" />
-    <Compile Include="Update\GitHubDataObjects.cs" />
-    <Compile Include="Update\IUpdater.cs" />
-    <Compile Include="Update\Updater.cs" />
     <EmbeddedResource Include="UI\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -157,5 +132,12 @@
   <ItemGroup>
     <Content Include="app.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JiraTimeBot.Core\JiraTimeBot.Core.csproj">
+      <Project>{35D8A11F-05F8-408D-A37D-0EECD96FA67A}</Project>
+      <Name>JiraTimeBot.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

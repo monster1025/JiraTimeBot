@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using JiraTimeBot.Core;
 
 namespace JiraTimeBot
 {
@@ -37,13 +38,5 @@ namespace JiraTimeBot
         {
             AppendText(message);
         }
-    }
-
-    public interface ILog
-    {
-        void Info([Localizable(false)] string message);
-        void Trace([Localizable(false)] string message);
-        void Warn([Localizable(false)] string message);
-        void Error([Localizable(false)] string message);
     }
 }
