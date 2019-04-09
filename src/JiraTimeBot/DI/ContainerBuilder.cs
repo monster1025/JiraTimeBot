@@ -4,6 +4,7 @@ using JiraTimeBot.UI.Tray;
 using System;
 using System.Windows.Forms;
 using JiraTimeBot.Core;
+using JiraTimeBot.Core.Configuration;
 using JiraTimeBot.Core.JiraIntegration;
 using JiraTimeBot.Core.JiraIntegration.Comments;
 using JiraTimeBot.Core.Mercurial;
@@ -62,6 +63,7 @@ namespace JiraTimeBot.DI
 
             _builder.RegisterType<AutoStartUp>().AsSelf().AsImplementedInterfaces();
             _builder.RegisterType<frmSettings>().AsSelf().AsImplementedInterfaces();
+            _builder.RegisterType<SettingsManager>().AsSelf().AsImplementedInterfaces().SingleInstance();
 
             var container = _builder.Build();
             return container;

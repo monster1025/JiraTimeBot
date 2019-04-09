@@ -72,7 +72,7 @@ namespace JiraTimeBot.UI
 
             _settingsWindowShow = () =>
             {
-                var frmSettings = new frmSettings(_container.Resolve<AutoStartUp>());
+                var frmSettings = new frmSettings(_container.Resolve<AutoStartUp>(), _container.Resolve<ISettingsManager>());
                 frmSettings.ShowDialog(this);
             };
             _settingsErrorReporter = msg => MessageBox.Show(msg, "Загрузка настроек", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);;
@@ -85,7 +85,9 @@ namespace JiraTimeBot.UI
 
         public Settings ReadSettingsAndLock()
         {
-            _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
+            var settingsManager = _container.Resolve<ISettingsManager>();
+
+            _settings = settingsManager.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
             
             LockUnlock(false);
 
@@ -123,7 +125,8 @@ namespace JiraTimeBot.UI
 
         private void PrintStartMessage()
         {
-            _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
+            var settingsManager = _container.Resolve<ISettingsManager>();
+            _settings = settingsManager.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
             _log.Info($"Загружен бот для {_settings.JiraUserName}, Режим: {_settings.WorkType.ToString()}, работаем в {_settings.RepositoryPath}");
         }
 

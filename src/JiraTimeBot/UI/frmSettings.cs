@@ -8,16 +8,18 @@ namespace JiraTimeBot.UI
     public partial class frmSettings : Form
     {
         private readonly AutoStartUp _autoStart;
+        private readonly ISettingsManager _settingsManager;
 
-        public frmSettings(AutoStartUp autoStart)
+        public frmSettings(AutoStartUp autoStart, ISettingsManager settingsManager)
         {
             _autoStart = autoStart;
+            _settingsManager = settingsManager;
             InitializeComponent();
         }
 
         private void frmSettings_Load(object sender, EventArgs e)
         {
-            var settings = Settings.Load();
+            var settings = _settingsManager.Load();
             if (settings != null)
             {
                 SetSettings(settings);
@@ -34,7 +36,7 @@ namespace JiraTimeBot.UI
             txtRepoPath.Text = settings.RepositoryPath;
             actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
             chkAddComments.Checked = settings.AddCommentsToWorklog;
-            txtRoundTo.Text = settings.RountToMinutes.ToString();
+            txtRoundTo.Text = settings.RoundToMinutes.ToString();
             cboWorkType.SelectedIndex = (int) settings.WorkType;
             txtTimeControlTask.Text = settings.TimeControlTask;
             txtJQL.Text = settings.JiraQuery;
@@ -57,7 +59,7 @@ namespace JiraTimeBot.UI
                 ActivationTime = TimeSpan.Parse(actTime.Text),
                 RepositoryPath = txtRepoPath.Text,
                 AddCommentsToWorklog = chkAddComments.Checked,
-                RountToMinutes = roundTo,
+                RoundToMinutes = roundTo,
                 WorkType = (WorkType) cboWorkType.SelectedIndex,
                 JiraQuery = txtJQL.Text,
                 TimeControlTask = txtTimeControlTask.Text,
@@ -71,7 +73,7 @@ namespace JiraTimeBot.UI
         private void btnSave_Click(object sender, EventArgs e)
         {
             var settings = ReadSettingsAndLock();
-            settings.Save();
+            _settingsManager.Save(settings);
              _autoStart.Set(chkAutostart.Checked);
 
             MessageBox.Show("Настройки сохранены.");

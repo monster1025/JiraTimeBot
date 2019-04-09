@@ -32,11 +32,11 @@ namespace JiraTimeBot.Core.TaskTime
             }
 
             //если кол-во коммитов более чем кол-во интервалов - то уменьшим интервал вдвое.
-            while (totalCommitsCount > (8 * (60.0 / settings.RountToMinutes)))
+            while (totalCommitsCount > (8 * (60.0 / settings.RoundToMinutes)))
             {
-                settings.RountToMinutes = (int)RoundTo((decimal)(settings.RountToMinutes / 2.0), 5);
-                _log.Info($"Слишком много задач - уменьшаю интервал до {settings.RountToMinutes}.");
-                if (settings.RountToMinutes == 5)
+                settings.RoundToMinutes = (int)RoundTo((decimal)(settings.RoundToMinutes / 2.0), 5);
+                _log.Info($"Слишком много задач - уменьшаю интервал до {settings.RoundToMinutes}.");
+                if (settings.RoundToMinutes == 5)
                 {
                     break;
                 }
@@ -66,7 +66,7 @@ namespace JiraTimeBot.Core.TaskTime
                 }
 
                 int currentTaskCommits = taskGroup.Count();
-                int currentTaskTime = (int)RoundTo(minutesPerWorkDay / totalCommitsCount * currentTaskCommits, settings.RountToMinutes);
+                int currentTaskTime = (int)RoundTo(minutesPerWorkDay / totalCommitsCount * currentTaskCommits, settings.RoundToMinutes);
                 remainMinutes = remainMinutes - currentTaskTime;
 
                 var orderedTasks = taskGroup.OrderBy(f => f.Time).ToArray();
@@ -126,9 +126,14 @@ namespace JiraTimeBot.Core.TaskTime
         private decimal RoundTo(decimal value, decimal to = 15, bool up = true)
         {
             if ((value % to) == 0)
+            {
                 return value;
+            }
+
             if (up)
+            {
                 return (value - (value % to) + to);
+            }
 
             return (value - (value % to));
         }
