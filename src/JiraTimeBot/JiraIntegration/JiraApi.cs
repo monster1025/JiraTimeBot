@@ -123,20 +123,25 @@ namespace JiraTimeBot.JiraIntegration
                 var userWorklogs = workLogs.Where(w =>
                     w.StartDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
                         StringComparison.InvariantCultureIgnoreCase)).ToList();
+                var comment = _descriptionSource.GetDescription(taskTimeItem, addCommentsToWorklog, settings);
 
                 foreach (var workLog in userWorklogs)
                 {
                     var timeSpent = TimeSpan.FromSeconds(workLog.TimeSpentInSeconds);
                     var timeDiff = Math.Abs((timeSpent - taskTimeItem.Time).TotalMinutes);
-                    if (timeDiff > 1 || userWorklogs.Count > 1)
+                    if (timeDiff > 1 || userWorklogs.Count > 1 || userWorklogs.First().Comment != comment)
                     {
                         if (timeDiff > 1)
                         {
                             _log.Trace($"Время отличается на {timeDiff} минут, удаляю worklog: {taskTimeItem.Branch} {workLog.Author} {workLog.CreateDate}: {workLog.TimeSpent}");
                         }
-                        else
+                        else if (userWorklogs.Count > 1)
                         {
                             _log.Trace($"Найдено более одного ворклога на задачу, удаляю worklog: {taskTimeItem.Branch} {workLog.Author} {workLog.CreateDate}: {workLog.TimeSpent}");
+                        }
+                        else
+                        {
+                            _log.Trace($"Описание отличается, удаляю worklog: {taskTimeItem.Branch} {workLog.Author} {workLog.CreateDate}: {workLog.TimeSpent}");
                         }
                         if (!dummy)
                         {
@@ -154,8 +159,6 @@ namespace JiraTimeBot.JiraIntegration
                 if (!hasTodayWorklog)
                 {
                     var timeSpentJira = $"{taskTimeItem.Time.TotalMinutes}m";
-
-                    var comment = _descriptionSource.GetDescription(taskTimeItem, addCommentsToWorklog, settings);
 
                     Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value, comment);
                     if (!dummy)
