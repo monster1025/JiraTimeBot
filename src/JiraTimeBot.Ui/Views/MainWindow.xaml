@@ -16,7 +16,7 @@
         >
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModels:MainPageViewModel}">
-            <ui:MainPage/>
+            <ui:MainPage />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
             <ui:SettingsPage/>

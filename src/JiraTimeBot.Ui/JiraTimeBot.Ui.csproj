@@ -190,6 +190,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JiraTimeBot.Core\JiraTimeBot.Core.csproj">
+      <Project>{35D8A11F-05F8-408D-A37D-0EECD96FA67A}</Project>
+      <Name>JiraTimeBot.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JiraTimeBot\JiraTimeBot.csproj">
       <Project>{f3b89316-c38c-4ce6-9d88-0b1373cfba1a}</Project>
       <Name>JiraTimeBot</Name>

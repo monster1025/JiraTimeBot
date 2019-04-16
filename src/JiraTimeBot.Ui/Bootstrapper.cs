@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extras.AggregateService;
+using JiraTimeBot.Core.Configuration;
 using JiraTimeBot.Ui.Models;
 using JiraTimeBot.Ui.ViewModels;
 
@@ -16,24 +17,29 @@ namespace JiraTimeBot.Ui
                 var result = new MainWindow();
                 result.DataContext = c.Resolve<ApplicationViewModel>();
                 return result;
-            }).SingleInstance();
+            }).InstancePerLifetimeScope();
 
-            builder.RegisterType<ApplicationModel>().SingleInstance();
-            builder.RegisterType<SettingsModel>().SingleInstance();
-            builder.RegisterType<MainModel>().SingleInstance();
+            builder.RegisterType<SettingsManager>().As<ISettingsManager>();
+            builder.RegisterType<ApplicationModel>().InstancePerLifetimeScope();
+            builder.RegisterType<SettingsModel>().InstancePerLifetimeScope();
+            builder.RegisterType<MainModel>().InstancePerLifetimeScope();
 
-            builder.RegisterType<ApplicationViewModel>().SingleInstance();
-            builder.RegisterType<MainPageViewModel>().SingleInstance();
-            builder.RegisterType<SettingsViewModel>().SingleInstance();
+            builder.RegisterType<ApplicationViewModel>().InstancePerLifetimeScope();
+            builder.RegisterType<MainPageViewModel>().InstancePerLifetimeScope();
+            builder.RegisterType<SettingsViewModel>()
+                   .InstancePerLifetimeScope();
             
-            builder.RegisterType<MainPage>().SingleInstance();
-            builder.RegisterType<SettingsPage>().SingleInstance();
+            builder.RegisterType<MainPage>().InstancePerLifetimeScope();
+            builder.RegisterType<SettingsPage>()
+                   .AsSelf()
+                   .As<IHavePassword>()
+                   .InstancePerLifetimeScope();
             
             builder.RegisterAggregateService<IRegisteredViewModels>();
 
             builder.RegisterType<ApplicationNavigator>()
                    .As<IApplicationNavigator>()
-                   .SingleInstance();
+                   .InstancePerLifetimeScope();
 
             var container = builder.Build();
 

@@ -79,7 +79,7 @@ namespace JiraTimeBot.Core.Configuration
             var settingsString = JsonConvert.SerializeObject(settings);
             File.WriteAllText(settingsPath, settingsString);
         }
-        private static bool SettingsIsValid(Settings settings, out string message)
+        public bool SettingsIsValid(Settings settings, out string message)
         {
             if (settings == null)
             {

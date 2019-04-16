@@ -2,6 +2,9 @@
 {
     public class ApplicationModel : IModel
     {
-        
+        /// <inheritdoc />
+        public ApplicationModel()
+        {
+        }
     }
 }

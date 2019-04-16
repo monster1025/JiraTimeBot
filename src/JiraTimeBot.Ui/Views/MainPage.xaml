@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:JiraTimeBot.Ui"
       xmlns:viewModels="clr-namespace:JiraTimeBot.Ui.ViewModels"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DataContext="{d:DesignInstance viewModels:MainPageViewModel}" >
     <UserControl.Resources>
@@ -24,16 +25,20 @@
             <StackPanel Grid.Row="0" 
                         Orientation="Vertical">
                 <Button Content="Настройки" Command="{Binding Path=OpenSettingsCommand}" />
-                <DatePicker />
+                <xctk:DateTimePicker AutoCloseCalendar="True" 
+                                     Format="ShortDate"
+                                     Value="{Binding Path=SelectedDate}" 
+                                     Kind="Local"  />
+                <!--<DatePicker  IsTodayHighlighted="True" SelectedDate="{Binding Path=SelectedDate}" />-->
                 <Button>
                     <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="Проставить на дату" />
                 </Button>
             </StackPanel>
             <StackPanel Grid.Row="2">
                 <CheckBox>Тестовый прогон</CheckBox>
-                <Button Content="Проставить время"/>
-                <Button Content="Митинг"/>
-                <Button Content="Отменить"/>
+                <Button Content="Проставить время" Command="{Binding Path=SetTimeCommand}"/>
+                <Button Content="Митинг" Command="{Binding Path=ShowMeetingInfoCommand}"/>
+                <Button Content="Отменить" Command="{Binding Path=CancelCommand}"/>
             </StackPanel>
         </Grid>
 

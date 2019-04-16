@@ -8,5 +8,6 @@ namespace JiraTimeBot.Core.Configuration
         Settings LoadAndCheck(Action settingsSource, Action<string> errorMessageReporter);
 
         void Save(Settings settings);
+        bool SettingsIsValid(Settings settings, out string message);
     }
 }

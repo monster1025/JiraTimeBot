@@ -43,23 +43,32 @@
         <TextBlock Grid.Row="0" Grid.Column="0"
                    Text="Режим работы" />
 
-        <ComboBox Grid.Row="0" Grid.Column="1">
+        <ComboBox Grid.Row="0" Grid.Column="1" 
+                  ItemsSource="{Binding Path=WorkModes}"
+                  SelectedItem="{Binding Path=CurrentWorkType}"
+                  >
         </ComboBox>
 
         <TextBlock Grid.Row="1" Grid.Column="0"
                    Text="Путь до репо" />
         
-        <TextBox Grid.Row="1" Grid.Column="1" />
+        <TextBox Grid.Row="1" Grid.Column="1" 
+                 Text="{Binding Path=RepositoryPath}"
+                 />
 
         <TextBlock Grid.Row="2" Grid.Column="0"
                    Text="Логин Jira" />
         
-        <TextBox Grid.Row="2" Grid.Column="1" />
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding Path=JiraLogin}"
+                 />
 
         <TextBlock Grid.Row="3" Grid.Column="0"
                    Text="Пароль Jira" />
 
-        <PasswordBox Grid.Row="3" Grid.Column="1"/>
+        <PasswordBox Name="PBox" Grid.Row="3" Grid.Column="1"
+                                          
+                     />
 
         <TextBlock Grid.Row="4" Grid.Column="0"
                    Text="Mercurial Name" />

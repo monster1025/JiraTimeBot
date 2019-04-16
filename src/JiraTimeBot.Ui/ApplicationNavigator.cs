@@ -1,11 +1,12 @@
-﻿using JiraTimeBot.Ui.ViewModels;
+﻿using System;
+using JiraTimeBot.Ui.ViewModels;
 
 namespace JiraTimeBot.Ui
 {
     public interface IRegisteredViewModels
     {
-        SettingsViewModel Settings { get; set; }
-        MainPageViewModel MainPage { get; set; }
+        Func<SettingsViewModel> Settings { get; set; }
+        Func<MainPageViewModel> MainPage { get; set; }
     }
 
     public class ApplicationNavigator : IApplicationNavigator
@@ -22,12 +23,12 @@ namespace JiraTimeBot.Ui
 
         public void NavigateToMain()
         {
-            _applicationViewModel.CurrentViewModel = _viewModels.MainPage;
+            _applicationViewModel.CurrentViewModel = _viewModels.MainPage();
         }
 
         public void NavigateToSettings()
         {
-            _applicationViewModel.CurrentViewModel = _viewModels.Settings;
+            _applicationViewModel.CurrentViewModel = _viewModels.Settings();
         }
     }
 }

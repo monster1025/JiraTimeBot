@@ -3,6 +3,10 @@ using JiraTimeBot.UI.Tray;
 using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Navigation;
+using JiraTimeBot.Core.Configuration;
+using JiraTimeBot.Ui.ViewModels;
+
 
 namespace JiraTimeBot.Ui
 {
@@ -34,13 +38,45 @@ namespace JiraTimeBot.Ui
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var mainWindow = _container.Resolve<MainWindow>();
-            var nav = _container.Resolve<IApplicationNavigator>();
+            var settingsManager = _container.Resolve<ISettingsManager>();
+            var settings = settingsManager.Load();
+            var scope = _container.BeginLifetimeScope("Started",
+                                                      builder =>
+                                                      {
+                                                          if (settings != null)
+                                                          {
+                                                              builder.RegisterInstance(settings);
+                                                          }
+                                                          else
+                                                          {
+                                                              builder.RegisterInstance(new Settings());
+                                                          }
+                                                      });
+
+            var appViewModel = scope.Resolve<ApplicationViewModel>();
+            var mainWindow = scope.Resolve<MainWindow>();
+            if (settings == null)
+            {
+                var settingsViewModel = scope.Resolve<SettingsViewModel>();
+                appViewModel.CurrentViewModel = settingsViewModel;
+            }
+            else
+            {
+                var mainViewModel = scope.Resolve<MainPageViewModel>();
+                appViewModel.CurrentViewModel = mainViewModel;
+            }
+
             
-            nav.NavigateToSettings();
+
             mainWindow.ShowActivated = true;
             mainWindow.Show();
             base.OnStartup(e);
+        }
+
+        /// <inheritdoc />
+        protected override void OnLoadCompleted(NavigationEventArgs e)
+        {
+            base.OnLoadCompleted(e);
         }
     }
 }
