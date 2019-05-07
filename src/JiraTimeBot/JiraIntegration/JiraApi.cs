@@ -145,7 +145,15 @@ namespace JiraTimeBot.JiraIntegration
                         }
                         if (!dummy)
                         {
-                            issue.DeleteWorklogAsync(workLog, token: cancellationToken);
+                            try
+                            {
+                                issue.DeleteWorklogAsync(workLog, token: cancellationToken);
+                            }
+                            catch (Exception ex)
+                            {
+                                _log.Error($"Не могу удалить Worklog по задаче {taskTimeItem.Branch}: {ex.Message}.");
+                                continue;
+                            }
                         }
                         hasTodayWorklog = false;
                     }
@@ -163,7 +171,15 @@ namespace JiraTimeBot.JiraIntegration
                     Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value, comment);
                     if (!dummy)
                     {
-                        workLogToAdd = issue.AddWorklogAsync(workLogToAdd, token: cancellationToken).Result;
+                        try
+                        {
+                            workLogToAdd = issue.AddWorklogAsync(workLogToAdd, token: cancellationToken).Result;
+                        }
+                        catch (Exception ex)
+                        {
+                            _log.Error($"Не могу добавить Worklog по задаче {taskTimeItem.Branch}: {ex.Message}.");
+                            continue;
+                        }
                     }
                     _log.Trace($"Добавили Worklog для {taskTimeItem.Branch}: {workLogToAdd.Author} {workLogToAdd.CreateDate}: {workLogToAdd.TimeSpent}");
                 }
