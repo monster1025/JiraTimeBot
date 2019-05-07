@@ -37,7 +37,7 @@ namespace JiraTimeBot.JiraIntegration
                 var comments = issue.GetCommentsAsync(cancellationToken).Result?.ToList() ?? new List<Comment>();
 
                 var user = settings.JiraUserName;
-                user = "Zoya.Aleksandridi";
+                //user = "Zoya.Aleksandridi";
                 var userComments = comments.Where(f => f.Author.Equals(user, StringComparison.InvariantCultureIgnoreCase)).ToList();
                 _log.Trace($"Получены комментарии по задаче {issue.Key} ({issue.Type?.Name}): {userComments.Count}.");
 
