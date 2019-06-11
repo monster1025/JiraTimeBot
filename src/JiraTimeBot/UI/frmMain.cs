@@ -172,6 +172,7 @@ namespace JiraTimeBot.UI
                 if (txtDummyMode.Checked)
                 {
                     _log.Info("Выключаем режим Тестового прогона");
+                    txtDummyMode.Checked = false;
                 }
 
                 using (var tokenSource = GetTokenSource())
