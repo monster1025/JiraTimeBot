@@ -49,6 +49,10 @@ namespace JiraTimeBot
                 {
                     return;
                 }
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
 
                 _log.Warn($"{realDate:dd.MM.yyyy} вы не сделали ничего полезного =) Использую предыдущий день.");
                 daysDiff--;
