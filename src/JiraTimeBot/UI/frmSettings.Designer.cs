@@ -51,6 +51,8 @@
             this.chkAutostart = new System.Windows.Forms.CheckBox();
             this.lblWorkDay = new System.Windows.Forms.Label();
             this.txtWorkDayDuration = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtRandomMinutes = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label5
@@ -78,6 +80,7 @@
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 26;
             this.label4.Text = "Путь до репо:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txtRepoPath
             // 
@@ -94,6 +97,7 @@
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 24;
             this.label2.Text = "Mercurial name:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txtMercurialEmail
             // 
@@ -155,7 +159,7 @@
             // chkAddComments
             // 
             this.chkAddComments.AutoSize = true;
-            this.chkAddComments.Location = new System.Drawing.Point(65, 308);
+            this.chkAddComments.Location = new System.Drawing.Point(65, 336);
             this.chkAddComments.Name = "chkAddComments";
             this.chkAddComments.Size = new System.Drawing.Size(133, 17);
             this.chkAddComments.TabIndex = 31;
@@ -164,7 +168,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(86, 331);
+            this.btnSave.Location = new System.Drawing.Point(86, 359);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -229,7 +233,7 @@
             // chkAutostart
             // 
             this.chkAutostart.AutoSize = true;
-            this.chkAutostart.Location = new System.Drawing.Point(65, 285);
+            this.chkAutostart.Location = new System.Drawing.Point(65, 313);
             this.chkAutostart.Name = "chkAutostart";
             this.chkAutostart.Size = new System.Drawing.Size(96, 17);
             this.chkAutostart.TabIndex = 40;
@@ -252,11 +256,29 @@
             this.txtWorkDayDuration.Size = new System.Drawing.Size(99, 20);
             this.txtWorkDayDuration.TabIndex = 41;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(30, 284);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(101, 13);
+            this.label9.TabIndex = 44;
+            this.label9.Text = "Рандомных минут:";
+            // 
+            // txtRandomMinutes
+            // 
+            this.txtRandomMinutes.Location = new System.Drawing.Point(133, 280);
+            this.txtRandomMinutes.Name = "txtRandomMinutes";
+            this.txtRandomMinutes.Size = new System.Drawing.Size(99, 20);
+            this.txtRandomMinutes.TabIndex = 43;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 362);
+            this.ClientSize = new System.Drawing.Size(243, 391);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.txtRandomMinutes);
             this.Controls.Add(this.lblWorkDay);
             this.Controls.Add(this.txtWorkDayDuration);
             this.Controls.Add(this.chkAutostart);
@@ -316,5 +338,7 @@
         private System.Windows.Forms.CheckBox chkAutostart;
         private System.Windows.Forms.Label lblWorkDay;
         private System.Windows.Forms.TextBox txtWorkDayDuration;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtRandomMinutes;
     }
 }

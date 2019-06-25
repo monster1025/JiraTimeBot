@@ -20,7 +20,7 @@ namespace JiraTimeBot.TaskTime
 
         public List<TaskTimeItem> CalculateTaskTime(List<MercurialCommitItem> commits, Settings settings, CancellationToken cancellationToken = default(CancellationToken))
         {
-            int minutesPerWorkDay = settings.MinuterPerWorkDay;
+            int minutesPerWorkDay = settings.MinuterPerWorkDay + GetRandomMinutes(settings);
             int workHours = (settings.MinuterPerWorkDay / 60);
             int totalCommitsCount = commits.Count;
 
@@ -30,11 +30,11 @@ namespace JiraTimeBot.TaskTime
             }
 
             //если кол-во коммитов более чем кол-во интервалов - то уменьшим интервал вдвое.
-            while (totalCommitsCount > (workHours * (60.0 / settings.RountToMinutes)))
+            while (totalCommitsCount > (workHours * (60.0 / settings.RoundToMinutes)))
             {
-                settings.RountToMinutes = (int)RoundTo((decimal)(settings.RountToMinutes / 2.0), 5);
-                _log.Info($"Слишком много задач - уменьшаю интервал до {settings.RountToMinutes}.");
-                if (settings.RountToMinutes == 5)
+                settings.RoundToMinutes = (int)RoundTo((decimal)(settings.RoundToMinutes / 2.0), 5);
+                _log.Info($"Слишком много задач - уменьшаю интервал до {settings.RoundToMinutes}.");
+                if (settings.RoundToMinutes == 5)
                 {
                     break;
                 }
@@ -65,7 +65,7 @@ namespace JiraTimeBot.TaskTime
                 }
 
                 int currentTaskCommits = taskGroup.Count();
-                int currentTaskTime = (int)RoundTo(minutesPerWorkDay / totalCommitsCount * currentTaskCommits, settings.RountToMinutes);
+                int currentTaskTime = (int)RoundTo(minutesPerWorkDay / totalCommitsCount * currentTaskCommits, settings.RoundToMinutes);
                 remainMinutes = remainMinutes - currentTaskTime;
 
                 var orderedTasks = taskGroup.OrderBy(f => f.Time).ToArray();
@@ -108,6 +108,14 @@ namespace JiraTimeBot.TaskTime
             PrintTotal(workTimeItems);
 
             return workTimeItems;
+        }
+
+        private int GetRandomMinutes(Settings settings)
+        {
+            var rand = new Random();
+            int randomIntervals = settings.RandomWorkMinutes / settings.RoundToMinutes;
+            int randomMinutes = rand.Next(0, randomIntervals + 1) * settings.RoundToMinutes;
+            return randomMinutes;
         }
 
         private void PrintTotal(List<TaskTimeItem> workTimeItems)

@@ -34,11 +34,12 @@ namespace JiraTimeBot.UI
             txtRepoPath.Text = settings.RepositoryPath;
             actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
             chkAddComments.Checked = settings.AddCommentsToWorklog;
-            txtRoundTo.Text = settings.RountToMinutes.ToString();
+            txtRoundTo.Text = settings.RoundToMinutes.ToString();
             cboWorkType.SelectedIndex = (int) settings.WorkType;
             txtTimeControlTask.Text = settings.TimeControlTask;
             txtJQL.Text = settings.JiraQuery;
             txtWorkDayDuration.Text = settings.MinuterPerWorkDay.ToString();
+            txtRandomMinutes.Text = settings.RandomWorkMinutes.ToString();
 
             cboWorkType_SelectedIndexChanged(null, null);
         }
@@ -53,6 +54,10 @@ namespace JiraTimeBot.UI
             {
                 minuterPerWorkDay = 8 * 60;
             }
+            if (!int.TryParse(txtRandomMinutes.Text, out var randomWorkMinutes))
+            {
+                randomWorkMinutes = 0;
+            }
 
             var settings = new Settings
             {
@@ -62,11 +67,12 @@ namespace JiraTimeBot.UI
                 ActivationTime = TimeSpan.Parse(actTime.Text),
                 RepositoryPath = txtRepoPath.Text,
                 AddCommentsToWorklog = chkAddComments.Checked,
-                RountToMinutes = roundTo,
+                RoundToMinutes = roundTo,
                 WorkType = (WorkType) cboWorkType.SelectedIndex,
                 JiraQuery = txtJQL.Text,
                 TimeControlTask = txtTimeControlTask.Text,
-                MinuterPerWorkDay = minuterPerWorkDay
+                MinuterPerWorkDay = minuterPerWorkDay,
+                RandomWorkMinutes = randomWorkMinutes
             };
 
             //LockUnlock(false);

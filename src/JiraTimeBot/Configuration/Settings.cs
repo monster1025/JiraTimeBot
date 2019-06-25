@@ -10,7 +10,7 @@ namespace JiraTimeBot.Configuration
     public class Settings
     {
         public int MinuterPerWorkDay { get; set; }
-        public int RountToMinutes { get; set; }
+        public int RoundToMinutes { get; set; }
 
         public string JiraUrl = "https://myteam.aeroclub.ru";
 
@@ -23,6 +23,7 @@ namespace JiraTimeBot.Configuration
         public WorkType WorkType { get; set; }
         public string JiraQuery { get; set; }
         public string TimeControlTask { get; set; }
+        public int RandomWorkMinutes { get; set; }
 
         public static Settings LoadAndCheck(Action settingsSource, Action<string> errorMessageReporter)
         {
@@ -60,7 +61,7 @@ namespace JiraTimeBot.Configuration
             var errors = new List<string>();
             message = null;
 
-            if (settings.RountToMinutes == default(int))
+            if (settings.RoundToMinutes == default(int))
             {
                 errors.Add("Укажите округление времени, например, 10 (минут)");
             }
