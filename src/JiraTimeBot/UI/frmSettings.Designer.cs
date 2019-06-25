@@ -49,6 +49,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.txtTimeControlTask = new System.Windows.Forms.TextBox();
             this.chkAutostart = new System.Windows.Forms.CheckBox();
+            this.lblWorkDay = new System.Windows.Forms.Label();
+            this.txtWorkDayDuration = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label5
@@ -153,7 +155,7 @@
             // chkAddComments
             // 
             this.chkAddComments.AutoSize = true;
-            this.chkAddComments.Location = new System.Drawing.Point(65, 277);
+            this.chkAddComments.Location = new System.Drawing.Point(65, 308);
             this.chkAddComments.Name = "chkAddComments";
             this.chkAddComments.Size = new System.Drawing.Size(133, 17);
             this.chkAddComments.TabIndex = 31;
@@ -162,7 +164,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(86, 300);
+            this.btnSave.Location = new System.Drawing.Point(86, 331);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -227,18 +229,36 @@
             // chkAutostart
             // 
             this.chkAutostart.AutoSize = true;
-            this.chkAutostart.Location = new System.Drawing.Point(65, 254);
+            this.chkAutostart.Location = new System.Drawing.Point(65, 285);
             this.chkAutostart.Name = "chkAutostart";
             this.chkAutostart.Size = new System.Drawing.Size(96, 17);
             this.chkAutostart.TabIndex = 40;
             this.chkAutostart.Text = "Автозагрузка";
             this.chkAutostart.UseVisualStyleBackColor = true;
             // 
+            // lblWorkDay
+            // 
+            this.lblWorkDay.AutoSize = true;
+            this.lblWorkDay.Location = new System.Drawing.Point(15, 258);
+            this.lblWorkDay.Name = "lblWorkDay";
+            this.lblWorkDay.Size = new System.Drawing.Size(117, 13);
+            this.lblWorkDay.TabIndex = 42;
+            this.lblWorkDay.Text = "Минут в рабочем дне:";
+            // 
+            // txtWorkDayDuration
+            // 
+            this.txtWorkDayDuration.Location = new System.Drawing.Point(133, 254);
+            this.txtWorkDayDuration.Name = "txtWorkDayDuration";
+            this.txtWorkDayDuration.Size = new System.Drawing.Size(99, 20);
+            this.txtWorkDayDuration.TabIndex = 41;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 334);
+            this.ClientSize = new System.Drawing.Size(243, 362);
+            this.Controls.Add(this.lblWorkDay);
+            this.Controls.Add(this.txtWorkDayDuration);
             this.Controls.Add(this.chkAutostart);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtTimeControlTask);
@@ -294,5 +314,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtTimeControlTask;
         private System.Windows.Forms.CheckBox chkAutostart;
+        private System.Windows.Forms.Label lblWorkDay;
+        private System.Windows.Forms.TextBox txtWorkDayDuration;
     }
 }

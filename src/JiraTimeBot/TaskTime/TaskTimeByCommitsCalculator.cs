@@ -22,6 +22,7 @@ namespace JiraTimeBot.TaskTime
         {
             int minutesPerWorkDay = settings.MinuterPerWorkDay;
             int remainMinutes = settings.MinuterPerWorkDay;
+            int workHours = (settings.MinuterPerWorkDay / 60);
             int totalCommitsCount = commits.Count;
 
             if (!commits.Any())
@@ -30,7 +31,7 @@ namespace JiraTimeBot.TaskTime
             }
 
             //если кол-во коммитов более чем кол-во интервалов - то уменьшим интервал вдвое.
-            while (totalCommitsCount > (8 * (60.0 / settings.RountToMinutes)))
+            while (totalCommitsCount > (workHours * (60.0 / settings.RountToMinutes)))
             {
                 settings.RountToMinutes = (int)RoundTo((decimal)(settings.RountToMinutes / 2.0), 5);
                 _log.Info($"Слишком много задач - уменьшаю интервал до {settings.RountToMinutes}.");

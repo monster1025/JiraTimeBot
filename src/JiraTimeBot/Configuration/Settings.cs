@@ -9,7 +9,7 @@ namespace JiraTimeBot.Configuration
 {
     public class Settings
     {
-        public int MinuterPerWorkDay = 8 * 60;
+        public int MinuterPerWorkDay { get; set; }
         public int RountToMinutes { get; set; }
 
         public string JiraUrl = "https://myteam.aeroclub.ru";

@@ -38,6 +38,7 @@ namespace JiraTimeBot.UI
             cboWorkType.SelectedIndex = (int) settings.WorkType;
             txtTimeControlTask.Text = settings.TimeControlTask;
             txtJQL.Text = settings.JiraQuery;
+            txtWorkDayDuration.Text = settings.MinuterPerWorkDay.ToString();
 
             cboWorkType_SelectedIndexChanged(null, null);
         }
@@ -47,6 +48,10 @@ namespace JiraTimeBot.UI
             if (!int.TryParse(txtRoundTo.Text, out var roundTo))
             {
                 roundTo = 15;
+            }
+            if (!int.TryParse(txtWorkDayDuration.Text, out var minuterPerWorkDay))
+            {
+                minuterPerWorkDay = 8 * 60;
             }
 
             var settings = new Settings
@@ -61,6 +66,7 @@ namespace JiraTimeBot.UI
                 WorkType = (WorkType) cboWorkType.SelectedIndex,
                 JiraQuery = txtJQL.Text,
                 TimeControlTask = txtTimeControlTask.Text,
+                MinuterPerWorkDay = minuterPerWorkDay
             };
 
             //LockUnlock(false);
