@@ -51,8 +51,7 @@ namespace JiraTimeBot.JiraIntegration
 
             try
             {
-                List<Issue> affectedIssues =
-                    jira.Issues.GetIssuesFromJqlAsync(jql, 100, 0, cancellationToken).Result.ToList();
+                List<Issue> affectedIssues = jira.Issues.GetIssuesFromJqlAsync(jql, 100, 0, cancellationToken).Result.ToList();
                 return affectedIssues;
             }
             catch (Exception ex)
@@ -177,7 +176,7 @@ namespace JiraTimeBot.JiraIntegration
                         }
                         catch (Exception ex)
                         {
-                            _log.Error($"Не могу добавить Worklog по задаче {taskTimeItem.Branch}: {ex.Message}.");
+                            _log.Error($"Не могу добавить Worklog по задаче {taskTimeItem.Branch}: {ex.Message} ({ex.InnerException?.Message}).");
                             continue;
                         }
                     }
