@@ -21,7 +21,6 @@ namespace JiraTimeBot.TaskTime
         public List<TaskTimeItem> CalculateTaskTime(List<MercurialCommitItem> commits, Settings settings, CancellationToken cancellationToken = default(CancellationToken))
         {
             int minutesPerWorkDay = settings.MinuterPerWorkDay;
-            int remainMinutes = settings.MinuterPerWorkDay;
             int workHours = (settings.MinuterPerWorkDay / 60);
             int totalCommitsCount = commits.Count;
 
@@ -56,6 +55,7 @@ namespace JiraTimeBot.TaskTime
                 });
             }
 
+            int remainMinutes = minutesPerWorkDay;
             //Нам нужно раскидать 480 минут в день.
             foreach (var taskGroup in commits.GroupBy(f => f.Branch).OrderByDescending(f=>f.Count()))
             {
