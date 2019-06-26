@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -124,7 +125,19 @@ namespace JiraTimeBot.Update
                 return false;
             }
         }
-        
+        public void SelfRestart()
+        {
+            var name = Application.ExecutablePath;
+            ProcessStartInfo startInfo = new ProcessStartInfo {
+                Arguments = "/C choice /C Y /N /D Y /T 1 & \"" + name + "\"",
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                FileName = "cmd.exe"
+            };
+            Process.Start(startInfo);
+            Application.Exit();
+        }
+
 
         private bool DownloadFile(string url, string to)
         {
