@@ -18,7 +18,7 @@ namespace JiraTimeBot.TaskTime
             _log = log;
         }
 
-        private List<TaskTimeItem> SpreadTime(List<TaskTimeItem> source, int minutes, int roundToMinutes, bool up = false)
+        private List<TaskTimeItem> SpreadTime(List<TaskTimeItem> source, int minutes, int roundToMinutes, bool roundUp = false, bool appendTime = true)
         {
             if (source == null || !source.Any())
             {
@@ -32,7 +32,7 @@ namespace JiraTimeBot.TaskTime
             foreach (var taskGroup in source.GroupBy(f => f.Branch).OrderByDescending(f => f.Count()))
             {
                 int currentTaskCommits = taskGroup.Count();
-                int currentTaskTime = (int)RoundTo(minutes / source.Count * currentTaskCommits, roundToMinutes, up);
+                int currentTaskTime = (int)RoundTo(minutes / source.Count * currentTaskCommits, roundToMinutes, roundUp);
                 remainMinutes = remainMinutes - currentTaskTime;
 
                 var orderedTasks = taskGroup.OrderBy(f => f.StartTime).ToArray();
@@ -44,7 +44,10 @@ namespace JiraTimeBot.TaskTime
                 var taskTimeItem = new TaskTimeItem
                 {
                     Branch = taskGroup.Key,
-                    TimeSpent = TimeSpan.FromMinutes(taskGroup.Sum(f=>f.TimeSpent.TotalMinutes)) + TimeSpan.FromMinutes(currentTaskTime),
+                    TimeSpent = appendTime ?
+                        TimeSpan.FromMinutes(taskGroup.Sum(f=>f.TimeSpent.TotalMinutes)) + TimeSpan.FromMinutes(currentTaskTime):
+                        TimeSpan.FromMinutes(currentTaskTime)
+                    ,
                     Commits = taskGroup.Sum(f=>f.Commits),
                     Description = sb.ToString(),
                     StartTime = taskGroup.Min(f=>f.StartTime),
