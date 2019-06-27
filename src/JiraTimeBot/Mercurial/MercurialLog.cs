@@ -82,6 +82,7 @@ namespace JiraTimeBot.Mercurial
                         TimeSpent = TimeSpan.Zero,
                         Type = GetCommitType(changeset.Branch)
                     };
+
                     if (task.Type == CommitType.Release && task.Description.StartsWith("Merge with", StringComparison.CurrentCultureIgnoreCase))
                     {
                         var branch = task.Description.Replace("Merge with", "").Replace(" ", "");
