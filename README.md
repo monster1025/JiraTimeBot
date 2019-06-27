@@ -1,5 +1,5 @@
 # JiraTimeBot [![Build status](https://ci.appveyor.com/api/projects/status/anmhfvuj4oq84j1f/branch/master?svg=true)](https://ci.appveyor.com/project/monster1025/jiratimebot/branch/master)
-Приложение для автоматического добавления Jira Worklog'ов исходя из количества коммитов в ветку.
+Приложение для автоматического добавления Jira Worklog'ов исходя из количества коммитов в ветку. Возможна работа по JQL-запросу JIRA.
 
 # Ограничения
  - Предполагается что все Ваши репозитории находятся в одной папке (к которой вы указываете путь в настройках).
