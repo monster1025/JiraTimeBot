@@ -99,7 +99,6 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="JiraIntegration\JiraApi.cs" />
-    <Compile Include="Mercurial\Objects\MercurialCommitItem.cs" />
     <Compile Include="Mercurial\MercurialLog.cs" />
     <Compile Include="Configuration\PasswordEncryptionClass.cs" />
     <Compile Include="Program.cs" />

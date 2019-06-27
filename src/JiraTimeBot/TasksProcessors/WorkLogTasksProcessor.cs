@@ -23,7 +23,7 @@ namespace JiraTimeBot.TasksProcessors
             _log.Trace($"На реальную дату {realDate:dd.MM.yyyy} распределение по задачам:");
             foreach (var taskTime in taskTimes)
             {
-                _log.Trace($"- {taskTime.Branch} (коммитов {taskTime.Commits}): {taskTime.Time}");
+                _log.Trace($"- {taskTime.Branch} (коммитов {taskTime.Commits}): {taskTime.TimeSpent}");
             }
 
             _jiraApi.SetTodayWorklog(taskTimes, settings, date: setForDate, dummy: dummyMode, addCommentsToWorklog: settings.AddCommentsToWorklog, cancellationToken: cancellationToken);

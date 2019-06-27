@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using JiraTimeBot.Configuration;
 using JiraTimeBot.Mercurial.Modifiers;
-using JiraTimeBot.Mercurial.Objects;
+using JiraTimeBot.TaskTime.Objects;
 using Mercurial;
 
 namespace JiraTimeBot.Mercurial
@@ -23,23 +23,23 @@ namespace JiraTimeBot.Mercurial
             _commitSkipper = commitSkipper;
             _technicalInfoSkipper = technicalInfoSkipper;
         }
-
-        public List<MercurialCommitItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
+        
+        public List<TaskTimeItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath))
             {
                 _log.Error("Папка с репо не сушествует.");
-                return new List<MercurialCommitItem>();
+                return new List<TaskTimeItem>();
             }
 
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
-            var workTasks = new List<MercurialCommitItem>();
+            var workTasks = new List<TaskTimeItem>();
             foreach (var repoDirectory in Directory.GetDirectories(settings.RepositoryPath))
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    return new List<MercurialCommitItem>();
+                    return new List<TaskTimeItem>();
                 }
 
                 //var project = new DirectoryInfo(repoDirectory).Name;
@@ -62,7 +62,7 @@ namespace JiraTimeBot.Mercurial
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        return new List<MercurialCommitItem>();
+                        return new List<TaskTimeItem>();
                     }
 
                     var commitMessage = FixEncoding(changeset.CommitMessage);
@@ -72,24 +72,25 @@ namespace JiraTimeBot.Mercurial
                     }
                     commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
 
-                    workTasks.Add(new MercurialCommitItem
+                    workTasks.Add(new TaskTimeItem
                     {
+                        StartTime = changeset.Timestamp,
                         Description = commitMessage,
                         Branch = changeset.Branch,
-                        Time = changeset.Timestamp,
-                        FilesAffected = changeset.PathActions.Count
+                        FilesAffected = changeset.PathActions.Count,
+                        Commits = 1,
+                        TimeSpent = TimeSpan.Zero
                     });
                     _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");
                 }
             }
             if (!workTasks.Any())
             {
-                return new List<MercurialCommitItem>();
+                return new List<TaskTimeItem>();
             }
 
             return workTasks;
         }
-
         
         private string FixEncoding(string source)
         {

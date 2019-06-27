@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Threading;
 using JiraTimeBot.Configuration;
-using JiraTimeBot.Mercurial.Objects;
+using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.Mercurial
 {
     public interface IMercurialLog
     {
-        List<MercurialCommitItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken));
+        List<TaskTimeItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

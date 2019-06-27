@@ -23,10 +23,10 @@ namespace JiraTimeBot.TasksProcessors
         {
             _log.Trace($"На реальную дату {realDate:dd.MM.yyyy} распределение по задачам:");
 
-            foreach (var taskTime in taskTimes.OrderByDescending(f => f.Time))
+            foreach (var taskTime in taskTimes.OrderByDescending(f => f.TimeSpent))
             {
                 var taskName = _jiraApi.GetTaskName(taskTime.Branch, settings);
-                _log.Trace($" - [{taskTime.Branch}, коммитов {taskTime.Commits}]: {taskName} - {taskTime.Time}");
+                _log.Trace($" - [{taskTime.Branch}, коммитов {taskTime.Commits}]: {taskName} - {taskTime.TimeSpent}");
             }
         }
     }

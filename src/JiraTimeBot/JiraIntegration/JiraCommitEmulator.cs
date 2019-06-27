@@ -5,7 +5,8 @@ using System.Threading;
 using Atlassian.Jira;
 using JiraTimeBot.Configuration;
 using JiraTimeBot.Mercurial;
-using JiraTimeBot.Mercurial.Objects;
+using JiraTimeBot.TaskTime.Objects;
+
 
 namespace JiraTimeBot.JiraIntegration
 {
@@ -20,19 +21,19 @@ namespace JiraTimeBot.JiraIntegration
             _jiraApi = jiraApi;
         }
 
-        public List<MercurialCommitItem> GetMercurialLog(Settings settings,
+        public List<TaskTimeItem> GetMercurialLog(Settings settings,
                                     DateTime? date = null,
                                     CancellationToken cancellationToken = default(CancellationToken))
         {
             date = date.GetValueOrDefault(DateTime.Now.Date);
-            var workTasks = new List<MercurialCommitItem>();
+            var workTasks = new List<TaskTimeItem>();
             var issues = _jiraApi.GetIssuesByJQL(settings.JiraQuery, settings, date, cancellationToken);
 
             foreach (var issue in issues)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    return new List<MercurialCommitItem>();
+                    return new List<TaskTimeItem>();
                 }
                 var comments = issue.GetCommentsAsync(cancellationToken).Result?.ToList() ?? new List<Comment>();
 
@@ -43,25 +44,27 @@ namespace JiraTimeBot.JiraIntegration
 
                 if (userComments.Any())
                 {
-                    foreach (var comment in userComments)
+                    foreach (var comment in userComments.OrderBy(f=>f.CreatedDate))
                     {
-                        workTasks.Add(new MercurialCommitItem
+                        workTasks.Add(new TaskTimeItem
                         {
+                            StartTime = issue.Updated.GetValueOrDefault(date.Value),
                             Description = issue.Summary,
-                            Time = issue.Updated.GetValueOrDefault(date.Value),
                             Branch = issue.Key.Value,
-                            FilesAffected = 1
+                            FilesAffected = 1,
+                            Commits = 1
                         });
                     }
                 }
                 else
                 {
-                    workTasks.Add(new MercurialCommitItem
+                    workTasks.Add(new TaskTimeItem
                     {
+                        StartTime = issue.Updated.GetValueOrDefault(date.Value),
                         Description = issue.Summary,
-                        Time = issue.Updated.GetValueOrDefault(date.Value),
                         Branch = issue.Key.Value,
-                        FilesAffected = 1
+                        FilesAffected = 1,
+                        Commits = 1
                     });
                 }
             }

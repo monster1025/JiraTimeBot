@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using JiraTimeBot.Configuration;
 using JiraTimeBot.Mercurial;
-using JiraTimeBot.Mercurial.Objects;
 using JiraTimeBot.TasksProcessors;
 using JiraTimeBot.TaskTime;
 using JiraTimeBot.TaskTime.Objects;
@@ -79,7 +78,7 @@ namespace JiraTimeBot
                 _log.Info("Использую Jira как источник информации.");
                 mercurial = _mercurialProviders.JiraCommitEmulator;
             }
-            List<MercurialCommitItem> commits = mercurial.GetMercurialLog(settings, realDate, cancellationToken);
+            List<TaskTimeItem> commits = mercurial.GetMercurialLog(settings, realDate, cancellationToken);
             List<TaskTimeItem> taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
 
             if (cancellationToken.IsCancellationRequested)

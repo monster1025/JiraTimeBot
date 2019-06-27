@@ -6,10 +6,9 @@ namespace JiraTimeBot.TaskTime.Objects
     {
         public string Description { get; set; }
         public string Branch { get; set; }
-        public TimeSpan Time { get; set; }
-        public int Commits { get; set; }
-
         public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public TimeSpan TimeSpent { get; set; }
+        public int Commits { get; set; }
+        public int FilesAffected { get; set; }
     }
 }

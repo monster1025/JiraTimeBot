@@ -127,7 +127,7 @@ namespace JiraTimeBot.JiraIntegration
                 foreach (var workLog in userWorklogs)
                 {
                     var timeSpent = TimeSpan.FromSeconds(workLog.TimeSpentInSeconds);
-                    var timeDiff = Math.Abs((timeSpent - taskTimeItem.Time).TotalMinutes);
+                    var timeDiff = Math.Abs((timeSpent - taskTimeItem.TimeSpent).TotalMinutes);
                     if (timeDiff > 1 || userWorklogs.Count > 1 || userWorklogs.First().Comment != comment)
                     {
                         if (timeDiff > 1)
@@ -165,7 +165,7 @@ namespace JiraTimeBot.JiraIntegration
 
                 if (!hasTodayWorklog)
                 {
-                    var timeSpentJira = $"{taskTimeItem.Time.TotalMinutes}m";
+                    var timeSpentJira = $"{taskTimeItem.TimeSpent.TotalMinutes}m";
 
                     Worklog workLogToAdd = new Worklog(timeSpentJira, date.Value, comment);
                     if (!dummy)
