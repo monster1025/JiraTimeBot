@@ -65,7 +65,7 @@ namespace JiraTimeBot.TaskTime
                 }
 
                 int currentTaskCommits = taskGroup.Count();
-                int currentTaskTime = (int)RoundTo(minutesPerWorkDay / totalCommitsCount * currentTaskCommits, settings.RoundToMinutes);
+                int currentTaskTime = (int)RoundTo(minutesPerWorkDay / totalCommitsCount * currentTaskCommits, settings.RoundToMinutes, false);
                 remainMinutes = remainMinutes - currentTaskTime;
 
                 var orderedTasks = taskGroup.OrderBy(f => f.Time).ToArray();
@@ -99,7 +99,7 @@ namespace JiraTimeBot.TaskTime
                 _log.Trace($"Погрешность распределения времени: {remainMinutes}. Добавляю к первой задаче.");
             }
 
-            if (workTimeItems.First().Time.TotalMinutes > Math.Abs(remainMinutes) && remainMinutes < 0)
+            if ((workTimeItems.First().Time.TotalMinutes > Math.Abs(remainMinutes) && remainMinutes < 0) || remainMinutes > 0)
             {
                 //если переборщили или не достаточно добавили до 8 часов - скореектируем остаток в первой задаче (она самая трудозатратная).
                 workTimeItems.First().Time += TimeSpan.FromMinutes(remainMinutes);
