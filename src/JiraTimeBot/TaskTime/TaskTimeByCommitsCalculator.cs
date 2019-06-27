@@ -12,53 +12,12 @@ namespace JiraTimeBot.TaskTime
     public class TaskTimeByCommitsCalculator: ITaskTimeCalculator
     {
         private readonly ILog _log;
+        private readonly ITaskTimeSpread _spreadHelper;
 
-        public TaskTimeByCommitsCalculator(ILog log)
+        public TaskTimeByCommitsCalculator(ILog log, ITaskTimeSpread spreadHelper)
         {
             _log = log;
-        }
-
-        private List<TaskTimeItem> SpreadTime(List<TaskTimeItem> source, int minutes, int roundToMinutes, bool roundUp = false, bool appendTime = true)
-        {
-            if (source == null || !source.Any())
-            {
-                return new List<TaskTimeItem>();
-            }
-
-            List<TaskTimeItem> newList = new List<TaskTimeItem>();
-            int remainMinutes = minutes;
-
-            //Нам нужно раскидать 480 минут в день.
-            foreach (var taskGroup in source.GroupBy(f => f.Branch).OrderByDescending(f => f.Count()))
-            {
-                int currentTaskCommits = taskGroup.Count();
-                int currentTaskTime = (int)RoundTo(minutes / source.Count * currentTaskCommits, roundToMinutes, roundUp);
-                remainMinutes = remainMinutes - currentTaskTime;
-
-                var orderedTasks = taskGroup.OrderBy(f => f.StartTime).ToArray();
-                StringBuilder sb = new StringBuilder();
-                foreach (var task in orderedTasks)
-                {
-                    sb.AppendLine($"- {task.Description}");
-                }
-                var taskTimeItem = new TaskTimeItem
-                {
-                    Branch = taskGroup.Key,
-                    TimeSpent = appendTime ?
-                        TimeSpan.FromMinutes(taskGroup.Sum(f=>f.TimeSpent.TotalMinutes)) + TimeSpan.FromMinutes(currentTaskTime):
-                        TimeSpan.FromMinutes(currentTaskTime)
-                    ,
-                    Commits = taskGroup.Sum(f=>f.Commits),
-                    Description = sb.ToString(),
-                    StartTime = taskGroup.Min(f=>f.StartTime),
-                    FilesAffected = taskGroup.Sum(f=>f.FilesAffected)
-                };
-
-                newList.Add(taskTimeItem);
-            }
-            newList = newList.OrderByDescending(f => f.TimeSpent).ToList();
-
-            return newList;
+            _spreadHelper = spreadHelper;
         }
 
         public List<TaskTimeItem> CalculateTaskTime(List<TaskTimeItem> commits, Settings settings, CancellationToken cancellationToken = default(CancellationToken))
@@ -88,8 +47,9 @@ namespace JiraTimeBot.TaskTime
                 remainMinutes -= (int)timeControlTask.TimeSpent.TotalMinutes;
             }
 
-            var workTasks = SpreadTime(commits, remainMinutes, settings.RoundToMinutes);
+            var workTasks = _spreadHelper.SpreadTime(commits, remainMinutes, settings.RoundToMinutes);
             workTimeItems.AddRange(workTasks);
+            workTimeItems = workTimeItems.OrderByDescending(f => f.TimeSpent).ToList();
 
             remainMinutes = minutesPerWorkDay - (int) workTimeItems.Sum(f => f.TimeSpent.TotalMinutes);
             if (remainMinutes != 0)
@@ -106,6 +66,7 @@ namespace JiraTimeBot.TaskTime
 
             return workTimeItems.OrderByDescending(f=>f.TimeSpent).ToList();
         }
+
 
         private TaskTimeItem GetTimeControlTask(string timeControlTask, int minutes = 30)
         {

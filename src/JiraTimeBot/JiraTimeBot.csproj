@@ -92,6 +92,7 @@
     <Compile Include="Mercurial\IMercurialLog.cs" />
     <Compile Include="Mercurial\Modifiers\TechnicalInfoSkipper.cs" />
     <Compile Include="TasksProcessors\IAllTasksProcessors.cs" />
+    <Compile Include="TaskTime\TaskTimeSpread.cs" />
     <Compile Include="UI\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
