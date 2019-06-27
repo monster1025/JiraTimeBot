@@ -79,20 +79,23 @@ namespace JiraTimeBot.TaskTime
             FixTooBigInterval(settings, workHours, totalCommitsCount);
 
             int remainMinutes = minutesPerWorkDay;
-            var timeControlTask = GetTimeControlTask(settings, ref remainMinutes);
-            var workTimeItems = SpreadTime(commits, remainMinutes, settings.RoundToMinutes);
 
+            var workTimeItems = new List<TaskTimeItem>();
+            var timeControlTask = GetTimeControlTask(settings.TimeControlTask);
             if (timeControlTask != null)
             {
                 workTimeItems.Add(timeControlTask);
+                remainMinutes -= (int)timeControlTask.TimeSpent.TotalMinutes;
             }
+
+            var workTasks = SpreadTime(commits, remainMinutes, settings.RoundToMinutes);
+            workTimeItems.AddRange(workTasks);
 
             remainMinutes = minutesPerWorkDay - (int) workTimeItems.Sum(f => f.TimeSpent.TotalMinutes);
             if (remainMinutes != 0)
             {
                 _log.Trace($"Погрешность распределения времени: {remainMinutes}. Добавляю к первой задаче.");
             }
-
             if ((workTimeItems.First().TimeSpent.TotalMinutes > Math.Abs(remainMinutes) && remainMinutes < 0) || remainMinutes > 0)
             {
                 //если переборщили или не достаточно добавили до 8 часов - скореектируем остаток в первой задаче (она самая трудозатратная).
@@ -101,19 +104,18 @@ namespace JiraTimeBot.TaskTime
 
             PrintTotal(workTimeItems);
 
-            return workTimeItems;
+            return workTimeItems.OrderByDescending(f=>f.TimeSpent).ToList();
         }
 
-        private TaskTimeItem GetTimeControlTask(Settings settings, ref int minutesPerWorkDay)
+        private TaskTimeItem GetTimeControlTask(string timeControlTask, int minutes = 30)
         {
             //Если указана задача контроля времени - то спишем туда 30 минут и вычеркнем их из общего рабочего времени.
-            if (!string.IsNullOrEmpty(settings.TimeControlTask))
+            if (!string.IsNullOrEmpty(timeControlTask))
             {
-                minutesPerWorkDay = minutesPerWorkDay - 30;
                 return new TaskTimeItem
                 {
-                    TimeSpent = TimeSpan.FromMinutes(30),
-                    Branch = settings.TimeControlTask,
+                    TimeSpent = TimeSpan.FromMinutes(minutes),
+                    Branch = timeControlTask,
                     Commits = 1,
                     Description = "Ведение учета времени"
                 };
