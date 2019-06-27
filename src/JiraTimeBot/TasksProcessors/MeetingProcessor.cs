@@ -23,10 +23,18 @@ namespace JiraTimeBot.TasksProcessors
         {
             _log.Trace($"На реальную дату {realDate:dd.MM.yyyy} распределение по задачам:");
 
-            foreach (var taskTime in taskTimes.OrderByDescending(f => f.TimeSpent))
+            foreach (var taskTime in taskTimes.Where(f=>f.Type == CommitType.Task).OrderByDescending(f => f.TimeSpent))
             {
                 var taskName = _jiraApi.GetTaskName(taskTime.Branch, settings);
                 _log.Trace($" - [{taskTime.Branch}, коммитов {taskTime.Commits}]: {taskName} - {taskTime.TimeSpent}");
+            }
+
+            var releases = taskTimes.Where(f => f.Type == CommitType.Release).GroupBy(f=>f.Description);
+            foreach (var release in releases)
+            {
+                var sum = release.Sum(f => (int) f.TimeSpent.TotalMinutes);
+                var description = release.First().Description.Replace(Environment.NewLine, "");
+                _log.Trace($" - [Release, задач {release.Count()}]: {description} - {TimeSpan.FromMinutes(sum)}");
             }
         }
     }

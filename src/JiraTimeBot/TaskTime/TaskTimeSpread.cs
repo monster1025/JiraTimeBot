@@ -44,7 +44,8 @@ namespace JiraTimeBot.TaskTime
                     Commits = taskGroup.Sum(f=>f.Commits),
                     Description = sb.ToString(),
                     StartTime = taskGroup.Min(f=>f.StartTime),
-                    FilesAffected = taskGroup.Sum(f=>f.FilesAffected)
+                    FilesAffected = taskGroup.Sum(f=>f.FilesAffected),
+                    Type = taskGroup.First().Type
                 };
 
                 newList.Add(taskTimeItem);
