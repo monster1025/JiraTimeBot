@@ -52,7 +52,8 @@ namespace JiraTimeBot.JiraIntegration
                             Description = issue.Summary,
                             Branch = issue.Key.Value,
                             FilesAffected = 1,
-                            Commits = 1
+                            Commits = 1,
+                            Type = CommitType.Task
                         });
                     }
                 }
@@ -64,7 +65,8 @@ namespace JiraTimeBot.JiraIntegration
                         Description = issue.Summary,
                         Branch = issue.Key.Value,
                         FilesAffected = 1,
-                        Commits = 1
+                        Commits = 1,
+                        Type = CommitType.Task
                     });
                 }
             }

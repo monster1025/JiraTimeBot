@@ -72,15 +72,25 @@ namespace JiraTimeBot.Mercurial
                     }
                     commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
 
-                    workTasks.Add(new TaskTimeItem
+                    var task = new TaskTimeItem
                     {
                         StartTime = changeset.Timestamp,
                         Description = commitMessage,
                         Branch = changeset.Branch,
                         FilesAffected = changeset.PathActions.Count,
                         Commits = 1,
-                        TimeSpent = TimeSpan.Zero
-                    });
+                        TimeSpent = TimeSpan.Zero,
+                        Type = GetCommitType(changeset.Branch)
+                    };
+                    if (task.Type == CommitType.Release && task.Description.StartsWith("Merge with", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        var branch = task.Description.Replace("Merge with", "").Replace(" ", "");
+                        var release = task.Branch.Replace("release", "");
+
+                        task.Branch = branch;
+                        task.Description = $"Подготовка и публикация версии {release}.";
+                    }
+                    workTasks.Add(task);
                     _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");
                 }
             }
@@ -91,7 +101,12 @@ namespace JiraTimeBot.Mercurial
 
             return workTasks;
         }
-        
+
+        private CommitType GetCommitType(string branch)
+        {
+            return branch.StartsWith("release") ? CommitType.Release : CommitType.Task;
+        }
+
         private string FixEncoding(string source)
         {
             //перекодируем сообщение - ибо оно криво забирается в 1252

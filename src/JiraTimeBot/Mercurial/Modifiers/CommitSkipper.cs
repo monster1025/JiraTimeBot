@@ -6,6 +6,10 @@ namespace JiraTimeBot.Mercurial.Modifiers
     {
         public bool IsNeedToSkip(string branch, string commitMessage)
         {
+            if (branch.StartsWith("release") && commitMessage.StartsWith("Merge with", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
             if (!branch.Contains("-"))
             {
                 return true;

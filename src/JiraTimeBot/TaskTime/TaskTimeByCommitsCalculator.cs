@@ -25,6 +25,8 @@ namespace JiraTimeBot.TaskTime
             int minutesPerWorkDay = settings.MinuterPerWorkDay + GetRandomMinutes(settings);
             int workHours = (settings.MinuterPerWorkDay / 60);
             int totalCommitsCount = commits.Count;
+            var taskCommits = commits.Where(f => f.Type == CommitType.Task).ToList();
+            var releaseCommits = commits.Where(f => f.Type == CommitType.Release).ToList();
 
             if (cancellationToken.IsCancellationRequested)
             {
@@ -47,7 +49,14 @@ namespace JiraTimeBot.TaskTime
                 remainMinutes -= (int)timeControlTask.TimeSpent.TotalMinutes;
             }
 
-            var workTasks = _spreadHelper.SpreadTime(commits, remainMinutes, settings.RoundToMinutes);
+            if (releaseCommits.Any())
+            {
+                var releaseTasks = _spreadHelper.SpreadTime(releaseCommits, 30, 1);
+                workTimeItems.AddRange(releaseTasks);
+                remainMinutes -= releaseTasks.Sum(f=>(int)f.TimeSpent.TotalMinutes);
+            }
+
+            var workTasks = _spreadHelper.SpreadTime(taskCommits, remainMinutes, settings.RoundToMinutes);
             workTimeItems.AddRange(workTasks);
             workTimeItems = workTimeItems.OrderByDescending(f => f.TimeSpent).ToList();
 
