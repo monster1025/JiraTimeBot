@@ -146,7 +146,7 @@ namespace JiraTimeBot.JiraIntegration
                         {
                             try
                             {
-                                issue.DeleteWorklogAsync(workLog, token: cancellationToken);
+                                issue.DeleteWorklogAsync(workLog, WorklogStrategy.RetainRemainingEstimate, token: cancellationToken);
                             }
                             catch (Exception ex)
                             {
@@ -172,7 +172,7 @@ namespace JiraTimeBot.JiraIntegration
                     {
                         try
                         {
-                            workLogToAdd = issue.AddWorklogAsync(workLogToAdd, token: cancellationToken).Result;
+                            workLogToAdd = issue.AddWorklogAsync(workLogToAdd, WorklogStrategy.RetainRemainingEstimate, token: cancellationToken).Result;
                         }
                         catch (Exception ex)
                         {
