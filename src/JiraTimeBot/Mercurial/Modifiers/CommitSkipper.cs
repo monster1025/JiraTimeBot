@@ -12,8 +12,8 @@ namespace JiraTimeBot.Mercurial.Modifiers
             }
 
             //Пропускаем Close и Merge коммиты
-            if (commitMessage.StartsWith($"Close {branch} ", StringComparison.InvariantCultureIgnoreCase) ||
-                commitMessage.StartsWith($"Merge with ", StringComparison.InvariantCultureIgnoreCase))
+            if (commitMessage.StartsWith($"Close {branch}", StringComparison.InvariantCultureIgnoreCase) ||
+                commitMessage.StartsWith($"Merge with", StringComparison.InvariantCultureIgnoreCase))
             {
                 return true;
             }
