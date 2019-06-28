@@ -94,7 +94,7 @@ namespace JiraTimeBot.TaskTime
             return null;
         }
 
-        private void FixTooBigInterval(Settings settings, int totalCommitsCount, int workHours)
+        private void FixTooBigInterval(Settings settings, int workHours, int totalCommitsCount)
         {
             //если кол-во коммитов более чем кол-во интервалов - то уменьшим интервал вдвое.
             while (totalCommitsCount > (workHours * (60.0 / settings.RoundToMinutes)))
