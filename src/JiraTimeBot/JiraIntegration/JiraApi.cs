@@ -107,9 +107,9 @@ namespace JiraTimeBot.JiraIntegration
                 {
                     issue = jira.Issues.Queryable.FirstOrDefault(f => f.Key == taskTimeItem.Branch);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    _log.Error($"Ошибка получения задачи из JIRA: {ex.Message} - {ex.InnerException?.Message}");
                 }
                 if (issue == null)
                 {
