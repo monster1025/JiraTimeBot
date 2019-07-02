@@ -46,28 +46,26 @@ namespace JiraTimeBot.JiraIntegration
                 {
                     foreach (var comment in userComments.OrderBy(f=>f.CreatedDate))
                     {
-                        workTasks.Add(new TaskTimeItem
-                        {
-                            StartTime = issue.Updated.GetValueOrDefault(date.Value),
-                            Description = issue.Summary,
-                            Branch = issue.Key.Value,
-                            FilesAffected = 1,
-                            Commits = 1,
-                            Type = CommitType.Task
-                        });
+                        var item = new TaskTimeItem(issue.Key.Value,
+                            issue.Summary,
+                            1,
+                            TimeSpan.Zero,
+                            issue.Updated.GetValueOrDefault(date.Value),
+                            1,
+                            CommitType.Task);
+                        workTasks.Add(item);
                     }
                 }
                 else
                 {
-                    workTasks.Add(new TaskTimeItem
-                    {
-                        StartTime = issue.Updated.GetValueOrDefault(date.Value),
-                        Description = issue.Summary,
-                        Branch = issue.Key.Value,
-                        FilesAffected = 1,
-                        Commits = 1,
-                        Type = CommitType.Task
-                    });
+                    var item = new TaskTimeItem(issue.Key.Value,
+                        issue.Summary,
+                        1,
+                        TimeSpan.Zero,
+                        issue.Updated.GetValueOrDefault(date.Value),
+                        1,
+                        CommitType.Task);
+                    workTasks.Add(item);
                 }
             }
 

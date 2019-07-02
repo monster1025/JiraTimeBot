@@ -72,16 +72,13 @@ namespace JiraTimeBot.Mercurial
                     }
                     commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
 
-                    var task = new TaskTimeItem
-                    {
-                        StartTime = changeset.Timestamp,
-                        Description = commitMessage,
-                        Branch = changeset.Branch,
-                        FilesAffected = changeset.PathActions.Count,
-                        Commits = 1,
-                        TimeSpent = TimeSpan.Zero,
-                        Type = GetCommitType(changeset.Branch)
-                    };
+                    var task = new TaskTimeItem(changeset.Branch,
+                        commitMessage,
+                        1,
+                        TimeSpan.Zero,
+                        changeset.Timestamp,
+                        changeset.PathActions.Count,
+                        GetCommitType(changeset.Branch));
 
                     if (task.Type == CommitType.Release && task.Description.StartsWith("Merge with", StringComparison.CurrentCultureIgnoreCase))
                     {

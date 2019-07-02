@@ -11,10 +11,17 @@ namespace JiraTimeBot.TaskTime.Objects
         public int Commits { get; set; }
         public int FilesAffected { get; set; }
         public CommitType Type { get; set; }
-    }
 
-    public enum CommitType {
-        Task = 0,
-        Release = 1
+        public TaskTimeItem(string branch, string description, int commits, TimeSpan timeSpent, DateTime startTime, 
+                            int filesAffected, CommitType type)
+        {
+            Branch = branch;
+            Description = description;
+            Commits = commits;
+            TimeSpent = timeSpent;
+            StartTime = startTime;
+            FilesAffected = filesAffected;
+            Type = type;
+        }
     }
 }

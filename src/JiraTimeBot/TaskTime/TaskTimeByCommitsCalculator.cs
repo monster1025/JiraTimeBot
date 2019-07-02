@@ -93,13 +93,13 @@ namespace JiraTimeBot.TaskTime
             //Если указана задача контроля времени - то спишем туда 30 минут и вычеркнем их из общего рабочего времени.
             if (!string.IsNullOrEmpty(timeControlTask))
             {
-                return new TaskTimeItem
-                {
-                    TimeSpent = TimeSpan.FromMinutes(minutes),
-                    Branch = timeControlTask,
-                    Commits = 1,
-                    Description = "Ведение учета времени"
-                };
+                return new TaskTimeItem(timeControlTask,
+                    "Ведение учета времени",
+                    1,
+                    TimeSpan.FromMinutes(minutes),
+                    DateTime.Now,
+                    1,
+                    CommitType.Task);
             }
 
             return null;

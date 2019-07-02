@@ -34,19 +34,20 @@ namespace JiraTimeBot.TaskTime
                 {
                     sb.AppendLine($"- {task.Description}");
                 }
-                var taskTimeItem = new TaskTimeItem
-                {
-                    Branch = taskGroup.Key,
-                    TimeSpent = appendTime ?
-                        TimeSpan.FromMinutes(taskGroup.Sum(f=>f.TimeSpent.TotalMinutes)) + TimeSpan.FromMinutes(currentTaskTime):
-                        TimeSpan.FromMinutes(currentTaskTime)
-                    ,
-                    Commits = taskGroup.Sum(f=>f.Commits),
-                    Description = sb.ToString(),
-                    StartTime = taskGroup.Min(f=>f.StartTime),
-                    FilesAffected = taskGroup.Sum(f=>f.FilesAffected),
-                    Type = taskGroup.First().Type
-                };
+
+                var timeSpent = appendTime
+                    ? TimeSpan.FromMinutes(taskGroup.Sum(f => f.TimeSpent.TotalMinutes)) +
+                      TimeSpan.FromMinutes(currentTaskTime)
+                    : TimeSpan.FromMinutes(currentTaskTime);
+
+                var taskTimeItem = new TaskTimeItem(
+                    taskGroup.Key,
+                    sb.ToString(),
+                    taskGroup.Sum(f => f.Commits),
+                    timeSpent,
+                    taskGroup.Min(f => f.StartTime),
+                    taskGroup.Sum(f => f.FilesAffected),
+                    taskGroup.First().Type);
 
                 newList.Add(taskTimeItem);
             }
