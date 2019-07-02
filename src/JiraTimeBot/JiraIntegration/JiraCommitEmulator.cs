@@ -48,9 +48,10 @@ namespace JiraTimeBot.JiraIntegration
                     {
                         var item = new TaskTimeItem(issue.Key.Value,
                             issue.Summary,
-                            1,
-                            TimeSpan.Zero,
+                            issue.Project,
                             issue.Updated.GetValueOrDefault(date.Value),
+                            TimeSpan.Zero,
+                            1,
                             1,
                             CommitType.Task);
                         workTasks.Add(item);
@@ -60,9 +61,10 @@ namespace JiraTimeBot.JiraIntegration
                 {
                     var item = new TaskTimeItem(issue.Key.Value,
                         issue.Summary,
-                        1,
-                        TimeSpan.Zero,
+                        issue.Project,
                         issue.Updated.GetValueOrDefault(date.Value),
+                        TimeSpan.Zero,
+                        1,
                         1,
                         CommitType.Task);
                     workTasks.Add(item);

@@ -11,12 +11,14 @@ namespace JiraTimeBot.TaskTime.Objects
         public int Commits { get; set; }
         public int FilesAffected { get; set; }
         public CommitType Type { get; set; }
+        public string Project { get; set; }
 
-        public TaskTimeItem(string branch, string description, int commits, TimeSpan timeSpent, DateTime startTime, 
-                            int filesAffected, CommitType type)
+        public TaskTimeItem(string branch, string description, string project, DateTime startTime, TimeSpan timeSpent, int commits, 
+                            int filesAffected = 1, CommitType type = CommitType.Task)
         {
             Branch = branch;
             Description = description;
+            Project = project;
             Commits = commits;
             TimeSpent = timeSpent;
             StartTime = startTime;

@@ -48,6 +48,8 @@ namespace JiraTimeBot.Mercurial
                     continue;
                 }
 
+                var directoryInfo = new DirectoryInfo(repoDirectory);
+
                 var repo = new Repository(repoDirectory);
                 var logCommand = new LogCommand
                 {
@@ -74,9 +76,10 @@ namespace JiraTimeBot.Mercurial
 
                     var task = new TaskTimeItem(changeset.Branch,
                         commitMessage,
-                        1,
-                        TimeSpan.Zero,
+                        directoryInfo.Name,
                         changeset.Timestamp,
+                        TimeSpan.Zero,
+                        1,
                         changeset.PathActions.Count,
                         GetCommitType(changeset.Branch));
 
@@ -91,7 +94,7 @@ namespace JiraTimeBot.Mercurial
                         var release = task.Branch.Replace("release", "");
 
                         task.Branch = branch;
-                        task.Description = $"Подготовка и публикация версии {release}.";
+                        task.Description = $"Подготовка и публикация версии {task.Project} {release}.";
                     }
                     workTasks.Add(task);
                     _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");

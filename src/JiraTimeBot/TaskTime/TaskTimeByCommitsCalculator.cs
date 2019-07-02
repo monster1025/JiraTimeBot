@@ -95,9 +95,10 @@ namespace JiraTimeBot.TaskTime
             {
                 return new TaskTimeItem(timeControlTask,
                     "Ведение учета времени",
-                    1,
-                    TimeSpan.FromMinutes(minutes),
+                    "Service",
                     DateTime.Now,
+                    TimeSpan.FromMinutes(minutes),
+                    1,
                     1,
                     CommitType.Task);
             }

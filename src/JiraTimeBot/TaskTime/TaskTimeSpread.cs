@@ -43,9 +43,10 @@ namespace JiraTimeBot.TaskTime
                 var taskTimeItem = new TaskTimeItem(
                     taskGroup.Key,
                     sb.ToString(),
-                    taskGroup.Sum(f => f.Commits),
-                    timeSpent,
+                    taskGroup.First().Project,
                     taskGroup.Min(f => f.StartTime),
+                    timeSpent,
+                    taskGroup.Sum(f => f.Commits),
                     taskGroup.Sum(f => f.FilesAffected),
                     taskGroup.First().Type);
 
