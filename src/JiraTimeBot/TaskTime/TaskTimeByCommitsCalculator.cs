@@ -57,7 +57,18 @@ namespace JiraTimeBot.TaskTime
             }
 
             var workTasks = _spreadHelper.SpreadTime(taskCommits, remainMinutes, settings.RoundToMinutes);
-            workTimeItems.AddRange(workTasks);
+            foreach (var workTask in workTasks)
+            {
+                var existingItem = workTimeItems.FirstOrDefault(f => f.Branch == workTask.Branch);
+                if (existingItem != null)
+                {
+                    existingItem.TimeSpent += workTask.TimeSpent;
+                    existingItem.Description += "\r\n" + workTask.Description;
+                    continue;
+                }
+
+                workTimeItems.Add(workTask);
+            }
             workTimeItems = workTimeItems.OrderByDescending(f => f.TimeSpent).ToList();
 
             remainMinutes = minutesPerWorkDay - (int) workTimeItems.Sum(f => f.TimeSpent.TotalMinutes);
