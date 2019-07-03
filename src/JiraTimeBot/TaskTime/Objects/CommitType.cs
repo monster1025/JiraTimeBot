@@ -1,7 +1,10 @@
-﻿namespace JiraTimeBot.TaskTime.Objects
+﻿using System;
+
+namespace JiraTimeBot.TaskTime.Objects
 {
+    [Flags]
     public enum CommitType {
-        Task = 0,
-        Release = 1
+        Task = 1,
+        Release = 2
     }
 }

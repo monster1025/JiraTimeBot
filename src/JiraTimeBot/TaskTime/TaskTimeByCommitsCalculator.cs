@@ -64,6 +64,7 @@ namespace JiraTimeBot.TaskTime
                 {
                     existingItem.TimeSpent += workTask.TimeSpent;
                     existingItem.Description += "\r\n" + workTask.Description;
+                    existingItem.Type |= CommitType.Task;
                     continue;
                 }
 
