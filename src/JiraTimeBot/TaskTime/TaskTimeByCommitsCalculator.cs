@@ -20,7 +20,7 @@ namespace JiraTimeBot.TaskTime
             _spreadHelper = spreadHelper;
         }
 
-        public List<TaskTimeItem> CalculateTaskTime(List<TaskTimeItem> commits, Settings settings, CancellationToken cancellationToken = default(CancellationToken))
+        public List<TaskTimeItem> CalculateTaskTime(List<TaskTimeItem> commits, Settings settings, CancellationToken cancellationToken = default)
         {
             int minutesPerWorkDay = settings.MinuterPerWorkDay + GetRandomMinutes(settings);
             int workHours = (settings.MinuterPerWorkDay / 60);
@@ -59,12 +59,10 @@ namespace JiraTimeBot.TaskTime
             var workTasks = _spreadHelper.SpreadTime(taskCommits, remainMinutes, settings.RoundToMinutes);
             foreach (var workTask in workTasks)
             {
-                var existingItem = workTimeItems.FirstOrDefault(f => f.Branch == workTask.Branch);
+                TaskTimeItem existingItem = workTimeItems.FirstOrDefault(f => f.Branch == workTask.Branch);
                 if (existingItem != null)
                 {
-                    existingItem.TimeSpent += workTask.TimeSpent;
-                    existingItem.Description += "\r\n" + workTask.Description;
-                    existingItem.Type |= CommitType.Task;
+                    existingItem.MergeWith(workTask);
                     continue;
                 }
 

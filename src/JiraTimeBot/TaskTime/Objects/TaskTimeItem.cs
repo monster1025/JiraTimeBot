@@ -25,5 +25,13 @@ namespace JiraTimeBot.TaskTime.Objects
             FilesAffected = filesAffected;
             Type = type;
         }
+
+        public void MergeWith(TaskTimeItem toMerge)
+        {
+            Commits += toMerge.Commits;
+            TimeSpent += toMerge.TimeSpent;
+            Description += "\r\n" + toMerge.Description;
+            Type |= toMerge.Type;
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace JiraTimeBot.TaskTime
             {
                 int currentTaskCommits = taskGroup.Count();
                 int currentTaskTime = (int)RoundTo(minutes / source.Count * currentTaskCommits, roundToMinutes, roundUp);
-                remainMinutes = remainMinutes - currentTaskTime;
+                remainMinutes -= currentTaskTime;
 
                 var orderedTasks = taskGroup.OrderBy(f => f.StartTime).ToArray();
                 StringBuilder sb = new StringBuilder();
