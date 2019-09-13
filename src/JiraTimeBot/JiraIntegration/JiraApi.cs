@@ -42,7 +42,7 @@ namespace JiraTimeBot.JiraIntegration
             }
         }
 
-        public List<Issue> GetIssuesByJQL(string jql, Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
+        public List<Issue> GetIssuesByJQL(string jql, Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
         {
             var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
             date = date.GetValueOrDefault(DateTime.Now.Date);
@@ -69,14 +69,14 @@ namespace JiraTimeBot.JiraIntegration
             }
         }
 
-        public List<Issue> GetWorkloggedIssuesByDate(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
+        public List<Issue> GetWorkloggedIssuesByDate(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
         {
             date = date.GetValueOrDefault(DateTime.Now.Date);
             var jql = "issueFunction in workLogged(\"on %DATE% by '%USER%'\")";
             return GetIssuesByJQL(jql, settings, date, cancellationToken);
         }
 
-        private void RemoveWorklogsAddedByUser(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, CancellationToken cancellationToken = default(CancellationToken))
+        private void RemoveWorklogsAddedByUser(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, CancellationToken cancellationToken = default)
         {
             var alreadyLoggedToday = GetWorkloggedIssuesByDate(settings, date);
             foreach (var issue in alreadyLoggedToday)
@@ -100,7 +100,7 @@ namespace JiraTimeBot.JiraIntegration
             }
         }
 
-        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false, CancellationToken cancellationToken = default(CancellationToken))
+        public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false, CancellationToken cancellationToken = default)
         {
             date = date.GetValueOrDefault(DateTime.Now.Date).Date;
             var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);

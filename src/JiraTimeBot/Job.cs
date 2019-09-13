@@ -79,7 +79,7 @@ namespace JiraTimeBot
                 mercurial = _mercurialProviders.JiraCommitEmulator;
             }
 
-            List<TaskTimeItem> taskTimes = null;
+            List<TaskTimeItem> taskTimes;
             if (!(tasksProcessor is MeetingProcessor))
             {
                 List<TaskTimeItem> commits = mercurial.GetMercurialLog(settings, realDate, cancellationToken);

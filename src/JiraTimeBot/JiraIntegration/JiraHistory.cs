@@ -13,7 +13,7 @@ namespace JiraTimeBot.JiraIntegration
     {
         List<TaskTimeItem> GetDayWorklogs(DateTime date,
                                           Settings settings,
-                                          CancellationToken cancellationToken = default(CancellationToken));
+                                          CancellationToken cancellationToken = default);
     }
 
     public class JiraHistory: IJiraHistory
@@ -27,7 +27,7 @@ namespace JiraTimeBot.JiraIntegration
 
         public List<TaskTimeItem> GetDayWorklogs(DateTime date,
                                                  Settings settings,
-                                                 CancellationToken cancellationToken = default(CancellationToken))
+                                                 CancellationToken cancellationToken = default)
         {
             var tasks = _jiraApi.GetIssuesByJQL("worklogDate = \"%DATE%\" and worklogAuthor='%USER%'", settings, date, cancellationToken);
             List<TaskTimeItem> resultItems = new List<TaskTimeItem>();
@@ -35,7 +35,6 @@ namespace JiraTimeBot.JiraIntegration
             {
                 var workLogs = issue.GetWorklogsAsync(cancellationToken).Result;
                 var user = settings.JiraUserName;
-                //user = "Zoya.Aleksandridi";
                 var userWorklogs = workLogs.Where(w =>
                     w.StartDate.GetValueOrDefault().Date == date && w.Author.Equals(user,
                         StringComparison.InvariantCultureIgnoreCase)).ToList();
@@ -46,7 +45,7 @@ namespace JiraTimeBot.JiraIntegration
 
                 var firstWorklog = userWorklogs.First();
 
-                var description = string.Join("\r\n", userWorklogs.Select(f => f.Comment).Distinct());
+                var description = string.Join(Environment.NewLine, userWorklogs.Select(f => f.Comment).Distinct());
                 var totalTime = TimeSpan.FromSeconds(userWorklogs.Sum(f => f.TimeSpentInSeconds));
                 var startDate = firstWorklog?.CreateDate ?? date;
                 var commits = userWorklogs.Sum(f => f.Comment.Count(c => c == '\n'));

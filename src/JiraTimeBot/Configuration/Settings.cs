@@ -61,7 +61,7 @@ namespace JiraTimeBot.Configuration
             var errors = new List<string>();
             message = null;
 
-            if (settings.RoundToMinutes == default(int))
+            if (settings.RoundToMinutes == default)
             {
                 errors.Add("Укажите округление времени, например, 10 (минут)");
             }
@@ -137,7 +137,7 @@ namespace JiraTimeBot.Configuration
             File.WriteAllText(settingsPath, settingsString);
         }
 
-        private static string _settingsFileName = "settings.json";
+        private static readonly string _settingsFileName = "settings.json";
     }
 
     public enum WorkType

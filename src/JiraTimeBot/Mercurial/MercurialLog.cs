@@ -24,7 +24,7 @@ namespace JiraTimeBot.Mercurial
             _technicalInfoSkipper = technicalInfoSkipper;
         }
         
-        public List<TaskTimeItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken))
+        public List<TaskTimeItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath))
             {
