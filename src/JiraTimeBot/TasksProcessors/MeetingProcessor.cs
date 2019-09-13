@@ -19,7 +19,7 @@ namespace JiraTimeBot.TasksProcessors
             _jiraApi = jiraApi;
         }
 
-        public void Process(DateTime setForDate, DateTime realDate, List<TaskTimeItem> taskTimes, Settings settings, bool dummyMode, CancellationToken cancellationToken = default)
+        public void Process(DateTime setForDate, DateTime realDate, List<TaskTimeItem> taskTimes, Settings settings, bool dummyMode, CancellationToken cancellationToken = default(CancellationToken))
         {
             _log.Trace($"На реальную дату {realDate:dd.MM.yyyy} распределение по задачам:");
 

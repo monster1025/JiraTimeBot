@@ -20,7 +20,7 @@ namespace JiraTimeBot.TaskTime
             _spreadHelper = spreadHelper;
         }
 
-        public List<TaskTimeItem> CalculateTaskTime(List<TaskTimeItem> commits, Settings settings, CancellationToken cancellationToken = default)
+        public List<TaskTimeItem> CalculateTaskTime(List<TaskTimeItem> commits, Settings settings, CancellationToken cancellationToken = default(CancellationToken))
         {
             int minutesPerWorkDay = settings.MinuterPerWorkDay + GetRandomMinutes(settings);
             int workHours = (settings.MinuterPerWorkDay / 60);
