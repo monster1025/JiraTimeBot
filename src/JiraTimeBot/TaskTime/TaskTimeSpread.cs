@@ -19,20 +19,18 @@ namespace JiraTimeBot.TaskTime
         public List<TaskTimeItem> SpreadTime(List<TaskTimeItem> source, int minutes, int roundToMinutes, bool roundUp = false, bool appendTime = true)
         {
             List<TaskTimeItem> newList = new List<TaskTimeItem>();
-            int remainMinutes = minutes;
 
             //Нам нужно раскидать 480 минут в день.
             foreach (var taskGroup in source.GroupBy(f => f.Branch).OrderByDescending(f => f.Count()))
             {
                 int currentTaskCommits = taskGroup.Count();
                 int currentTaskTime = (int)RoundTo(minutes / source.Count * currentTaskCommits, roundToMinutes, roundUp);
-                remainMinutes -= currentTaskTime;
 
                 var orderedTasks = taskGroup.OrderBy(f => f.StartTime).ToArray();
                 StringBuilder sb = new StringBuilder();
-                foreach (var task in orderedTasks)
+                foreach (var taskDescription in orderedTasks.Select(f=>f.Description).Distinct())
                 {
-                    sb.AppendLine($"- {task.Description}");
+                    sb.AppendLine($"- {taskDescription}");
                 }
 
                 var timeSpent = appendTime
@@ -48,6 +46,7 @@ namespace JiraTimeBot.TaskTime
                     timeSpent,
                     taskGroup.Sum(f => f.Commits),
                     taskGroup.Sum(f => f.FilesAffected),
+                    taskGroup.First().ReleaseVersion,
                     taskGroup.First().Type);
 
                 newList.Add(taskTimeItem);

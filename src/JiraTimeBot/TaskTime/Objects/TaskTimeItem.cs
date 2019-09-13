@@ -12,9 +12,10 @@ namespace JiraTimeBot.TaskTime.Objects
         public int FilesAffected { get; set; }
         public CommitType Type { get; set; }
         public string Project { get; set; }
+        public string ReleaseVersion { get; set; }
 
         public TaskTimeItem(string branch, string description, string project, DateTime startTime, TimeSpan timeSpent, int commits, 
-                            int filesAffected = 1, CommitType type = CommitType.Task)
+                            int filesAffected = 1, string releaseVersion = "", CommitType type = CommitType.Task)
         {
             Branch = branch;
             Description = description;
@@ -23,6 +24,7 @@ namespace JiraTimeBot.TaskTime.Objects
             TimeSpent = timeSpent;
             StartTime = startTime;
             FilesAffected = filesAffected;
+            ReleaseVersion = releaseVersion;
             Type = type;
         }
 

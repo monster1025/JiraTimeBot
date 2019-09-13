@@ -99,6 +99,7 @@ namespace JiraTimeBot.TaskTime
                     TimeSpan.FromMinutes(minutes),
                     1,
                     1,
+                    "",
                     CommitType.Task);
             }
 

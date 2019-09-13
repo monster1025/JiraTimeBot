@@ -53,6 +53,7 @@ namespace JiraTimeBot.JiraIntegration
                             TimeSpan.Zero,
                             1,
                             1,
+                            "",
                             CommitType.Task);
                         workTasks.Add(item);
                     }
@@ -66,6 +67,7 @@ namespace JiraTimeBot.JiraIntegration
                         TimeSpan.Zero,
                         1,
                         1,
+                        "",
                         CommitType.Task);
                     workTasks.Add(item);
                 }

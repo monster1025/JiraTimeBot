@@ -80,7 +80,8 @@ namespace JiraTimeBot.Mercurial
                         changeset.Timestamp,
                         TimeSpan.Zero,
                         1,
-                        changeset.PathActions.Count,
+                        changeset.PathActions.Count, 
+                        "",
                         GetCommitType(changeset.Branch));
 
                     if (task.Type == CommitType.Release && task.Description.StartsWith("Merge with", StringComparison.CurrentCultureIgnoreCase))
@@ -95,6 +96,7 @@ namespace JiraTimeBot.Mercurial
 
                         task.Branch = branch;
                         task.Description = $"Подготовка и публикация версии {task.Project} {release}.";
+                        task.ReleaseVersion = release;
                     }
                     workTasks.Add(task);
                     _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");

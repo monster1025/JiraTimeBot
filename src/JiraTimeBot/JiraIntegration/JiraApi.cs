@@ -9,7 +9,15 @@ using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.JiraIntegration
 {
-    public class JiraApi
+    public interface IJiraApi
+    {
+        List<Issue> GetIssuesByJQL(string jql, Settings settings, DateTime? date = null, CancellationToken cancellationToken = default);
+        string GetTaskName(string branch, Settings settings);
+        List<Issue> GetWorkloggedIssuesByDate(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default);
+        void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false, CancellationToken cancellationToken = default);
+    }
+
+    public class JiraApi : IJiraApi
     {
         private readonly ILog _log;
         private readonly IJiraDescriptionSource _descriptionSource;
@@ -68,7 +76,7 @@ namespace JiraTimeBot.JiraIntegration
             return GetIssuesByJQL(jql, settings, date, cancellationToken);
         }
 
-        private void RemoveWorklogsAddedByUser(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null,  bool dummy = false, CancellationToken cancellationToken = default(CancellationToken))
+        private void RemoveWorklogsAddedByUser(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, CancellationToken cancellationToken = default(CancellationToken))
         {
             var alreadyLoggedToday = GetWorkloggedIssuesByDate(settings, date);
             foreach (var issue in alreadyLoggedToday)

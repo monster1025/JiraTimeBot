@@ -6,5 +6,6 @@ namespace JiraTimeBot.Mercurial
     {
         MercurialLog MercurialLog { get; }
         JiraCommitEmulator JiraCommitEmulator { get; }
+        IJiraHistory JiraHistory { get; }
     }
 }

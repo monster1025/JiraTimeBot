@@ -78,8 +78,18 @@ namespace JiraTimeBot
                 _log.Info("Использую Jira как источник информации.");
                 mercurial = _mercurialProviders.JiraCommitEmulator;
             }
-            List<TaskTimeItem> commits = mercurial.GetMercurialLog(settings, realDate, cancellationToken);
-            List<TaskTimeItem> taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
+
+            List<TaskTimeItem> taskTimes = null;
+            if (!(tasksProcessor is MeetingProcessor))
+            {
+                List<TaskTimeItem> commits = mercurial.GetMercurialLog(settings, realDate, cancellationToken);
+                taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
+            }
+            else
+            {
+                var provider = _mercurialProviders.JiraHistory;
+                taskTimes = provider.GetDayWorklogs(realDate, settings, cancellationToken);
+            }
 
             if (cancellationToken.IsCancellationRequested)
             {

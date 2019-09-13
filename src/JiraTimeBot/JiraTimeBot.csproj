@@ -81,6 +81,7 @@
     <Compile Include="DI\ContainerBuilder.cs" />
     <Compile Include="JiraIntegration\Comments\IJiraDescriptionSource.cs" />
     <Compile Include="JiraIntegration\Comments\JiraDescriptionSource.cs" />
+    <Compile Include="JiraIntegration\JiraHistory.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\Settings.cs" />
