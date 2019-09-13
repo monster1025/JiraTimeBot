@@ -29,7 +29,7 @@ namespace JiraTimeBot.JiraIntegration
                                                  Settings settings,
                                                  CancellationToken cancellationToken = default(CancellationToken))
         {
-            var tasks = _jiraApi.GetIssuesByJQL("status changed by '%USER%' during (\"%DATE%\",\"%DATE%\")", settings, date, cancellationToken);
+            var tasks = _jiraApi.GetIssuesByJQL("worklogDate = \"%DATE%\" and worklogAuthor='%USER%'", settings, date, cancellationToken);
             List<TaskTimeItem> resultItems = new List<TaskTimeItem>();
             foreach (var issue in tasks)
             {
@@ -37,7 +37,7 @@ namespace JiraTimeBot.JiraIntegration
                 var user = settings.JiraUserName;
                 //user = "Zoya.Aleksandridi";
                 var userWorklogs = workLogs.Where(w =>
-                    w.CreateDate.GetValueOrDefault().Date == date && w.Author.Equals(user,
+                    w.StartDate.GetValueOrDefault().Date == date && w.Author.Equals(user,
                         StringComparison.InvariantCultureIgnoreCase)).ToList();
                 if (!userWorklogs.Any())
                 {
@@ -50,6 +50,10 @@ namespace JiraTimeBot.JiraIntegration
                 var totalTime = TimeSpan.FromSeconds(userWorklogs.Sum(f => f.TimeSpentInSeconds));
                 var startDate = firstWorklog?.CreateDate ?? date;
                 var commits = userWorklogs.Sum(f => f.Comment.Count(c => c == '\n'));
+                if (commits == 0)
+                {
+                    commits = 1;
+                }
                 var taskType = CommitType.Task;
                 if (description.Contains("Подготовка и публикация"))
                 {

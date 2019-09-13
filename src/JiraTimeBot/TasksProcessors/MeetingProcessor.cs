@@ -21,7 +21,8 @@ namespace JiraTimeBot.TasksProcessors
 
         public void Process(DateTime setForDate, DateTime realDate, List<TaskTimeItem> taskTimes, Settings settings, bool dummyMode, CancellationToken cancellationToken = default(CancellationToken))
         {
-            _log.Trace($"На реальную дату {realDate:dd.MM.yyyy} распределение по задачам:");
+            var totalTime = TimeSpan.FromSeconds(taskTimes.Sum(f => f.TimeSpent.TotalSeconds));
+            _log.Trace($"На реальную дату {realDate:dd.MM.yyyy} распределение по задачам ({totalTime:hh':'mm':'ss}):");
 
             foreach (var taskTime in taskTimes.Where(f=>f.Type.HasFlag(CommitType.Task)).OrderByDescending(f => f.TimeSpent))
             {

@@ -85,7 +85,7 @@ namespace JiraTimeBot.JiraIntegration
                 {
                     var workLogs = issue.GetWorklogsAsync(cancellationToken).Result;
                     var userWorklogs = workLogs.Where(w =>
-                        w.CreateDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
+                        w.StartDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
                             StringComparison.InvariantCultureIgnoreCase)).ToList();
                     foreach (var userWorklog in userWorklogs)
                     {
