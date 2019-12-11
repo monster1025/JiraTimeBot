@@ -13,7 +13,7 @@ namespace JiraTimeBot.Configuration
         public int RoundToMinutes { get; set; }
 
         public string JiraUrl = "https://myteam.aeroclub.ru";
-
+        public bool PullBeforeProcess { get; set; }
         public string RepositoryPath { get; set; }
         public string MercurialAuthorEmail { get; set; }
         public string JiraUserName { get; set; }

@@ -40,6 +40,7 @@ namespace JiraTimeBot.UI
             txtJQL.Text = settings.JiraQuery;
             txtWorkDayDuration.Text = settings.MinuterPerWorkDay.ToString();
             txtRandomMinutes.Text = settings.RandomWorkMinutes.ToString();
+            chkPullBeforeProcess.Checked = settings.PullBeforeProcess;
 
             cboWorkType_SelectedIndexChanged(null, null);
         }
@@ -72,7 +73,8 @@ namespace JiraTimeBot.UI
                 JiraQuery = txtJQL.Text,
                 TimeControlTask = txtTimeControlTask.Text,
                 MinuterPerWorkDay = minuterPerWorkDay,
-                RandomWorkMinutes = randomWorkMinutes
+                RandomWorkMinutes = randomWorkMinutes,
+                PullBeforeProcess = chkPullBeforeProcess.Checked
             };
 
             //LockUnlock(false);

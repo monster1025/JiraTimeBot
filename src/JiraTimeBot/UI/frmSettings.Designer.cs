@@ -53,6 +53,7 @@
             this.txtWorkDayDuration = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtRandomMinutes = new System.Windows.Forms.TextBox();
+            this.chkPullBeforeProcess = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label5
@@ -168,7 +169,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(86, 359);
+            this.btnSave.Location = new System.Drawing.Point(86, 382);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -272,11 +273,22 @@
             this.txtRandomMinutes.Size = new System.Drawing.Size(99, 20);
             this.txtRandomMinutes.TabIndex = 43;
             // 
+            // chkPullBeforeProcess
+            // 
+            this.chkPullBeforeProcess.AutoSize = true;
+            this.chkPullBeforeProcess.Location = new System.Drawing.Point(65, 359);
+            this.chkPullBeforeProcess.Name = "chkPullBeforeProcess";
+            this.chkPullBeforeProcess.Size = new System.Drawing.Size(83, 17);
+            this.chkPullBeforeProcess.TabIndex = 45;
+            this.chkPullBeforeProcess.Text = "Делать pull";
+            this.chkPullBeforeProcess.UseVisualStyleBackColor = true;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 391);
+            this.ClientSize = new System.Drawing.Size(243, 414);
+            this.Controls.Add(this.chkPullBeforeProcess);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.txtRandomMinutes);
             this.Controls.Add(this.lblWorkDay);
@@ -340,5 +352,6 @@
         private System.Windows.Forms.TextBox txtWorkDayDuration;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtRandomMinutes;
+        private System.Windows.Forms.CheckBox chkPullBeforeProcess;
     }
 }

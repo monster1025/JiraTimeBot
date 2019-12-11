@@ -51,6 +51,12 @@ namespace JiraTimeBot.Mercurial
                 var directoryInfo = new DirectoryInfo(repoDirectory);
 
                 var repo = new Repository(repoDirectory);
+
+                if (settings.PullBeforeProcess)
+                {
+                    repo.Pull();
+                }
+
                 var logCommand = new LogCommand
                 {
                     Date = date,
