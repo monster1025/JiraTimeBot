@@ -54,7 +54,14 @@ namespace JiraTimeBot.Mercurial
 
                 if (settings.PullBeforeProcess)
                 {
-                    repo.Pull();
+                    try
+                    {
+                        repo.Pull();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log?.Trace($" - Не получается сделать pull для репозитория: {directoryInfo.Name} - {ex.Message}");
+                    }
                 }
 
                 var logCommand = new LogCommand
