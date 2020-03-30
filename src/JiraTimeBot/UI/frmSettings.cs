@@ -102,7 +102,7 @@ namespace JiraTimeBot.UI
         private void cboWorkType_SelectedIndexChanged(object sender, EventArgs e)
         {
             txtJQL.Enabled = (cboWorkType.SelectedIndex == 1);
-            txtRepoPath.Enabled = (cboWorkType.SelectedIndex == 0);
+            txtRepoPath.Enabled = (cboWorkType.SelectedIndex == 0 || cboWorkType.SelectedIndex == 2);
         }
     }
 }

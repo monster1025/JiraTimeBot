@@ -43,8 +43,9 @@ namespace JiraTimeBot.DI
 
             _builder.RegisterType<TechnicalInfoSkipper>().As<ITechnicalInfoSkipper>().AsSelf();
 
-            _builder.RegisterType<MercurialLog>().As<IMercurialLog>().AsSelf();
-            _builder.RegisterType<JiraCommitEmulator>().As<IMercurialLog>().AsSelf();
+            _builder.RegisterType<GitLog>().As<IRepositoryLog>().AsSelf();
+            _builder.RegisterType<MercurialLog>().As<IRepositoryLog>().AsSelf();
+            _builder.RegisterType<JiraCommitEmulator>().As<IRepositoryLog>().AsSelf();
             _builder.RegisterAggregateService<IAllMercurialProviders>();
             
             _builder.RegisterType<TaskTimeSpread>().As<ITaskTimeSpread>().AsSelf();

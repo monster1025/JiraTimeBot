@@ -72,7 +72,8 @@ namespace JiraTimeBot.JiraIntegration
         public List<Issue> GetWorkloggedIssuesByDate(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
         {
             date = date.GetValueOrDefault(DateTime.Now.Date);
-            var jql = "issueFunction in workLogged(\"on %DATE% by '%USER%'\")";
+            //var jql = "issueFunction in workLogged(\"on %DATE% by '%USER%'\")";
+            var jql = "worklogAuthor = '%USER%' && worklogDate = \"%DATE%\"";
             return GetIssuesByJQL(jql, settings, date, cancellationToken);
         }
 

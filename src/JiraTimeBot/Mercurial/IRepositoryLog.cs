@@ -6,8 +6,8 @@ using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.Mercurial
 {
-    public interface IMercurialLog
+    public interface IRepositoryLog
     {
-        List<TaskTimeItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken));
+        List<TaskTimeItem> GetRepositoryLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

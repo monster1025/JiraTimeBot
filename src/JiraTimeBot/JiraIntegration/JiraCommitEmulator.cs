@@ -10,7 +10,7 @@ using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.JiraIntegration
 {
-    public class JiraCommitEmulator : IMercurialLog
+    public class JiraCommitEmulator : IRepositoryLog
     {
         private readonly ILog _log;
         private readonly JiraApi _jiraApi;
@@ -21,7 +21,7 @@ namespace JiraTimeBot.JiraIntegration
             _jiraApi = jiraApi;
         }
 
-        public List<TaskTimeItem> GetMercurialLog(Settings settings,
+        public List<TaskTimeItem> GetRepositoryLog(Settings settings,
                                     DateTime? date = null,
                                     CancellationToken cancellationToken = default(CancellationToken))
         {

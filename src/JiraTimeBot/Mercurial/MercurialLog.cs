@@ -11,7 +11,7 @@ using Mercurial;
 
 namespace JiraTimeBot.Mercurial
 {
-    public class MercurialLog: IMercurialLog
+    public class MercurialLog: IRepositoryLog
     {
         private readonly ILog _log;
         private readonly ICommitSkipper _commitSkipper;
@@ -24,7 +24,7 @@ namespace JiraTimeBot.Mercurial
             _technicalInfoSkipper = technicalInfoSkipper;
         }
         
-        public List<TaskTimeItem> GetMercurialLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
+        public List<TaskTimeItem> GetRepositoryLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath))
             {

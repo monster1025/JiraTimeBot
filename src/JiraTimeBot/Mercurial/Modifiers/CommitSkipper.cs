@@ -10,6 +10,7 @@ namespace JiraTimeBot.Mercurial.Modifiers
             {
                 return false;
             }
+            
             if (!branch.Contains("-"))
             {
                 return true;
@@ -17,7 +18,8 @@ namespace JiraTimeBot.Mercurial.Modifiers
 
             //Пропускаем Close и Merge коммиты
             if (commitMessage.StartsWith($"Close {branch}", StringComparison.InvariantCultureIgnoreCase) ||
-                commitMessage.StartsWith($"Merge with", StringComparison.InvariantCultureIgnoreCase))
+                commitMessage.StartsWith($"Merge with", StringComparison.InvariantCultureIgnoreCase) ||
+                commitMessage.StartsWith($"Merge branch", StringComparison.InvariantCultureIgnoreCase))
             {
                 return true;
             }

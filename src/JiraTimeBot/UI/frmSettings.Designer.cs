@@ -183,7 +183,8 @@
             this.cboWorkType.FormattingEnabled = true;
             this.cboWorkType.Items.AddRange(new object[] {
             "Mercurial",
-            "Jira"});
+            "Jira",
+            "Git"});
             this.cboWorkType.Location = new System.Drawing.Point(133, 18);
             this.cboWorkType.Name = "cboWorkType";
             this.cboWorkType.Size = new System.Drawing.Size(99, 21);

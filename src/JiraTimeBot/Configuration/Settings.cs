@@ -144,5 +144,6 @@ namespace JiraTimeBot.Configuration
     {
         Mercurial = 0,
         JiraLogs = 1,
+        GitLogs = 2
     }
 }

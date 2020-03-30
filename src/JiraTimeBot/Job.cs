@@ -72,17 +72,22 @@ namespace JiraTimeBot
 
         private bool SetTaskTimesForDateImpl(DateTime setForDate, DateTime realDate, Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
         {
-            IMercurialLog mercurial = _mercurialProviders.MercurialLog;
+            IRepositoryLog mercurial = _mercurialProviders.MercurialLog;
             if (settings.WorkType == WorkType.JiraLogs)
             {
                 _log.Info("Использую Jira как источник информации.");
                 mercurial = _mercurialProviders.JiraCommitEmulator;
             }
+            else if (settings.WorkType == WorkType.GitLogs)
+            {
+                _log.Info("Использую Git как источник информации.");
+                mercurial = _mercurialProviders.GitLog;
+            }
 
             List<TaskTimeItem> taskTimes;
             if (!(tasksProcessor is MeetingProcessor))
             {
-                List<TaskTimeItem> commits = mercurial.GetMercurialLog(settings, realDate, cancellationToken);
+                List<TaskTimeItem> commits = mercurial.GetRepositoryLog(settings, realDate, cancellationToken);
                 taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
             }
             else
