@@ -99,6 +99,7 @@ namespace JiraTimeBot.Mercurial
                         continue;
                     }
                     commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
+                    var files = FilesToMerge(commit, repo);
 
                     var task = new TaskTimeItem(branch,
                         commitMessage,
@@ -106,51 +107,13 @@ namespace JiraTimeBot.Mercurial
                         commit.Committer.When.DateTime,
                         TimeSpan.Zero,
                         1,
-                        1, //changeset.PathActions.Count,
+                        files.Length, //changeset.PathActions.Count,
                         "",
                         GetCommitType(branch));
                     workTasks.Add(task);
 
                     _log?.Trace($" - Найден commit: {commit.Committer.When.DateTime} - {branch} - {commit.Author.Email} - {commitMessage}");
                 }
-
-                //foreach (var changeset in log)
-                //{
-
-                //    var commitMessage = FixEncoding(changeset.CommitMessage);
-                //    if (_commitSkipper.IsNeedToSkip(changeset.Branch, commitMessage))
-                //    {
-                //        continue;
-                //    }
-                //    commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
-
-                //    var task = new TaskTimeItem(changeset.Branch,
-                //        commitMessage,
-                //        directoryInfo.Name,
-                //        changeset.Timestamp,
-                //        TimeSpan.Zero,
-                //        1,
-                //        changeset.PathActions.Count,
-                //        "",
-                //        GetCommitType(changeset.Branch));
-
-                //    if (task.Type == CommitType.Release && task.Description.StartsWith("Merge with", StringComparison.CurrentCultureIgnoreCase))
-                //    {
-                //        var description = task.Description;
-                //        if (description.Contains("\n"))
-                //        {
-                //            description = description.Split('\n')[0];
-                //        }
-                //        var branch = description.Replace("Merge with", "").Replace(" ", "");
-                //        var release = task.Branch.Replace("release", "");
-
-                //        task.Branch = branch;
-                //        task.Description = $"Подготовка и публикация версии {task.Project} {release}.";
-                //        task.ReleaseVersion = release;
-                //    }
-                //    workTasks.Add(task);
-                //    _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");
-                //}
             }
             if (!workTasks.Any())
             {
@@ -165,15 +128,18 @@ namespace JiraTimeBot.Mercurial
             return branch.StartsWith("release") ? CommitType.Release : CommitType.Task;
         }
 
-        private string FixEncoding(string source)
+        public String[] FilesToMerge(Commit commit, Repository repo)
         {
-            //перекодируем сообщение - ибо оно криво забирается в 1252
-            Encoding srcEncodingFormat = Encoding.GetEncoding("windows-1252");
-            byte[] originalByteString = srcEncodingFormat.GetBytes(source);
-            var commitMessage = Encoding.UTF8.GetString(originalByteString);
-            return commitMessage;
+            var fileList = new List<String>();
+            foreach (var parent in commit.Parents)
+            {
+                foreach (TreeEntryChanges change in repo.Diff.Compare<TreeChanges>(parent.Tree, commit.Tree))
+                {
+                    fileList.Add(change.Path);
+                }
+            }
+            return fileList.ToArray();
         }
-
 
         private IEnumerable<Branch> ListBranchesContaininingCommit(Repository repo, string commitSha)
         {
