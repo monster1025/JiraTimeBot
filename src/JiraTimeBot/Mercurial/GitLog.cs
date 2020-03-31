@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Threading;
 using JiraTimeBot.Configuration;
@@ -73,9 +74,25 @@ namespace JiraTimeBot.Mercurial
                         _log?.Trace($" - Не получается сделать pull для репозитория: {directoryInfo.Name} - {ex.Message}");
                     }
                 }
-                var filter = new CommitFilter { SortBy = CommitSortStrategies.Time };
+                
+                var allCommits = new List<Commit>();
 
-                foreach (Commit commit in repo.Commits.QueryBy(filter).Take(200))
+                var reflog = repo.Refs.Log(repo.Refs.Head);
+                foreach (var reflogItem in reflog)
+                {
+                    if (reflogItem.Committer.When.Date != date || reflogItem.Committer.Email != settings.MercurialAuthorEmail)
+                    {
+                        continue;
+                    }
+
+                    var commit = repo.Lookup<LibGit2Sharp.Commit>(reflogItem.To.Sha);
+                    if (commit != null && allCommits.All(f => f.Sha != commit.Sha))
+                    {
+                        allCommits.Add(commit);
+                    }
+                }
+
+                foreach (Commit commit in allCommits)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
