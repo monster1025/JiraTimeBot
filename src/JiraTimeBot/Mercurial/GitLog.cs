@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.ServiceModel.Security;
-using System.Text;
 using System.Threading;
 using JiraTimeBot.Configuration;
 using JiraTimeBot.Mercurial.Modifiers;
 using JiraTimeBot.TaskTime.Objects;
 using LibGit2Sharp;
-using LibGit2Sharp.Handlers;
 
 namespace JiraTimeBot.Mercurial
 {
@@ -80,7 +77,7 @@ namespace JiraTimeBot.Mercurial
                 var reflog = repo.Refs.Log(repo.Refs.Head);
                 foreach (var reflogItem in reflog)
                 {
-                    if (reflogItem.Committer.When.Date != date || reflogItem.Committer.Email != settings.MercurialAuthorEmail)
+                    if (reflogItem.Committer.When.Date != date.Value.Date || reflogItem.Committer.Email != settings.MercurialAuthorEmail)
                     {
                         continue;
                     }
@@ -98,7 +95,7 @@ namespace JiraTimeBot.Mercurial
                     {
                         return new List<TaskTimeItem>();
                     }
-                    if (commit.Author.When.DateTime.Date != date || commit.Author.Email != settings.MercurialAuthorEmail)
+                    if (commit.Author.When.DateTime.Date != date.Value.Date || commit.Author.Email != settings.MercurialAuthorEmail)
                     {
                         continue;
                     }
