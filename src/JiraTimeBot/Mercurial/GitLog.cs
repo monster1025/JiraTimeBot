@@ -108,10 +108,13 @@ namespace JiraTimeBot.Mercurial
                     }
 
                     var commitMessage = commit.MessageShort;
+                    commitMessage = _technicalInfoSkipper.StripBranchPrefix(branch, commitMessage);
+
                     if (_commitSkipper.IsNeedToSkip(branch, commitMessage))
                     {
                         continue;
                     }
+
                     commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
                     var files = FilesToMerge(commit, repo);
 
