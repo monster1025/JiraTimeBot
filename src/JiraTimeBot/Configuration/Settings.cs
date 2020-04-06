@@ -12,7 +12,7 @@ namespace JiraTimeBot.Configuration
         public int MinuterPerWorkDay { get; set; }
         public int RoundToMinutes { get; set; }
 
-        public string JiraUrl = "https://myteam.aeroclub.ru";
+        public string JiraUrl { get; set; }
         public bool PullBeforeProcess { get; set; }
         public string RepositoryPath { get; set; }
         public string MercurialAuthorEmail { get; set; }

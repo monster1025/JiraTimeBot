@@ -30,8 +30,6 @@
         {
             this.label5 = new System.Windows.Forms.Label();
             this.txtRoundTo = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtRepoPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtMercurialEmail = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -54,12 +52,16 @@
             this.label9 = new System.Windows.Forms.Label();
             this.txtRandomMinutes = new System.Windows.Forms.TextBox();
             this.chkPullBeforeProcess = new System.Windows.Forms.CheckBox();
+            this.txtRepoPath = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lblJiraUrl = new System.Windows.Forms.Label();
+            this.txtJiraUrl = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(33, 153);
+            this.label5.Location = new System.Drawing.Point(33, 175);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(100, 13);
             this.label5.TabIndex = 28;
@@ -67,33 +69,16 @@
             // 
             // txtRoundTo
             // 
-            this.txtRoundTo.Location = new System.Drawing.Point(133, 150);
+            this.txtRoundTo.Location = new System.Drawing.Point(133, 169);
             this.txtRoundTo.Name = "txtRoundTo";
             this.txtRoundTo.Size = new System.Drawing.Size(100, 20);
             this.txtRoundTo.TabIndex = 27;
             this.txtRoundTo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRoundTo_KeyPress);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(53, 48);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(76, 13);
-            this.label4.TabIndex = 26;
-            this.label4.Text = "Путь до репо:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // txtRepoPath
-            // 
-            this.txtRepoPath.Location = new System.Drawing.Point(133, 45);
-            this.txtRepoPath.Name = "txtRepoPath";
-            this.txtRepoPath.Size = new System.Drawing.Size(100, 20);
-            this.txtRepoPath.TabIndex = 25;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(47, 127);
+            this.label2.Location = new System.Drawing.Point(47, 149);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 24;
@@ -102,7 +87,7 @@
             // 
             // txtMercurialEmail
             // 
-            this.txtMercurialEmail.Location = new System.Drawing.Point(133, 124);
+            this.txtMercurialEmail.Location = new System.Drawing.Point(133, 146);
             this.txtMercurialEmail.Name = "txtMercurialEmail";
             this.txtMercurialEmail.Size = new System.Drawing.Size(100, 20);
             this.txtMercurialEmail.TabIndex = 23;
@@ -110,7 +95,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(62, 100);
+            this.label1.Location = new System.Drawing.Point(62, 122);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 22;
@@ -118,7 +103,7 @@
             // 
             // txtJiraPassword
             // 
-            this.txtJiraPassword.Location = new System.Drawing.Point(133, 97);
+            this.txtJiraPassword.Location = new System.Drawing.Point(133, 119);
             this.txtJiraPassword.Name = "txtJiraPassword";
             this.txtJiraPassword.PasswordChar = '*';
             this.txtJiraPassword.Size = new System.Drawing.Size(100, 20);
@@ -127,7 +112,7 @@
             // lbl1
             // 
             this.lbl1.AutoSize = true;
-            this.lbl1.Location = new System.Drawing.Point(69, 74);
+            this.lbl1.Location = new System.Drawing.Point(69, 96);
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(64, 13);
             this.lbl1.TabIndex = 20;
@@ -135,7 +120,7 @@
             // 
             // txtJiraLogin
             // 
-            this.txtJiraLogin.Location = new System.Drawing.Point(133, 71);
+            this.txtJiraLogin.Location = new System.Drawing.Point(133, 93);
             this.txtJiraLogin.Name = "txtJiraLogin";
             this.txtJiraLogin.Size = new System.Drawing.Size(100, 20);
             this.txtJiraLogin.TabIndex = 19;
@@ -143,7 +128,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(41, 232);
+            this.label3.Location = new System.Drawing.Point(41, 254);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(91, 13);
             this.label3.TabIndex = 30;
@@ -152,7 +137,7 @@
             // actTime
             // 
             this.actTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.actTime.Location = new System.Drawing.Point(133, 228);
+            this.actTime.Location = new System.Drawing.Point(133, 250);
             this.actTime.Name = "actTime";
             this.actTime.Size = new System.Drawing.Size(100, 20);
             this.actTime.TabIndex = 29;
@@ -160,7 +145,7 @@
             // chkAddComments
             // 
             this.chkAddComments.AutoSize = true;
-            this.chkAddComments.Location = new System.Drawing.Point(65, 336);
+            this.chkAddComments.Location = new System.Drawing.Point(65, 366);
             this.chkAddComments.Name = "chkAddComments";
             this.chkAddComments.Size = new System.Drawing.Size(133, 17);
             this.chkAddComments.TabIndex = 31;
@@ -169,7 +154,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(86, 382);
+            this.btnSave.Location = new System.Drawing.Point(86, 412);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -203,7 +188,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(100, 179);
+            this.label7.Location = new System.Drawing.Point(100, 201);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(29, 13);
             this.label7.TabIndex = 37;
@@ -211,7 +196,7 @@
             // 
             // txtJQL
             // 
-            this.txtJQL.Location = new System.Drawing.Point(133, 176);
+            this.txtJQL.Location = new System.Drawing.Point(133, 198);
             this.txtJQL.Name = "txtJQL";
             this.txtJQL.Size = new System.Drawing.Size(99, 20);
             this.txtJQL.TabIndex = 36;
@@ -219,7 +204,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(-2, 206);
+            this.label8.Location = new System.Drawing.Point(-2, 228);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(133, 13);
             this.label8.TabIndex = 39;
@@ -227,7 +212,7 @@
             // 
             // txtTimeControlTask
             // 
-            this.txtTimeControlTask.Location = new System.Drawing.Point(133, 202);
+            this.txtTimeControlTask.Location = new System.Drawing.Point(133, 224);
             this.txtTimeControlTask.Name = "txtTimeControlTask";
             this.txtTimeControlTask.Size = new System.Drawing.Size(99, 20);
             this.txtTimeControlTask.TabIndex = 38;
@@ -235,7 +220,7 @@
             // chkAutostart
             // 
             this.chkAutostart.AutoSize = true;
-            this.chkAutostart.Location = new System.Drawing.Point(65, 313);
+            this.chkAutostart.Location = new System.Drawing.Point(65, 343);
             this.chkAutostart.Name = "chkAutostart";
             this.chkAutostart.Size = new System.Drawing.Size(96, 17);
             this.chkAutostart.TabIndex = 40;
@@ -245,7 +230,7 @@
             // lblWorkDay
             // 
             this.lblWorkDay.AutoSize = true;
-            this.lblWorkDay.Location = new System.Drawing.Point(15, 258);
+            this.lblWorkDay.Location = new System.Drawing.Point(15, 280);
             this.lblWorkDay.Name = "lblWorkDay";
             this.lblWorkDay.Size = new System.Drawing.Size(117, 13);
             this.lblWorkDay.TabIndex = 42;
@@ -253,7 +238,7 @@
             // 
             // txtWorkDayDuration
             // 
-            this.txtWorkDayDuration.Location = new System.Drawing.Point(133, 254);
+            this.txtWorkDayDuration.Location = new System.Drawing.Point(133, 276);
             this.txtWorkDayDuration.Name = "txtWorkDayDuration";
             this.txtWorkDayDuration.Size = new System.Drawing.Size(99, 20);
             this.txtWorkDayDuration.TabIndex = 41;
@@ -261,7 +246,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(30, 284);
+            this.label9.Location = new System.Drawing.Point(30, 306);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(101, 13);
             this.label9.TabIndex = 44;
@@ -269,7 +254,7 @@
             // 
             // txtRandomMinutes
             // 
-            this.txtRandomMinutes.Location = new System.Drawing.Point(133, 280);
+            this.txtRandomMinutes.Location = new System.Drawing.Point(133, 302);
             this.txtRandomMinutes.Name = "txtRandomMinutes";
             this.txtRandomMinutes.Size = new System.Drawing.Size(99, 20);
             this.txtRandomMinutes.TabIndex = 43;
@@ -277,18 +262,54 @@
             // chkPullBeforeProcess
             // 
             this.chkPullBeforeProcess.AutoSize = true;
-            this.chkPullBeforeProcess.Location = new System.Drawing.Point(65, 359);
+            this.chkPullBeforeProcess.Location = new System.Drawing.Point(65, 389);
             this.chkPullBeforeProcess.Name = "chkPullBeforeProcess";
             this.chkPullBeforeProcess.Size = new System.Drawing.Size(83, 17);
             this.chkPullBeforeProcess.TabIndex = 45;
             this.chkPullBeforeProcess.Text = "Делать pull";
             this.chkPullBeforeProcess.UseVisualStyleBackColor = true;
             // 
+            // txtRepoPath
+            // 
+            this.txtRepoPath.Location = new System.Drawing.Point(133, 45);
+            this.txtRepoPath.Name = "txtRepoPath";
+            this.txtRepoPath.Size = new System.Drawing.Size(100, 20);
+            this.txtRepoPath.TabIndex = 25;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(53, 48);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(76, 13);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "Путь до репо:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblJiraUrl
+            // 
+            this.lblJiraUrl.AutoSize = true;
+            this.lblJiraUrl.Location = new System.Drawing.Point(53, 72);
+            this.lblJiraUrl.Name = "lblJiraUrl";
+            this.lblJiraUrl.Size = new System.Drawing.Size(76, 13);
+            this.lblJiraUrl.TabIndex = 47;
+            this.lblJiraUrl.Text = "Путь до репо:";
+            this.lblJiraUrl.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // txtJiraUrl
+            // 
+            this.txtJiraUrl.Location = new System.Drawing.Point(133, 69);
+            this.txtJiraUrl.Name = "txtJiraUrl";
+            this.txtJiraUrl.Size = new System.Drawing.Size(100, 20);
+            this.txtJiraUrl.TabIndex = 46;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 414);
+            this.ClientSize = new System.Drawing.Size(243, 442);
+            this.Controls.Add(this.lblJiraUrl);
+            this.Controls.Add(this.txtJiraUrl);
             this.Controls.Add(this.chkPullBeforeProcess);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.txtRandomMinutes);
@@ -330,8 +351,6 @@
 
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtRoundTo;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtRepoPath;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtMercurialEmail;
         private System.Windows.Forms.Label label1;
@@ -354,5 +373,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtRandomMinutes;
         private System.Windows.Forms.CheckBox chkPullBeforeProcess;
+        private System.Windows.Forms.TextBox txtRepoPath;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblJiraUrl;
+        private System.Windows.Forms.TextBox txtJiraUrl;
     }
 }

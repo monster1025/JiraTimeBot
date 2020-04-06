@@ -28,6 +28,7 @@ namespace JiraTimeBot.UI
 
         private void SetSettings(Settings settings)
         {
+            txtJiraUrl.Text = settings.JiraUrl;
             txtJiraLogin.Text = settings.JiraUserName;
             txtJiraPassword.Text = settings.JiraPassword;
             txtMercurialEmail.Text = settings.MercurialAuthorEmail;
@@ -62,6 +63,7 @@ namespace JiraTimeBot.UI
 
             var settings = new Settings
             {
+                JiraUrl = txtJiraUrl.Text,
                 JiraUserName = txtJiraLogin.Text,
                 JiraPassword = txtJiraPassword.Text,
                 MercurialAuthorEmail = txtMercurialEmail.Text,
