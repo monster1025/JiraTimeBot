@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace JiraTimeBot.UI.Tray
 {
-    public class TrayMenu: ITrayMenu
+    public class TrayMenu : ITrayMenu
     {
-        private NotifyIcon  _trayIcon;
+        private NotifyIcon _trayIcon;
 
         public NotifyIcon Create(frmMain form)
         {
@@ -14,8 +14,8 @@ namespace JiraTimeBot.UI.Tray
 
             _trayIcon = new NotifyIcon
             {
-                Text = "JiraTimeBot", 
-                Icon = form.Icon, 
+                Text = "JiraTimeBot",
+                Icon = form.Icon,
                 ContextMenu = trayMenu,
                 Visible = false,
                 Tag = form
@@ -43,8 +43,8 @@ namespace JiraTimeBot.UI.Tray
 
         private void btnTray_Click(object sender, EventArgs e)
         {
-            var icon = (NotifyIcon) sender;
-            var form = (frmMain) icon.Tag;
+            var icon = (NotifyIcon)sender;
+            var form = (frmMain)icon.Tag;
             form.Visible = true;
             form.Activate();
             form.BringToFront();

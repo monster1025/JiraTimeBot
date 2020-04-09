@@ -2,16 +2,14 @@
 using JiraTimeBot.Configuration;
 using JiraTimeBot.DI;
 using JiraTimeBot.TasksProcessors;
+using JiraTimeBot.UI.Startup;
 using JiraTimeBot.UI.Tray;
 using JiraTimeBot.Update;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using JiraTimeBot.UI.Startup;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -34,7 +32,8 @@ namespace JiraTimeBot.UI
 
         protected override void WndProc(ref Message message)
         {
-            if (message.Msg == SingleInstance.WM_SHOWFIRSTINSTANCE) {
+            if (message.Msg == SingleInstance.WM_SHOWFIRSTINSTANCE)
+            {
                 this.Show();
                 this.WindowState = FormWindowState.Normal;
                 _trayIcon.Hide();
@@ -73,7 +72,7 @@ namespace JiraTimeBot.UI
                 var frmSettings = new frmSettings(_container.Resolve<AutoStartUp>());
                 frmSettings.ShowDialog(this);
             };
-            _settingsErrorReporter = msg => MessageBox.Show(msg, "Загрузка настроек", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);;
+            _settingsErrorReporter = msg => MessageBox.Show(msg, "Загрузка настроек", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); ;
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -84,7 +83,7 @@ namespace JiraTimeBot.UI
         public Settings ReadSettingsAndLock()
         {
             _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
-            
+
             LockUnlock(false);
 
             return _settings;
@@ -131,7 +130,7 @@ namespace JiraTimeBot.UI
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, _tokenSource.Token); 
+                await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, _tokenSource.Token);
             }
 
             LockUnlock(true);
@@ -195,7 +194,7 @@ namespace JiraTimeBot.UI
 
             LockUnlock(true);
         }
-        
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             _tokenSource.Cancel();

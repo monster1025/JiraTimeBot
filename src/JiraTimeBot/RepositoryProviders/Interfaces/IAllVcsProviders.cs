@@ -1,8 +1,8 @@
 ﻿using JiraTimeBot.JiraIntegration;
 
-namespace JiraTimeBot.Mercurial
+namespace JiraTimeBot.RepositoryProviders.Interfaces
 {
-    public interface IAllMercurialProviders
+    public interface IAllRepositoryProviders
     {
         MercurialLog MercurialLog { get; }
         GitLog GitLog { get; }

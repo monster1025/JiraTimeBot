@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JiraTimeBot.Mercurial.Modifiers
+namespace JiraTimeBot.RepositoryProviders.Modifiers
 {
     public class CommitSkipper : ICommitSkipper
     {
@@ -10,7 +10,7 @@ namespace JiraTimeBot.Mercurial.Modifiers
             {
                 return false;
             }
-            
+
             if (!branch.Contains("-"))
             {
                 return true;

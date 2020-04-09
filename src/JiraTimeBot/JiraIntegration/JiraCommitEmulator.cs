@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Atlassian.Jira;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.RepositoryProviders.Interfaces;
+using JiraTimeBot.TaskTime.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Atlassian.Jira;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.Mercurial;
-using JiraTimeBot.TaskTime.Objects;
 
 
 namespace JiraTimeBot.JiraIntegration
@@ -44,7 +44,7 @@ namespace JiraTimeBot.JiraIntegration
 
                 if (userComments.Any())
                 {
-                    foreach (var comment in userComments.OrderBy(f=>f.CreatedDate))
+                    foreach (var comment in userComments.OrderBy(f => f.CreatedDate))
                     {
                         var item = new TaskTimeItem(issue.Key.Value,
                             issue.Summary,

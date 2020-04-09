@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Atlassian.Jira;
+﻿using Atlassian.Jira;
 using JiraTimeBot.Configuration;
 using JiraTimeBot.JiraIntegration.Comments;
 using JiraTimeBot.TaskTime.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace JiraTimeBot.JiraIntegration
 {

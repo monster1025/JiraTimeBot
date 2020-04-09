@@ -1,8 +1,8 @@
 ﻿using JiraTimeBot.UI;
+using JiraTimeBot.UI.Tray;
 using System;
 using System.Threading;
 using System.Windows.Forms;
-using JiraTimeBot.UI.Tray;
 
 namespace JiraTimeBot
 {

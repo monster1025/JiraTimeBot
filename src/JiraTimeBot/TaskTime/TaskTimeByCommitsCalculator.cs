@@ -1,15 +1,13 @@
-﻿using System;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.TaskTime.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using JiraTimeBot.Configuration;
-
-using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.TaskTime
 {
-    public class TaskTimeByCommitsCalculator: ITaskTimeCalculator
+    public class TaskTimeByCommitsCalculator : ITaskTimeCalculator
     {
         private readonly ILog _log;
         private readonly ITaskTimeSpread _spreadHelper;
@@ -53,7 +51,7 @@ namespace JiraTimeBot.TaskTime
             {
                 var releaseTasks = _spreadHelper.SpreadTime(releaseCommits, 30, 1);
                 workTimeItems.AddRange(releaseTasks);
-                remainMinutes -= releaseTasks.Sum(f=>(int)f.TimeSpent.TotalMinutes);
+                remainMinutes -= releaseTasks.Sum(f => (int)f.TimeSpent.TotalMinutes);
             }
 
             var workTasks = _spreadHelper.SpreadTime(taskCommits, remainMinutes, settings.RoundToMinutes);
@@ -70,7 +68,7 @@ namespace JiraTimeBot.TaskTime
             }
             workTimeItems = workTimeItems.OrderByDescending(f => f.TimeSpent).ToList();
 
-            remainMinutes = minutesPerWorkDay - (int) workTimeItems.Sum(f => f.TimeSpent.TotalMinutes);
+            remainMinutes = minutesPerWorkDay - (int)workTimeItems.Sum(f => f.TimeSpent.TotalMinutes);
             if (remainMinutes != 0)
             {
                 _log.Trace($"Погрешность распределения времени: {remainMinutes}. Добавляю к первой задаче.");
@@ -83,7 +81,7 @@ namespace JiraTimeBot.TaskTime
 
             PrintTotal(workTimeItems);
 
-            return workTimeItems.OrderByDescending(f=>f.TimeSpent).ToList();
+            return workTimeItems.OrderByDescending(f => f.TimeSpent).ToList();
         }
 
 
@@ -111,7 +109,7 @@ namespace JiraTimeBot.TaskTime
             //если кол-во коммитов более чем кол-во интервалов - то уменьшим интервал вдвое.
             while (totalCommitsCount > (workHours * (60.0 / settings.RoundToMinutes)))
             {
-                settings.RoundToMinutes = (int) RoundTo((decimal) (settings.RoundToMinutes / 2.0), 5);
+                settings.RoundToMinutes = (int)RoundTo((decimal)(settings.RoundToMinutes / 2.0), 5);
                 _log.Info($"Слишком много задач - уменьшаю интервал до {settings.RoundToMinutes}.");
                 if (settings.RoundToMinutes == 5)
                 {

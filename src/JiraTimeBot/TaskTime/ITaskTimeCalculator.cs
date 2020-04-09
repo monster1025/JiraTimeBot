@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using JiraTimeBot.Configuration;
-
+﻿using JiraTimeBot.Configuration;
 using JiraTimeBot.TaskTime.Objects;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace JiraTimeBot.TaskTime
 {

@@ -1,17 +1,18 @@
-﻿using System;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.RepositoryProviders.Interfaces;
+using JiraTimeBot.RepositoryProviders.Modifiers;
+using JiraTimeBot.TaskTime.Objects;
+using Mercurial;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.Mercurial.Modifiers;
-using JiraTimeBot.TaskTime.Objects;
-using Mercurial;
 
-namespace JiraTimeBot.Mercurial
+namespace JiraTimeBot.RepositoryProviders
 {
-    public class MercurialLog: IRepositoryLog
+    public class MercurialLog : IRepositoryLog
     {
         private readonly ILog _log;
         private readonly ICommitSkipper _commitSkipper;
@@ -23,7 +24,7 @@ namespace JiraTimeBot.Mercurial
             _commitSkipper = commitSkipper;
             _technicalInfoSkipper = technicalInfoSkipper;
         }
-        
+
         public List<TaskTimeItem> GetRepositoryLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath))
@@ -68,7 +69,7 @@ namespace JiraTimeBot.Mercurial
                 {
                     Date = date,
                     Users = { settings.MercurialAuthorEmail },
-                    AdditionalArguments = { "--encoding=utf-8"},
+                    AdditionalArguments = { "--encoding=utf-8" },
                 };
 
                 var log = repo.Log(logCommand);
@@ -93,7 +94,7 @@ namespace JiraTimeBot.Mercurial
                         changeset.Timestamp,
                         TimeSpan.Zero,
                         1,
-                        changeset.PathActions.Count, 
+                        changeset.PathActions.Count,
                         "",
                         GetCommitType(changeset.Branch));
 

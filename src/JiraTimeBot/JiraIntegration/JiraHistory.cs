@@ -1,11 +1,9 @@
-﻿using System;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.TaskTime.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.JiraIntegration
 {
@@ -16,7 +14,7 @@ namespace JiraTimeBot.JiraIntegration
                                           CancellationToken cancellationToken = default);
     }
 
-    public class JiraHistory: IJiraHistory
+    public class JiraHistory : IJiraHistory
     {
         private readonly IJiraApi _jiraApi;
 
@@ -59,7 +57,7 @@ namespace JiraTimeBot.JiraIntegration
                     taskType = CommitType.Release;
                 }
 
-                resultItems.Add(new TaskTimeItem(issue.Key.Value, description, issue.Project, startDate, totalTime, commits, 1, "", taskType));   
+                resultItems.Add(new TaskTimeItem(issue.Key.Value, description, issue.Project, startDate, totalTime, commits, 1, "", taskType));
             }
 
             return resultItems;

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace JiraTimeBot.Update
 {
@@ -81,6 +81,7 @@ namespace JiraTimeBot.Update
             {
                 _log.Info($"Вы используете актуальную версию.");
             }
+
             return false;
         }
 
@@ -90,10 +91,12 @@ namespace JiraTimeBot.Update
             {
                 _log.Info($"Устанавливаю обновление до версии {gitVersion}.");
                 //Rename he executing file
-                System.IO.FileInfo appFile = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                System.IO.FileInfo appFile =
+                    new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 var bkpDir = Path.Combine(appFile.DirectoryName, "bkp");
                 if (!Directory.Exists(bkpDir))
                 {
+                    _log.Info($"Создаю директорию {bkpDir}.");
                     Directory.CreateDirectory(bkpDir);
                 }
 
@@ -102,33 +105,47 @@ namespace JiraTimeBot.Update
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
                         var zipEntryPath = Path.Combine(appFile.DirectoryName, entry.FullName);
-                        if (File.Exists(zipEntryPath))
+                        if (entry.FullName.EndsWith("/"))
                         {
-                            System.IO.FileInfo zipEntryFile = new System.IO.FileInfo(zipEntryPath);
-                            if (File.Exists(bkpDir + "\\" + zipEntryFile.Name))
+                            var bkpEntryPath = Path.Combine(bkpDir, entry.FullName);
+                            bkpEntryPath = bkpEntryPath.TrimEnd('/');
+                            if (!Directory.Exists(bkpEntryPath))
                             {
-                                File.Delete(bkpDir + "\\" + zipEntryFile.Name);
+                                Directory.CreateDirectory(bkpEntryPath);
                             }
-                            System.IO.File.Move(zipEntryFile.FullName, bkpDir + "\\" + zipEntryFile.Name);
                         }
+                        else
+                        {
+                            if (File.Exists(zipEntryPath))
+                            {
+                                System.IO.FileInfo zipEntryFile = new System.IO.FileInfo(zipEntryPath);
+                                if (File.Exists(bkpDir + "\\" + zipEntryFile.Name))
+                                {
+                                    File.Delete(bkpDir + "\\" + zipEntryFile.Name);
+                                }
 
-                        entry.ExtractToFile(zipEntryPath);
+                                System.IO.File.Move(zipEntryFile.FullName, bkpDir + "\\" + zipEntryFile.Name);
+                            }
+                            entry.ExtractToFile(zipEntryPath);
+                        }
                     }
                 }
 
                 _log.Info("Обновление установлено. Перезапустите программу для применения изменений.");
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _log.Error($"Что-то пошло не так при обновлении.");
+                _log.Error($"Что-то пошло не так при обновлении {ex.Message}: {ex.StackTrace}.");
                 return false;
             }
         }
+
         public void SelfRestart()
         {
             var name = Application.ExecutablePath;
-            ProcessStartInfo startInfo = new ProcessStartInfo {
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
                 Arguments = "/C choice /C Y /N /D Y /T 1 & \"" + name + "\"",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
@@ -143,7 +160,6 @@ namespace JiraTimeBot.Update
         {
             try
             {
-
                 using (var client = new WebClient())
                 {
                     client.Headers.Add("User-Agent",
@@ -162,11 +178,11 @@ namespace JiraTimeBot.Update
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                 request.UserAgent = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
 
-                using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
                 using (StreamReader reader = new StreamReader(stream))
                 {

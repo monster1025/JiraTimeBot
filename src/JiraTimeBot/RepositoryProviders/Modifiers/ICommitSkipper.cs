@@ -1,4 +1,4 @@
-﻿namespace JiraTimeBot.Mercurial.Modifiers
+﻿namespace JiraTimeBot.RepositoryProviders.Modifiers
 {
     public interface ICommitSkipper
     {

@@ -1,14 +1,15 @@
-﻿using System;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.RepositoryProviders.Interfaces;
+using JiraTimeBot.RepositoryProviders.Modifiers;
+using JiraTimeBot.TaskTime.Objects;
+using LibGit2Sharp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.Mercurial.Modifiers;
-using JiraTimeBot.TaskTime.Objects;
-using LibGit2Sharp;
 
-namespace JiraTimeBot.Mercurial
+namespace JiraTimeBot.RepositoryProviders
 {
     public class GitLog : IRepositoryLog
     {
@@ -49,7 +50,7 @@ namespace JiraTimeBot.Mercurial
 
                 var directoryInfo = new DirectoryInfo(repoDirectory);
 
-                
+
                 var repo = new LibGit2Sharp.Repository(repoDirectory);
 
                 if (settings.PullBeforeProcess)
@@ -71,7 +72,7 @@ namespace JiraTimeBot.Mercurial
                         _log?.Trace($" - Не получается сделать pull для репозитория: {directoryInfo.Name} - {ex.Message}");
                     }
                 }
-                
+
                 var allCommits = new List<Commit>();
 
                 var reflog = repo.Refs.Log(repo.Refs.Head);

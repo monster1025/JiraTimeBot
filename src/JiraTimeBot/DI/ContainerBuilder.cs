@@ -2,16 +2,17 @@
 using Autofac.Extras.AggregateService;
 using JiraTimeBot.JiraIntegration;
 using JiraTimeBot.JiraIntegration.Comments;
-using JiraTimeBot.Mercurial;
-using JiraTimeBot.Mercurial.Modifiers;
+using JiraTimeBot.RepositoryProviders;
+using JiraTimeBot.RepositoryProviders.Interfaces;
+using JiraTimeBot.RepositoryProviders.Modifiers;
 using JiraTimeBot.TasksProcessors;
 using JiraTimeBot.TaskTime;
-using JiraTimeBot.UI.Tray;
-using System;
-using System.Windows.Forms;
 using JiraTimeBot.UI;
 using JiraTimeBot.UI.Startup;
+using JiraTimeBot.UI.Tray;
 using JiraTimeBot.Update;
+using System;
+using System.Windows.Forms;
 
 namespace JiraTimeBot.DI
 {
@@ -46,8 +47,8 @@ namespace JiraTimeBot.DI
             _builder.RegisterType<GitLog>().As<IRepositoryLog>().AsSelf();
             _builder.RegisterType<MercurialLog>().As<IRepositoryLog>().AsSelf();
             _builder.RegisterType<JiraCommitEmulator>().As<IRepositoryLog>().AsSelf();
-            _builder.RegisterAggregateService<IAllMercurialProviders>();
-            
+            _builder.RegisterAggregateService<IAllRepositoryProviders>();
+
             _builder.RegisterType<TaskTimeSpread>().As<ITaskTimeSpread>().AsSelf();
             _builder.RegisterType<TaskTimeByCommitsCalculator>().As<ITaskTimeCalculator>().AsSelf();
 
@@ -59,8 +60,8 @@ namespace JiraTimeBot.DI
             _builder.RegisterType<JiraApi>().AsSelf().AsImplementedInterfaces();
 
             _builder.RegisterType<JiraHistory>().AsSelf().As<IJiraHistory>();
-            
-            _builder.Register(c => new Job(c.Resolve<IAllMercurialProviders>(), c.Resolve<ITaskTimeCalculator>(), c.Resolve<ILog>())).AsSelf();
+
+            _builder.Register(c => new Job(c.Resolve<IAllRepositoryProviders>(), c.Resolve<ITaskTimeCalculator>(), c.Resolve<ILog>())).AsSelf();
 
             _builder.RegisterType<AutoStartUp>().AsSelf().AsImplementedInterfaces();
             _builder.RegisterType<frmSettings>().AsSelf().AsImplementedInterfaces();

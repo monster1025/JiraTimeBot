@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using JiraTimeBot.Configuration;
+﻿using JiraTimeBot.Configuration;
 using JiraTimeBot.UI.Startup;
+using System;
+using System.Windows.Forms;
 
 namespace JiraTimeBot.UI
 {
@@ -36,7 +36,7 @@ namespace JiraTimeBot.UI
             actTime.Text = settings.ActivationTime.ToString("hh\\:mm\\:ss");
             chkAddComments.Checked = settings.AddCommentsToWorklog;
             txtRoundTo.Text = settings.RoundToMinutes.ToString();
-            cboWorkType.SelectedIndex = (int) settings.WorkType;
+            cboWorkType.SelectedIndex = (int)settings.WorkType;
             txtTimeControlTask.Text = settings.TimeControlTask;
             txtJQL.Text = settings.JiraQuery;
             txtWorkDayDuration.Text = settings.MinuterPerWorkDay.ToString();
@@ -71,7 +71,7 @@ namespace JiraTimeBot.UI
                 RepositoryPath = txtRepoPath.Text,
                 AddCommentsToWorklog = chkAddComments.Checked,
                 RoundToMinutes = roundTo,
-                WorkType = (WorkType) cboWorkType.SelectedIndex,
+                WorkType = (WorkType)cboWorkType.SelectedIndex,
                 JiraQuery = txtJQL.Text,
                 TimeControlTask = txtTimeControlTask.Text,
                 MinuterPerWorkDay = minuterPerWorkDay,
@@ -88,7 +88,7 @@ namespace JiraTimeBot.UI
         {
             var settings = ReadSettingsAndLock();
             settings.Save();
-             _autoStart.Set(chkAutostart.Checked);
+            _autoStart.Set(chkAutostart.Checked);
 
             MessageBox.Show("Настройки сохранены.");
 

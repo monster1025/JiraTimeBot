@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace JiraTimeBot.Update
+﻿namespace JiraTimeBot.Update
 {
     internal interface IUpdater
     {

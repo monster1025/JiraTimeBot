@@ -14,7 +14,7 @@ namespace JiraTimeBot.TaskTime.Objects
         public string Project { get; set; }
         public string ReleaseVersion { get; set; }
 
-        public TaskTimeItem(string branch, string description, string project, DateTime startTime, TimeSpan timeSpent, int commits, 
+        public TaskTimeItem(string branch, string description, string project, DateTime startTime, TimeSpan timeSpent, int commits,
                             int filesAffected = 1, string releaseVersion = "", CommitType type = CommitType.Task)
         {
             Branch = branch;

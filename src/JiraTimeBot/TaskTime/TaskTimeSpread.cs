@@ -1,8 +1,8 @@
-﻿using System;
+﻿using JiraTimeBot.TaskTime.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.TaskTime
 {
@@ -14,7 +14,7 @@ namespace JiraTimeBot.TaskTime
                                       bool roundUp = false,
                                       bool appendTime = true);
     }
-    public class TaskTimeSpread: ITaskTimeSpread
+    public class TaskTimeSpread : ITaskTimeSpread
     {
         public List<TaskTimeItem> SpreadTime(List<TaskTimeItem> source, int minutes, int roundToMinutes, bool roundUp = false, bool appendTime = true)
         {
@@ -28,7 +28,7 @@ namespace JiraTimeBot.TaskTime
 
                 var orderedTasks = taskGroup.OrderBy(f => f.StartTime).ToArray();
                 StringBuilder sb = new StringBuilder();
-                foreach (var taskDescription in orderedTasks.Select(f=>f.Description).Distinct())
+                foreach (var taskDescription in orderedTasks.Select(f => f.Description).Distinct())
                 {
                     sb.AppendLine($"- {taskDescription}");
                 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.JiraIntegration;
+using JiraTimeBot.TaskTime.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.JiraIntegration;
-using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot.TasksProcessors
 {
@@ -24,16 +24,16 @@ namespace JiraTimeBot.TasksProcessors
             var totalTime = TimeSpan.FromSeconds(taskTimes.Sum(f => f.TimeSpent.TotalSeconds));
             _log.Trace($"На реальную дату {realDate:dd.MM.yyyy} распределение по задачам ({totalTime:hh':'mm':'ss}):");
 
-            foreach (var taskTime in taskTimes.Where(f=>f.Type.HasFlag(CommitType.Task)).OrderByDescending(f => f.TimeSpent))
+            foreach (var taskTime in taskTimes.Where(f => f.Type.HasFlag(CommitType.Task)).OrderByDescending(f => f.TimeSpent))
             {
                 var taskName = _jiraApi.GetTaskName(taskTime.Branch, settings);
                 _log.Trace($" - [{taskTime.Branch}, коммитов {taskTime.Commits}]: {taskName} - {taskTime.TimeSpent}");
             }
 
-            var releases = taskTimes.Where(f => f.Type.HasFlag(CommitType.Release)).GroupBy(f=>f.Description);
+            var releases = taskTimes.Where(f => f.Type.HasFlag(CommitType.Release)).GroupBy(f => f.Description);
             foreach (var release in releases)
             {
-                var sum = release.Sum(f => (int) f.TimeSpent.TotalMinutes);
+                var sum = release.Sum(f => (int)f.TimeSpent.TotalMinutes);
                 var description = release.First().Description.Replace(Environment.NewLine, "");
                 _log.Trace($" - [Release, задач {release.Count()}]: {description} - {TimeSpan.FromMinutes(sum)}");
             }

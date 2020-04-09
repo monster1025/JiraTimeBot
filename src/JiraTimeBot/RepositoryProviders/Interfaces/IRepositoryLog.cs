@@ -1,10 +1,10 @@
-﻿using System;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.TaskTime.Objects;
+using System;
 using System.Collections.Generic;
 using System.Threading;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.TaskTime.Objects;
 
-namespace JiraTimeBot.Mercurial
+namespace JiraTimeBot.RepositoryProviders.Interfaces
 {
     public interface IRepositoryLog
     {

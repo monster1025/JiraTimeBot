@@ -1,23 +1,23 @@
-﻿using System;
+﻿using JiraTimeBot.Configuration;
+using JiraTimeBot.RepositoryProviders.Interfaces;
+using JiraTimeBot.TasksProcessors;
+using JiraTimeBot.TaskTime;
+using JiraTimeBot.TaskTime.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.Mercurial;
-using JiraTimeBot.TasksProcessors;
-using JiraTimeBot.TaskTime;
-using JiraTimeBot.TaskTime.Objects;
 
 namespace JiraTimeBot
 {
     class Job
     {
-        private readonly IAllMercurialProviders _mercurialProviders;
+        private readonly IAllRepositoryProviders _mercurialProviders;
         private readonly ITaskTimeCalculator _taskTimeDiscoverer;
         private readonly ILog _log;
 
-        public Job(IAllMercurialProviders mercurialProviders, ITaskTimeCalculator taskTimeDiscoverer, ILog log)
+        public Job(IAllRepositoryProviders mercurialProviders, ITaskTimeCalculator taskTimeDiscoverer, ILog log)
         {
             _mercurialProviders = mercurialProviders;
             _taskTimeDiscoverer = taskTimeDiscoverer;
@@ -30,7 +30,7 @@ namespace JiraTimeBot
 
             return Task.Run(() => DoTheJobImpl(settings, tasksProcessor, dummyMode, cancellationToken), cancellationToken);
         }
-        
+
         private void DoTheJobImpl(Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
         {
             int daysDiff = 0;
