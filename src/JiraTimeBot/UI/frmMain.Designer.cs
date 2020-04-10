@@ -81,6 +81,7 @@
             this.tlpControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpControls.Size = new System.Drawing.Size(759, 416);
             this.tlpControls.TabIndex = 19;
+            this.tlpControls.Paint += new System.Windows.Forms.PaintEventHandler(this.tlpControls_Paint);
             // 
             // txtLog
             // 

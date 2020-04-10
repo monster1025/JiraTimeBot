@@ -38,6 +38,7 @@ namespace JiraTimeBot.UI
                 this.WindowState = FormWindowState.Normal;
                 _trayIcon.Hide();
             }
+
             base.WndProc(ref message);
         }
 
@@ -65,14 +66,16 @@ namespace JiraTimeBot.UI
             _log = _container.Resolve<ILog>();
             _tasksProcessors = _container.Resolve<IAllTasksProcessors>();
 
-            _controls = new Control[] { txtDummyMode, btnStart, btnMeeting, btnSettings, dteForDay, btnDoForDate };
+            _controls = new Control[] {txtDummyMode, btnStart, btnMeeting, btnSettings, dteForDay, btnDoForDate};
 
             _settingsWindowShow = () =>
             {
                 var frmSettings = new frmSettings(_container.Resolve<AutoStartUp>());
                 frmSettings.ShowDialog(this);
             };
-            _settingsErrorReporter = msg => MessageBox.Show(msg, "Загрузка настроек", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); ;
+            _settingsErrorReporter = msg =>
+                MessageBox.Show(msg, "Загрузка настроек", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            ;
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -121,7 +124,8 @@ namespace JiraTimeBot.UI
         private void PrintStartMessage()
         {
             _settings = Settings.LoadAndCheck(_settingsWindowShow, _settingsErrorReporter);
-            _log.Info($"Загружен бот для {_settings.JiraUserName}, Режим: {_settings.WorkType.ToString()}, работаем в {_settings.RepositoryPath}");
+            _log.Info(
+                $"Загружен бот для {_settings.JiraUserName}, Режим: {_settings.WorkType.ToString()}, работаем в {_settings.RepositoryPath}");
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
@@ -130,7 +134,8 @@ namespace JiraTimeBot.UI
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, _tokenSource.Token);
+                await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked,
+                    _tokenSource.Token);
             }
 
             LockUnlock(true);
@@ -176,7 +181,8 @@ namespace JiraTimeBot.UI
 
                 using (var tokenSource = GetTokenSource())
                 {
-                    await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, tokenSource.Token);
+                    await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked,
+                        tokenSource.Token);
                 }
 
                 LockUnlock(true);
@@ -189,7 +195,8 @@ namespace JiraTimeBot.UI
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.DoTheJob(settings, _tasksProcessors.MeetingProcessor, txtDummyMode.Checked, _tokenSource.Token);
+                await _job.DoTheJob(settings, _tasksProcessors.MeetingProcessor, txtDummyMode.Checked,
+                    _tokenSource.Token);
             }
 
             LockUnlock(true);
@@ -244,11 +251,15 @@ namespace JiraTimeBot.UI
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.SetTaskTimesForDate(dteForDay.Value, dteForDay.Value, settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, _tokenSource.Token);
+                await _job.SetTaskTimesForDate(dteForDay.Value, dteForDay.Value, settings,
+                    _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked, _tokenSource.Token);
             }
 
             LockUnlock(true);
+        }
 
+        private void tlpControls_Paint(object sender, PaintEventArgs e)
+        {
         }
     }
 }

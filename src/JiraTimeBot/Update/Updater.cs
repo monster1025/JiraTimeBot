@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace JiraTimeBot.Update
@@ -12,6 +13,7 @@ namespace JiraTimeBot.Update
     public class Updater : IUpdater
     {
         private readonly ILog _log;
+        private double _downloadPercent = 0;
 
         public Updater(ILog log)
         {
@@ -90,45 +92,34 @@ namespace JiraTimeBot.Update
             try
             {
                 _log.Info($"Устанавливаю обновление до версии {gitVersion}.");
-                //Rename he executing file
-                System.IO.FileInfo appFile =
-                    new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+                var appFile = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 var bkpDir = Path.Combine(appFile.DirectoryName, "bkp");
-                if (!Directory.Exists(bkpDir))
+
+                if (Directory.Exists(bkpDir))
+                    Directory.Delete(bkpDir, true);
+                _log.Info($"Создаю директорию {bkpDir}.");
+                Directory.CreateDirectory(bkpDir);
+
+                //забэкапим все папки
+                foreach (var dir in Directory.GetDirectories(appFile.DirectoryName).Where(f=>!f.EndsWith("bkp")))
                 {
-                    _log.Info($"Создаю директорию {bkpDir}.");
-                    Directory.CreateDirectory(bkpDir);
+                    var dirName = new DirectoryInfo(dir);
+                    var bkpDirPath = Path.Combine(bkpDir, dirName.Name);
+                    if (Directory.Exists(bkpDirPath))
+                        Directory.Delete(bkpDirPath, true);
+                    Directory.Move(dir, bkpDirPath);
+                }
+                //и файлы
+                foreach (var file in Directory.GetFiles(appFile.DirectoryName).Where(f=>!f.EndsWith("update.zip")))
+                {
+                    File.Move(file, Path.Combine(bkpDir, new FileInfo(file).Name));
                 }
 
+                //распакуем архив
                 using (ZipArchive archive = ZipFile.OpenRead(Path.Combine(appFile.DirectoryName, updateFile)))
                 {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        var zipEntryPath = Path.Combine(appFile.DirectoryName, entry.FullName);
-                        if (entry.FullName.EndsWith("/"))
-                        {
-                            var bkpEntryPath = Path.Combine(bkpDir, entry.FullName);
-                            bkpEntryPath = bkpEntryPath.TrimEnd('/');
-                            if (!Directory.Exists(bkpEntryPath))
-                            {
-                                Directory.CreateDirectory(bkpEntryPath);
-                            }
-                        }
-                        else
-                        {
-                            if (File.Exists(zipEntryPath))
-                            {
-                                System.IO.FileInfo zipEntryFile = new System.IO.FileInfo(zipEntryPath);
-                                if (File.Exists(bkpDir + "\\" + zipEntryFile.Name))
-                                {
-                                    File.Delete(bkpDir + "\\" + zipEntryFile.Name);
-                                }
-
-                                System.IO.File.Move(zipEntryFile.FullName, bkpDir + "\\" + zipEntryFile.Name);
-                            }
-                            entry.ExtractToFile(zipEntryPath);
-                        }
-                    }
+                    archive.ExtractToDirectory(appFile.DirectoryName);
                 }
 
                 _log.Info("Обновление установлено. Перезапустите программу для применения изменений.");
@@ -164,13 +155,27 @@ namespace JiraTimeBot.Update
                 {
                     client.Headers.Add("User-Agent",
                         "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0");
-                    client.DownloadFile(url, to);
+                    client.DownloadProgressChanged += ClientOnDownloadProgressChanged;
+                    client.DownloadFileAsync(new Uri(url), to);
+                    
+                    while (client.IsBusy) { Application.DoEvents(); }
+                    
                     return true;
                 }
             }
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        private void ClientOnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            var percent = Math.Truncate(e.BytesReceived / (double)e.TotalBytesToReceive * 100);
+            if (Math.Abs(_downloadPercent - percent) >= 10)
+            {
+                _log.Info($"Downloaded: {percent}%");
+                _downloadPercent = percent;
             }
         }
 
