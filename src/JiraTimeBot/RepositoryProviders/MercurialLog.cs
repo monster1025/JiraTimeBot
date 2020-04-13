@@ -7,8 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace JiraTimeBot.RepositoryProviders
 {
@@ -72,49 +74,58 @@ namespace JiraTimeBot.RepositoryProviders
                     AdditionalArguments = { "--encoding=utf-8" },
                 };
 
-                var log = repo.Log(logCommand);
-
-                foreach (var changeset in log)
+                try
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        return new List<TaskTimeItem>();
-                    }
+                    var log = repo.Log(logCommand);
 
-                    var commitMessage = FixEncoding(changeset.CommitMessage);
-                    if (_commitSkipper.IsNeedToSkip(changeset.Branch, commitMessage))
+                    foreach (var changeset in log)
                     {
-                        continue;
-                    }
-                    commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
-
-                    var task = new TaskTimeItem(changeset.Branch,
-                        commitMessage,
-                        directoryInfo.Name,
-                        changeset.Timestamp,
-                        TimeSpan.Zero,
-                        1,
-                        changeset.PathActions.Count,
-                        "",
-                        GetCommitType(changeset.Branch));
-
-                    if (task.Type == CommitType.Release && task.Description.StartsWith("Merge with", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        var description = task.Description;
-                        if (description.Contains("\n"))
+                        if (cancellationToken.IsCancellationRequested)
                         {
-                            description = description.Split('\n')[0];
+                            return new List<TaskTimeItem>();
                         }
-                        var branch = description.Replace("Merge with", "").Replace(" ", "");
-                        var release = task.Branch.Replace("release", "");
 
-                        task.Branch = branch;
-                        task.Description = $"Подготовка и публикация версии {task.Project} {release}.";
-                        task.ReleaseVersion = release;
+                        var commitMessage = FixEncoding(changeset.CommitMessage);
+                        if (_commitSkipper.IsNeedToSkip(changeset.Branch, commitMessage))
+                        {
+                            continue;
+                        }
+                        commitMessage = _technicalInfoSkipper.StripTechnicalInfo(commitMessage);
+
+                        var task = new TaskTimeItem(changeset.Branch,
+                            commitMessage,
+                            directoryInfo.Name,
+                            changeset.Timestamp,
+                            TimeSpan.Zero,
+                            1,
+                            changeset.PathActions.Count,
+                            "",
+                            GetCommitType(changeset.Branch));
+
+                        if (task.Type == CommitType.Release && task.Description.StartsWith("Merge with", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            var description = task.Description;
+                            if (description.Contains("\n"))
+                            {
+                                description = description.Split('\n')[0];
+                            }
+                            var branch = description.Replace("Merge with", "").Replace(" ", "");
+                            var release = task.Branch.Replace("release", "");
+
+                            task.Branch = branch;
+                            task.Description = $"Подготовка и публикация версии {task.Project} {release}.";
+                            task.ReleaseVersion = release;
+                        }
+                        workTasks.Add(task);
+                        _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");
                     }
-                    workTasks.Add(task);
-                    _log?.Trace($" - Найден changeset: {changeset.Timestamp} - {changeset.Branch} - {changeset.AuthorEmailAddress} - {commitMessage}");
                 }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Oops something went wrong in repo {repoDirectory}");
+                    throw;
+                }
+
             }
             if (!workTasks.Any())
             {
