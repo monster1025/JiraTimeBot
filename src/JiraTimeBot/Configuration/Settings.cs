@@ -14,6 +14,7 @@ namespace JiraTimeBot.Configuration
 
         public string JiraUrl { get; set; }
         public bool PullBeforeProcess { get; set; }
+        public bool RemoveManuallyAddedWorklogs { get; set; }
         public string RepositoryPath { get; set; }
         public string MercurialAuthorEmail { get; set; }
         public string JiraUserName { get; set; }

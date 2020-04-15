@@ -56,6 +56,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.lblJiraUrl = new System.Windows.Forms.Label();
             this.txtJiraUrl = new System.Windows.Forms.TextBox();
+            this.chkRemoveManuallyAddedWorklogs = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label5
@@ -154,7 +155,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(86, 412);
+            this.btnSave.Location = new System.Drawing.Point(86, 432);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -262,7 +263,7 @@
             // chkPullBeforeProcess
             // 
             this.chkPullBeforeProcess.AutoSize = true;
-            this.chkPullBeforeProcess.Location = new System.Drawing.Point(65, 389);
+            this.chkPullBeforeProcess.Location = new System.Drawing.Point(65, 409);
             this.chkPullBeforeProcess.Name = "chkPullBeforeProcess";
             this.chkPullBeforeProcess.Size = new System.Drawing.Size(83, 17);
             this.chkPullBeforeProcess.TabIndex = 45;
@@ -303,11 +304,22 @@
             this.txtJiraUrl.Size = new System.Drawing.Size(100, 20);
             this.txtJiraUrl.TabIndex = 46;
             // 
+            // chkRemoveManuallyAddedWorklogs
+            // 
+            this.chkRemoveManuallyAddedWorklogs.AutoSize = true;
+            this.chkRemoveManuallyAddedWorklogs.Location = new System.Drawing.Point(65, 387);
+            this.chkRemoveManuallyAddedWorklogs.Name = "chkRemoveManuallyAddedWorklogs";
+            this.chkRemoveManuallyAddedWorklogs.Size = new System.Drawing.Size(157, 17);
+            this.chkRemoveManuallyAddedWorklogs.TabIndex = 48;
+            this.chkRemoveManuallyAddedWorklogs.Text = "Удалять \"ручные записи\"";
+            this.chkRemoveManuallyAddedWorklogs.UseVisualStyleBackColor = true;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 442);
+            this.ClientSize = new System.Drawing.Size(243, 467);
+            this.Controls.Add(this.chkRemoveManuallyAddedWorklogs);
             this.Controls.Add(this.lblJiraUrl);
             this.Controls.Add(this.txtJiraUrl);
             this.Controls.Add(this.chkPullBeforeProcess);
@@ -377,5 +389,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblJiraUrl;
         private System.Windows.Forms.TextBox txtJiraUrl;
+        private System.Windows.Forms.CheckBox chkRemoveManuallyAddedWorklogs;
     }
 }

@@ -15,6 +15,7 @@ namespace JiraTimeBot.JiraIntegration
         string GetTaskName(string branch, Settings settings);
         List<Issue> GetWorkloggedIssuesByDate(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default);
         void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false, CancellationToken cancellationToken = default);
+        List<Worklog> GetManuallyWorklogged(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date, CancellationToken cancellationToken = default);
     }
 
     public class JiraApi : IJiraApi
@@ -77,6 +78,28 @@ namespace JiraTimeBot.JiraIntegration
             return GetIssuesByJQL(jql, settings, date, cancellationToken);
         }
 
+        public List<Worklog> GetManuallyWorklogged(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date, CancellationToken cancellationToken = default)
+        {
+            var result = new List<Worklog>();
+            var alreadyLoggedToday = GetWorkloggedIssuesByDate(settings, date);
+            foreach (var issue in alreadyLoggedToday)
+            {
+                if (!taskTimeItems.Any(f => f.Branch.Equals(issue.Key.Value, StringComparison.InvariantCulture)))
+                {
+                    var workLogs = issue.GetWorklogsAsync(cancellationToken).Result;
+                    var userWorklogs = workLogs.Where(w =>
+                        w.StartDate.GetValueOrDefault().Date == date && w.Author.Equals(settings.JiraUserName,
+                            StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    foreach (var userWorklog in userWorklogs)
+                    {
+                        result.Add(userWorklog);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         private void RemoveWorklogsAddedByUser(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, CancellationToken cancellationToken = default)
         {
             var alreadyLoggedToday = GetWorkloggedIssuesByDate(settings, date);
@@ -106,8 +129,11 @@ namespace JiraTimeBot.JiraIntegration
             date = date.GetValueOrDefault(DateTime.Now.Date).Date;
             var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
 
-            //Удаляем добавленные вручную пользователем данные.
-            RemoveWorklogsAddedByUser(taskTimeItems, settings, date, dummy, cancellationToken);
+            if (settings.RemoveManuallyAddedWorklogs)
+            {
+                //Удаляем добавленные вручную пользователем данные.
+                RemoveWorklogsAddedByUser(taskTimeItems, settings, date, dummy, cancellationToken);
+            }
 
             foreach (TaskTimeItem taskTimeItem in taskTimeItems)
             {
@@ -155,7 +181,7 @@ namespace JiraTimeBot.JiraIntegration
                         {
                             try
                             {
-                                issue.DeleteWorklogAsync(workLog, WorklogStrategy.RetainRemainingEstimate, token: cancellationToken);
+                                issue.DeleteWorklogAsync(workLog, WorklogStrategy.AutoAdjustRemainingEstimate, token: cancellationToken);
                             }
                             catch (Exception ex)
                             {
@@ -181,7 +207,7 @@ namespace JiraTimeBot.JiraIntegration
                     {
                         try
                         {
-                            workLogToAdd = issue.AddWorklogAsync(workLogToAdd, WorklogStrategy.RetainRemainingEstimate, token: cancellationToken).Result;
+                            workLogToAdd = issue.AddWorklogAsync(workLogToAdd, WorklogStrategy.AutoAdjustRemainingEstimate, token: cancellationToken).Result;
                         }
                         catch (Exception ex)
                         {

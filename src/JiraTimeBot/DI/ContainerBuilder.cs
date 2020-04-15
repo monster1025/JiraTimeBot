@@ -61,7 +61,8 @@ namespace JiraTimeBot.DI
 
             _builder.RegisterType<JiraHistory>().AsSelf().As<IJiraHistory>();
 
-            _builder.Register(c => new Job(c.Resolve<IAllRepositoryProviders>(), c.Resolve<ITaskTimeCalculator>(), c.Resolve<ILog>())).AsSelf();
+            _builder.Register(c => new Job(c.Resolve<IAllRepositoryProviders>(), c.Resolve<ITaskTimeCalculator>(),
+                c.Resolve<IJiraApi>(), c.Resolve<ILog>())).AsSelf();
 
             _builder.RegisterType<AutoStartUp>().AsSelf().AsImplementedInterfaces();
             _builder.RegisterType<frmSettings>().AsSelf().AsImplementedInterfaces();

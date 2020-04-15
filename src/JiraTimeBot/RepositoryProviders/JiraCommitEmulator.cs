@@ -1,14 +1,14 @@
-﻿using Atlassian.Jira;
-using JiraTimeBot.Configuration;
-using JiraTimeBot.RepositoryProviders.Interfaces;
-using JiraTimeBot.TaskTime.Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Atlassian.Jira;
+using JiraTimeBot.Configuration;
+using JiraTimeBot.JiraIntegration;
+using JiraTimeBot.RepositoryProviders.Interfaces;
+using JiraTimeBot.TaskTime.Objects;
 
-
-namespace JiraTimeBot.JiraIntegration
+namespace JiraTimeBot.RepositoryProviders
 {
     public class JiraCommitEmulator : IRepositoryLog
     {

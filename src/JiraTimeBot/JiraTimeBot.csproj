@@ -121,7 +121,7 @@
     <Compile Include="Job.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\Settings.cs" />
-    <Compile Include="JiraIntegration\JiraCommitEmulator.cs" />
+    <Compile Include="RepositoryProviders\JiraCommitEmulator.cs" />
     <Compile Include="RepositoryProviders\GitLog.cs" />
     <Compile Include="RepositoryProviders\Interfaces\IAllVcsProviders.cs" />
     <Compile Include="RepositoryProviders\Modifiers\ITechnicalInfoSkipper.cs" />

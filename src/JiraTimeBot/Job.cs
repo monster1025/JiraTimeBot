@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using JiraTimeBot.JiraIntegration;
 
 namespace JiraTimeBot
 {
@@ -15,12 +16,14 @@ namespace JiraTimeBot
     {
         private readonly IAllRepositoryProviders _mercurialProviders;
         private readonly ITaskTimeCalculator _taskTimeDiscoverer;
+        private readonly IJiraApi _jiraApi;
         private readonly ILog _log;
 
-        public Job(IAllRepositoryProviders mercurialProviders, ITaskTimeCalculator taskTimeDiscoverer, ILog log)
+        public Job(IAllRepositoryProviders mercurialProviders, ITaskTimeCalculator taskTimeDiscoverer, IJiraApi jiraApi, ILog log)
         {
             _mercurialProviders = mercurialProviders;
             _taskTimeDiscoverer = taskTimeDiscoverer;
+            _jiraApi = jiraApi;
             _log = log;
         }
 
@@ -72,22 +75,23 @@ namespace JiraTimeBot
 
         private bool SetTaskTimesForDateImpl(DateTime setForDate, DateTime realDate, Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
         {
-            IRepositoryLog mercurial = _mercurialProviders.MercurialLog;
+            IRepositoryLog repository = _mercurialProviders.MercurialLog;
             if (settings.WorkType == WorkType.JiraLogs)
             {
                 _log.Info("Использую Jira как источник информации.");
-                mercurial = _mercurialProviders.JiraCommitEmulator;
+                repository = _mercurialProviders.JiraCommitEmulator;
             }
             else if (settings.WorkType == WorkType.GitLogs)
             {
                 _log.Info("Использую Git как источник информации.");
-                mercurial = _mercurialProviders.GitLog;
+                repository = _mercurialProviders.GitLog;
             }
 
             List<TaskTimeItem> taskTimes;
             if (!(tasksProcessor is MeetingProcessor))
             {
-                List<TaskTimeItem> commits = mercurial.GetRepositoryLog(settings, realDate, cancellationToken);
+                List<TaskTimeItem> commits = repository.GetRepositoryLog(settings, realDate, cancellationToken);
+                ModifyWorktimeByManualLogs(setForDate, settings, cancellationToken, commits);
                 taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
             }
             else
@@ -110,6 +114,22 @@ namespace JiraTimeBot
 
             _log.Info("Готово.");
             return true;
+        }
+
+        private void ModifyWorktimeByManualLogs(DateTime setForDate, Settings settings, CancellationToken cancellationToken,
+            List<TaskTimeItem> commits)
+        {
+            if (settings.RemoveManuallyAddedWorklogs)
+            {
+                return;
+            }
+
+            //если не удаляем добавленное вручную, то посчитаем сколько там надобавляли и отнимем от рабочего дня
+            var manuallyWorklogged = _jiraApi.GetManuallyWorklogged(commits, settings, setForDate, cancellationToken);
+            if (manuallyWorklogged.Any() && manuallyWorklogged.Sum(f => f.TimeSpentInSeconds) < settings.MinuterPerWorkDay)
+            {
+                settings.MinuterPerWorkDay = (int) (settings.MinuterPerWorkDay - manuallyWorklogged.Sum(f => f.TimeSpentInSeconds));
+            }
         }
     }
 }
