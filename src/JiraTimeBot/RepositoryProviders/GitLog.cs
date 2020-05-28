@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace JiraTimeBot.RepositoryProviders
@@ -78,7 +79,11 @@ namespace JiraTimeBot.RepositoryProviders
                 var reflog = repo.Refs.Log(repo.Refs.Head);
                 foreach (var reflogItem in reflog)
                 {
-                    if (reflogItem.Committer.When.Date != date.Value.Date || reflogItem.Committer.Email != settings.MercurialAuthorEmail)
+
+                    var dateMatch = date.Value.Date == reflogItem.Committer.When.Date;
+                    var userMatch = reflogItem.Committer.Email.Equals(settings.MercurialAuthorEmail, StringComparison.CurrentCultureIgnoreCase);
+
+                    if (!dateMatch || !userMatch)
                     {
                         continue;
                     }
@@ -101,12 +106,19 @@ namespace JiraTimeBot.RepositoryProviders
                         continue;
                     }
 
-                    var branch = ListBranchesContaininingCommit(repo, commit.Sha).Select(f => f.FriendlyName)
-                        .Where(f => f.Contains("-") && !f.Contains("/")).Distinct().FirstOrDefault();
+                    var regex = new Regex("[a-zA-Z]{1,4}-[0-9]{1,6}");
+                    var branch = ListBranchesContaininingCommit(repo, commit.Sha)
+                                 .Select(f => f.FriendlyName)
+                                 .FirstOrDefault(f => regex.IsMatch(f));
+                                 
+
+                        //.Where(f => f.Contains("-") && !f.Contains("/")).Distinct().FirstOrDefault();
                     if (branch == null)
                     {
                         continue;
                     }
+
+                    branch = regex.Match(branch).Value;
 
                     var commitMessage = commit.MessageShort;
                     commitMessage = _technicalInfoSkipper.StripBranchPrefix(branch, commitMessage);
