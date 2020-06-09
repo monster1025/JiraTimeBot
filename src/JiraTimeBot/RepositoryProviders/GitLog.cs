@@ -36,7 +36,7 @@ namespace JiraTimeBot.RepositoryProviders
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
             var workTasks = new List<TaskTimeItem>();
-            foreach (var repoDirectory in Directory.GetDirectories(settings.RepositoryPath))
+            foreach (var repoDirectory in Directory.GetDirectories(settings.RepositoryPath, ".git", SearchOption.AllDirectories))
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -44,16 +44,15 @@ namespace JiraTimeBot.RepositoryProviders
                 }
 
                 //var project = new DirectoryInfo(repoDirectory).Name;
-                if (!Directory.Exists(Path.Combine(repoDirectory, ".git")))
+                var repoRootDirectory = repoDirectory.Replace(".git", "");
+                var directoryInfo = new DirectoryInfo(repoRootDirectory);
+                if (!directoryInfo.Exists)
                 {
                     continue;
                 }
 
-                var directoryInfo = new DirectoryInfo(repoDirectory);
 
-
-                var repo = new LibGit2Sharp.Repository(repoDirectory);
-
+                var repo = new LibGit2Sharp.Repository(repoRootDirectory);
                 if (settings.PullBeforeProcess)
                 {
                     try
