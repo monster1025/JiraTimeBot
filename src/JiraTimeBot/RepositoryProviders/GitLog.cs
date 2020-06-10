@@ -105,7 +105,7 @@ namespace JiraTimeBot.RepositoryProviders
                         continue;
                     }
 
-                    var regex = new Regex("[a-zA-Z]{1,4}-[0-9]{1,6}");
+                    var regex = new Regex("[a-zA-Z0-9]{1,4}-[0-9]{1,6}");
                     var branch = ListBranchesContaininingCommit(repo, commit.Sha)
                                  .Select(f => f.FriendlyName)
                                  .FirstOrDefault(f => regex.IsMatch(f));
