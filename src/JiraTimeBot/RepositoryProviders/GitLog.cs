@@ -80,7 +80,10 @@ namespace JiraTimeBot.RepositoryProviders
                 {
 
                     var dateMatch = date.Value.Date == reflogItem.Committer.When.Date;
-                    var userMatch = reflogItem.Committer.Email.Equals(settings.MercurialAuthorEmail, StringComparison.CurrentCultureIgnoreCase);
+                    var committerEmail = reflogItem.Committer.Email;
+
+                    var userMatch = committerEmail.Equals(settings.MercurialAuthorEmail, StringComparison.CurrentCultureIgnoreCase)
+                                    || committerEmail.Equals(settings.AlternativeEmail, StringComparison.CurrentCultureIgnoreCase);
 
                     if (!dateMatch || !userMatch)
                     {
@@ -100,7 +103,13 @@ namespace JiraTimeBot.RepositoryProviders
                     {
                         return new List<TaskTimeItem>();
                     }
-                    if (commit.Author.When.DateTime.Date != date.Value.Date || commit.Author.Email != settings.MercurialAuthorEmail)
+
+                    var userMatch = commit.Author.Email.Equals(settings.MercurialAuthorEmail, StringComparison.CurrentCultureIgnoreCase)
+                                    || commit.Author.Email.Equals(settings.AlternativeEmail, StringComparison.CurrentCultureIgnoreCase);
+
+
+                    if (commit.Author.When.DateTime.Date != date.Value.Date 
+                        || !userMatch)
                     {
                         continue;
                     }

@@ -25,6 +25,7 @@ namespace JiraTimeBot.Configuration
         public string JiraQuery { get; set; }
         public string TimeControlTask { get; set; }
         public int RandomWorkMinutes { get; set; }
+        public string AlternativeEmail { get; set; }
 
         public static Settings LoadAndCheck(Action settingsSource, Action<string> errorMessageReporter)
         {

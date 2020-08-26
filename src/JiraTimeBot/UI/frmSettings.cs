@@ -43,7 +43,7 @@ namespace JiraTimeBot.UI
             txtRandomMinutes.Text = settings.RandomWorkMinutes.ToString();
             chkPullBeforeProcess.Checked = settings.PullBeforeProcess;
             chkRemoveManuallyAddedWorklogs.Checked = settings.RemoveManuallyAddedWorklogs;
-
+            tbAlternateEmail.Text = settings.AlternativeEmail;
             cboWorkType_SelectedIndexChanged(null, null);
         }
 
@@ -78,7 +78,8 @@ namespace JiraTimeBot.UI
                 MinuterPerWorkDay = minuterPerWorkDay,
                 RandomWorkMinutes = randomWorkMinutes,
                 PullBeforeProcess = chkPullBeforeProcess.Checked,
-                RemoveManuallyAddedWorklogs = chkRemoveManuallyAddedWorklogs.Checked
+                RemoveManuallyAddedWorklogs = chkRemoveManuallyAddedWorklogs.Checked,
+                AlternativeEmail = tbAlternateEmail.Text
             };
 
             //LockUnlock(false);

@@ -57,6 +57,8 @@
             this.lblJiraUrl = new System.Windows.Forms.Label();
             this.txtJiraUrl = new System.Windows.Forms.TextBox();
             this.chkRemoveManuallyAddedWorklogs = new System.Windows.Forms.CheckBox();
+            this.tbAlternateEmail = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label5
@@ -146,7 +148,7 @@
             // chkAddComments
             // 
             this.chkAddComments.AutoSize = true;
-            this.chkAddComments.Location = new System.Drawing.Point(65, 366);
+            this.chkAddComments.Location = new System.Drawing.Point(65, 400);
             this.chkAddComments.Name = "chkAddComments";
             this.chkAddComments.Size = new System.Drawing.Size(133, 17);
             this.chkAddComments.TabIndex = 31;
@@ -155,7 +157,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(86, 432);
+            this.btnSave.Location = new System.Drawing.Point(86, 466);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 32;
@@ -221,7 +223,7 @@
             // chkAutostart
             // 
             this.chkAutostart.AutoSize = true;
-            this.chkAutostart.Location = new System.Drawing.Point(65, 343);
+            this.chkAutostart.Location = new System.Drawing.Point(65, 377);
             this.chkAutostart.Name = "chkAutostart";
             this.chkAutostart.Size = new System.Drawing.Size(96, 17);
             this.chkAutostart.TabIndex = 40;
@@ -263,7 +265,7 @@
             // chkPullBeforeProcess
             // 
             this.chkPullBeforeProcess.AutoSize = true;
-            this.chkPullBeforeProcess.Location = new System.Drawing.Point(65, 409);
+            this.chkPullBeforeProcess.Location = new System.Drawing.Point(65, 443);
             this.chkPullBeforeProcess.Name = "chkPullBeforeProcess";
             this.chkPullBeforeProcess.Size = new System.Drawing.Size(83, 17);
             this.chkPullBeforeProcess.TabIndex = 45;
@@ -307,18 +309,36 @@
             // chkRemoveManuallyAddedWorklogs
             // 
             this.chkRemoveManuallyAddedWorklogs.AutoSize = true;
-            this.chkRemoveManuallyAddedWorklogs.Location = new System.Drawing.Point(65, 387);
+            this.chkRemoveManuallyAddedWorklogs.Location = new System.Drawing.Point(65, 421);
             this.chkRemoveManuallyAddedWorklogs.Name = "chkRemoveManuallyAddedWorklogs";
             this.chkRemoveManuallyAddedWorklogs.Size = new System.Drawing.Size(157, 17);
             this.chkRemoveManuallyAddedWorklogs.TabIndex = 48;
             this.chkRemoveManuallyAddedWorklogs.Text = "Удалять \"ручные записи\"";
             this.chkRemoveManuallyAddedWorklogs.UseVisualStyleBackColor = true;
             // 
+            // tbAlternateEmail
+            // 
+            this.tbAlternateEmail.Location = new System.Drawing.Point(133, 328);
+            this.tbAlternateEmail.Name = "tbAlternateEmail";
+            this.tbAlternateEmail.Size = new System.Drawing.Size(100, 20);
+            this.tbAlternateEmail.TabIndex = 49;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(4, 331);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(123, 13);
+            this.label10.TabIndex = 50;
+            this.label10.Text = "Дополнительный Email";
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 467);
+            this.ClientSize = new System.Drawing.Size(243, 496);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.tbAlternateEmail);
             this.Controls.Add(this.chkRemoveManuallyAddedWorklogs);
             this.Controls.Add(this.lblJiraUrl);
             this.Controls.Add(this.txtJiraUrl);
@@ -390,5 +410,7 @@
         private System.Windows.Forms.Label lblJiraUrl;
         private System.Windows.Forms.TextBox txtJiraUrl;
         private System.Windows.Forms.CheckBox chkRemoveManuallyAddedWorklogs;
+        private System.Windows.Forms.TextBox tbAlternateEmail;
+        private System.Windows.Forms.Label label10;
     }
 }
