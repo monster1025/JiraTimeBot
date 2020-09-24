@@ -27,9 +27,9 @@ namespace JiraTimeBot.RepositoryProviders
             _technicalInfoSkipper = technicalInfoSkipper;
         }
 
-        public List<TaskTimeItem> GetRepositoryLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
+        public List<TaskTimeItem> GetRepositoryLog(Settings settings, string currentRepository, DateTime? date = null, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath))
+            if (string.IsNullOrEmpty(currentRepository) || !Directory.Exists(currentRepository))
             {
                 _log.Error("Папка с репо не сушествует.");
                 return new List<TaskTimeItem>();
@@ -38,7 +38,7 @@ namespace JiraTimeBot.RepositoryProviders
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
             var workTasks = new List<TaskTimeItem>();
-            foreach (var repoDirectory in Directory.GetDirectories(settings.RepositoryPath))
+            foreach (var repoDirectory in Directory.GetDirectories(currentRepository))
             {
                 if (cancellationToken.IsCancellationRequested)
                 {

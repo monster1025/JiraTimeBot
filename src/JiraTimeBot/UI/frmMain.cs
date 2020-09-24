@@ -134,8 +134,10 @@ namespace JiraTimeBot.UI
 
             using (_tokenSource = GetTokenSource())
             {
-                await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked,
-                    _tokenSource.Token);
+                await _job.DoTheJob(settings, 
+                                    _tasksProcessors.WorkLogTasksProcessor, 
+                                    txtDummyMode.Checked,
+                                    _tokenSource.Token);
             }
 
             LockUnlock(true);
@@ -181,8 +183,10 @@ namespace JiraTimeBot.UI
 
                 using (var tokenSource = GetTokenSource())
                 {
-                    await _job.DoTheJob(settings, _tasksProcessors.WorkLogTasksProcessor, txtDummyMode.Checked,
-                        tokenSource.Token);
+                    await _job.DoTheJob(settings, 
+                                        _tasksProcessors.WorkLogTasksProcessor, 
+                                        txtDummyMode.Checked,
+                                        tokenSource.Token);
                 }
 
                 LockUnlock(true);

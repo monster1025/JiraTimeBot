@@ -14,14 +14,17 @@ namespace JiraTimeBot
 {
     class Job
     {
-        private readonly IAllRepositoryProviders _mercurialProviders;
+        private readonly IAllRepositoryProviders _repositoryProviders;
         private readonly ITaskTimeCalculator _taskTimeDiscoverer;
         private readonly IJiraApi _jiraApi;
         private readonly ILog _log;
 
-        public Job(IAllRepositoryProviders mercurialProviders, ITaskTimeCalculator taskTimeDiscoverer, IJiraApi jiraApi, ILog log)
+        public Job(IAllRepositoryProviders repositoryProviders, 
+                   ITaskTimeCalculator taskTimeDiscoverer, 
+                   IJiraApi jiraApi, 
+                   ILog log)
         {
-            _mercurialProviders = mercurialProviders;
+            _repositoryProviders = repositoryProviders;
             _taskTimeDiscoverer = taskTimeDiscoverer;
             _jiraApi = jiraApi;
             _log = log;
@@ -34,7 +37,10 @@ namespace JiraTimeBot
             return Task.Run(() => DoTheJobImpl(settings, tasksProcessor, dummyMode, cancellationToken), cancellationToken);
         }
 
-        private void DoTheJobImpl(Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
+        private void DoTheJobImpl(Settings settings, 
+                                  ITasksProcessor tasksProcessor, 
+                                  bool dummyMode, 
+                                  CancellationToken cancellationToken)
         {
             int daysDiff = 0;
             if (tasksProcessor is MeetingProcessor)
@@ -73,30 +79,91 @@ namespace JiraTimeBot
             return Task.Run(() => SetTaskTimesForDateImpl(setForDate, realDate, settings, tasksProcessor, dummyMode, cancellationToken), cancellationToken);
         }
 
-        private bool SetTaskTimesForDateImpl(DateTime setForDate, DateTime realDate, Settings settings, ITasksProcessor tasksProcessor, bool dummyMode, CancellationToken cancellationToken)
+        private bool SetTaskTimesForDateImpl(DateTime setForDate,
+                                             DateTime realDate,
+                                             Settings settings,
+                                             ITasksProcessor tasksProcessor,
+                                             bool dummyMode,
+                                             CancellationToken cancellationToken)
         {
-            IRepositoryLog repository = _mercurialProviders.MercurialLog;
-            if (settings.WorkType == WorkType.JiraLogs)
+            List<TaskTimeItem> tasks = new List<TaskTimeItem>();
+            if (tasksProcessor is MeetingProcessor)
             {
-                _log.Info("Использую Jira как источник информации.");
-                repository = _mercurialProviders.JiraCommitEmulator;
-            }
-            else if (settings.WorkType == WorkType.GitLogs)
-            {
-                _log.Info("Использую Git как источник информации.");
-                repository = _mercurialProviders.GitLog;
+                var provider = _repositoryProviders.JiraHistory;
+                tasks = provider.GetDayWorklogs(realDate, settings, cancellationToken);
+                return SetTaskTimesForDate(setForDate, realDate, settings, tasksProcessor, dummyMode, tasks, cancellationToken);
             }
 
-            List<TaskTimeItem> taskTimes;
+            switch (settings.WorkType)
+            {
+                case WorkType.Mercurial:
+                {
+                    var repo = _repositoryProviders.JiraCommitEmulator;
+                    tasks = GetTasksFromRepositories(realDate, settings, new[] {repo});
+                    break;
+                }
+                case WorkType.JiraLogs:
+                {
+                    var repo = _repositoryProviders.JiraCommitEmulator;
+                    tasks = GetTasksFromRepositories(realDate, settings, new[] {repo});
+                    break;
+                }
+                case WorkType.GitLogs:
+                {
+                    var repo = _repositoryProviders.GitLog;
+                    tasks = GetTasksFromRepositories(realDate, settings, new[] {repo});
+                    break;
+                }
+                case WorkType.CVSMixed:
+                {
+                    var repos = new[] {_repositoryProviders.GitLog as IRepositoryLog, _repositoryProviders.MercurialLog};
+                    tasks = GetTasksFromRepositories(realDate, settings, repos);
+                    break;
+                }
+                default:
+                {
+                    return false;
+                }
+            }
+
+            var result = SetTaskTimesForDate(setForDate, realDate, settings, tasksProcessor, dummyMode, tasks, cancellationToken);
+            return result;
+        }
+
+        private List<TaskTimeItem> GetTasksFromRepositories(DateTime realDate, 
+                                                            Settings settings,  
+                                                            IEnumerable<IRepositoryLog> repositories)
+        {
+            var result = new List<TaskTimeItem>();
+            foreach (var repositoryLog in repositories)
+            {
+                foreach (var repoPath in settings.GetRepositories())
+                {
+                    var items = repositoryLog.GetRepositoryLog(settings, repoPath, realDate);
+                    result.AddRange(items);
+                }
+            }
+            return result;
+        }
+
+
+        private bool SetTaskTimesForDate(DateTime setForDate, 
+                                         DateTime realDate, 
+                                         Settings settings, 
+                                         ITasksProcessor tasksProcessor, 
+                                         bool dummyMode, 
+                                         List<TaskTimeItem> taskTimes,
+                                         CancellationToken cancellationToken)
+        {
             if (!(tasksProcessor is MeetingProcessor))
             {
-                List<TaskTimeItem> commits = repository.GetRepositoryLog(settings, realDate, cancellationToken);
+                List<TaskTimeItem> commits = taskTimes;
                 ModifyWorktimeByManualLogs(setForDate, settings, cancellationToken, commits);
                 taskTimes = _taskTimeDiscoverer.CalculateTaskTime(commits, settings, cancellationToken);
             }
             else
             {
-                var provider = _mercurialProviders.JiraHistory;
+                var provider = _repositoryProviders.JiraHistory;
                 taskTimes = provider.GetDayWorklogs(realDate, settings, cancellationToken);
             }
 

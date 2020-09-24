@@ -140,12 +140,18 @@ namespace JiraTimeBot.Configuration
         }
 
         private static readonly string _settingsFileName = "settings.json";
+
+        public string[] GetRepositories()
+        {
+            return RepositoryPath.Split(';').Select(c => c.Trim()).ToArray();
+        }
     }
 
     public enum WorkType
     {
         Mercurial = 0,
         JiraLogs = 1,
-        GitLogs = 2
+        GitLogs = 2,
+        CVSMixed = 3
     }
 }

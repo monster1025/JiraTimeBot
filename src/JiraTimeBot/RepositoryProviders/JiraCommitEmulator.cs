@@ -22,8 +22,9 @@ namespace JiraTimeBot.RepositoryProviders
         }
 
         public List<TaskTimeItem> GetRepositoryLog(Settings settings,
-                                    DateTime? date = null,
-                                    CancellationToken cancellationToken = default(CancellationToken))
+                                                   string currentRepository,
+                                                   DateTime? date = null,
+                                                   CancellationToken cancellationToken = default(CancellationToken))
         {
             date = date.GetValueOrDefault(DateTime.Now.Date);
             var workTasks = new List<TaskTimeItem>();

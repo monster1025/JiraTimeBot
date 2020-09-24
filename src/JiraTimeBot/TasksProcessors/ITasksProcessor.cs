@@ -8,6 +8,11 @@ namespace JiraTimeBot.TasksProcessors
 {
     interface ITasksProcessor
     {
-        void Process(DateTime setForDate, DateTime realDate, List<TaskTimeItem> taskTimes, Settings settings, bool dummyMode, CancellationToken cancellationToken = default(CancellationToken));
+        void Process(DateTime setForDate, 
+                     DateTime realDate, 
+                     List<TaskTimeItem> taskTimes, 
+                     Settings settings, 
+                     bool dummyMode, 
+                     CancellationToken cancellationToken = default);
     }
 }

@@ -25,9 +25,9 @@ namespace JiraTimeBot.RepositoryProviders
             _technicalInfoSkipper = technicalInfoSkipper;
         }
 
-        public List<TaskTimeItem> GetRepositoryLog(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
+        public List<TaskTimeItem> GetRepositoryLog(Settings settings, string currentRepository, DateTime? date = null, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(settings.RepositoryPath) || !Directory.Exists(settings.RepositoryPath))
+            if (string.IsNullOrEmpty(currentRepository) || !Directory.Exists(currentRepository))
             {
                 _log.Error("Папка с репо не сушествует.");
                 return new List<TaskTimeItem>();
@@ -36,7 +36,7 @@ namespace JiraTimeBot.RepositoryProviders
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
             var workTasks = new List<TaskTimeItem>();
-            foreach (var repoDirectory in Directory.GetDirectories(settings.RepositoryPath, ".git", SearchOption.AllDirectories))
+            foreach (var repoDirectory in Directory.GetDirectories(currentRepository, ".git", SearchOption.AllDirectories))
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -115,7 +115,7 @@ namespace JiraTimeBot.RepositoryProviders
                     }
 
                     var regex = new Regex("[a-zA-Z0-9]{1,4}-[0-9]{1,6}");
-                    var branch = ListBranchesContaininingCommit(repo, commit.Sha)
+                    var branch = ListBranchesContainsCommit(repo, commit.Sha)
                                  .Select(f => f.FriendlyName)
                                  .FirstOrDefault(f => regex.IsMatch(f));
                                  
@@ -179,7 +179,7 @@ namespace JiraTimeBot.RepositoryProviders
             return fileList.ToArray();
         }
 
-        private IEnumerable<Branch> ListBranchesContaininingCommit(Repository repo, string commitSha)
+        private IEnumerable<Branch> ListBranchesContainsCommit(Repository repo, string commitSha)
         {
             bool directBranchHasBeenFound = false;
             foreach (var branch in repo.Branches)
