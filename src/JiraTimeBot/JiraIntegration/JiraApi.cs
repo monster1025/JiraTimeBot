@@ -6,18 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using JiraTimeBot.JiraIntegration.Authentificators;
+using RestSharp.Authenticators;
 
 namespace JiraTimeBot.JiraIntegration
 {
-    public interface IJiraApi
-    {
-        List<Issue> GetIssuesByJQL(string jql, Settings settings, DateTime? date = null, CancellationToken cancellationToken = default);
-        string GetTaskName(string branch, Settings settings);
-        List<Issue> GetWorkloggedIssuesByDate(Settings settings, DateTime? date = null, CancellationToken cancellationToken = default);
-        void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false, CancellationToken cancellationToken = default);
-        List<Worklog> GetManuallyWorklogged(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date, CancellationToken cancellationToken = default);
-    }
-
     public class JiraApi : IJiraApi
     {
         private readonly ILog _log;
@@ -31,9 +24,9 @@ namespace JiraTimeBot.JiraIntegration
 
         public string GetTaskName(string branch, Settings settings)
         {
-            var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
             try
             {
+                var jira = GetClient(settings);
                 var issue = jira.Issues.Queryable.FirstOrDefault(f => f.Key == branch);
                 return issue?.Summary;
             }
@@ -45,7 +38,7 @@ namespace JiraTimeBot.JiraIntegration
 
         public List<Issue> GetIssuesByJQL(string jql, Settings settings, DateTime? date = null, CancellationToken cancellationToken = default)
         {
-            var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
+            var jira = GetClient(settings);
             date = date.GetValueOrDefault(DateTime.Now.Date);
 
             var userName = settings.JiraUserName;
@@ -127,8 +120,8 @@ namespace JiraTimeBot.JiraIntegration
         public void SetTodayWorklog(List<TaskTimeItem> taskTimeItems, Settings settings, DateTime? date = null, bool dummy = false, bool addCommentsToWorklog = false, CancellationToken cancellationToken = default)
         {
             date = date.GetValueOrDefault(DateTime.Now.Date).Date;
-            var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
-
+            var jira = GetClient(settings);
+            
             if (settings.RemoveManuallyAddedWorklogs)
             {
                 //Удаляем добавленные вручную пользователем данные.
@@ -218,6 +211,16 @@ namespace JiraTimeBot.JiraIntegration
                     _log.Trace($"Добавили Worklog для {taskTimeItem.Branch}: {workLogToAdd.Author} {workLogToAdd.CreateDate}: {workLogToAdd.TimeSpent}");
                 }
             }
+        }
+
+        public Jira GetClient(Settings settings)
+        {
+            var jira = Jira.CreateRestClient(settings.JiraUrl, settings.JiraUserName, settings.JiraPassword);
+            if (settings.JiraPassword.Length == 32)
+            {
+                jira.RestClient.RestSharpClient.Authenticator = new JSessionAuthenticator(settings.JiraPassword);
+            }
+            return jira;
         }
     }
 }
