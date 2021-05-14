@@ -184,7 +184,7 @@ namespace JiraTimeBot.RepositoryProviders
             bool directBranchHasBeenFound = false;
             foreach (var branch in repo.Branches)
             {
-                if (branch.Tip.Sha != commitSha)
+                if (branch.Tip?.Sha != commitSha)
                 {
                     continue;
                 }
