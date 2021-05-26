@@ -200,7 +200,15 @@ namespace JiraTimeBot.RepositoryProviders
 
             foreach (var branch in repo.Branches)
             {
-                var commits = repo.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = branch }).Where(c => c.Sha == commitSha);
+                List<Commit> commits = new List<Commit>();
+                try
+                {
+                    commits = repo.Commits.QueryBy(new CommitFilter {IncludeReachableFrom = branch}).Where(c => c.Sha == commitSha).ToList();
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
 
                 if (!commits.Any())
                 {
