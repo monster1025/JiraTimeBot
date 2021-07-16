@@ -118,7 +118,6 @@ namespace JiraTimeBot.RepositoryProviders
                     var branch = ListBranchesContainsCommit(repo, commit.Sha)
                                  .Select(f => f.FriendlyName)
                                  .FirstOrDefault(f => regex.IsMatch(f));
-                                 
 
                         //.Where(f => f.Contains("-") && !f.Contains("/")).Distinct().FirstOrDefault();
                     if (branch == null)
